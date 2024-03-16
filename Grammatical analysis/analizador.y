@@ -2,17 +2,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
- int yylex(void); 
- int yyerror(char *s); 
+extern char *yytext; // Acceso a yytext de Flex
+void yyerror(const char *s);
+int yylex(void); 
 %}
 
-%union { char *s;
-         int i;
+%union { 
+    char *s;
+    int i;
 }
 
 %token <s> tTEXT tID
-%token <i> tINT tNB
-%token tVOID
+%token <i> tNB
+%token tVOID tINT
 %token tCDIV tSPAN tCSPAN
 %token tIF tELSE tWHILE
 %token tADD tSUB tMUL tDIV
@@ -21,46 +23,65 @@
 %token tLBRACE tRBRACE tLPAR tRPAR tSEMI tCOMMA
 %token tERROR tPRINT tRETURN
 
+%%
+Program : 
+        | Program fun
+;
+
+fun: 
+    tVOID tID tLPAR args tRPAR tLBRACE structure tRBRACE { printf("Function Found : void\n"); }
+    | tINT tID tLPAR args tRPAR tLBRACE structure tRBRACE { printf("Function Found : int\n"); }
+;
+
+structure : context 
+          | context structure     
+;
+
+context : action 
+;
+
+action : 
+        declaration tSEMI
+;
+
+
+declaration:
+            tINT tID
+           | tINT tID tCOMMA declaration
+           | tINT tID tASSIGN resultat tCOMMA declaration
+           | tINT tID tASSIGN resultat
+;
+
+resultat  : 
+           var
+          | resultat tMUL var
+          | resultat tDIV var
+          | resultat tADD var
+          | resultat tSUB var
+;
+
+var:
+     tID
+    | tNB
+;
+
+args:
+    /* Not Arguments */
+    | argList
+;
+
+argList:
+    tINT tID                 /* Only one argument */
+    | argList tCOMMA tINT tID /* Several arguments, divided by commas */
+;
 
 %%
 
-Program : fun1
-        | fun1 Program
-;
-
-fun1 : tINT tID;
-
-fun : 
-   tVOID tID tLPAR args tRPAR tLBRACE tRBRACE 
-   |tINT tID tLPAR args tRPAR tLBRACE tRBRACE 
-;
-
-args: tVOID
-    | arg
-    | args tCOMMA args
-;
-
-arg : tINT tID  
-;
-
-
-
-
-%%
-
-int yyerror(char *s){
-    printf("Syntax Error on line %s\n", s);
-    return 0;
+void yyerror(const char *s) {
+    fprintf(stderr, "Error: %s SYMBOL NOT EXPECTED %s\n", s, yytext);
 }
 
 int main() {
     yyparse();
     return 0;
 }
-
-
-
-
-
-
-

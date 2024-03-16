@@ -9,16 +9,25 @@
 /* Oussama Eljid */
 /*  Cristian Martinez */
 
+
 void showError();
 
 %}
 
-alpha             ([a-zA-Z][a-zA-Z0-9])*
-number           ([0-9])+
-hex_number        (0[xX][0-9a-fA-F])+
+alpha         [a-zA-Z][a-zA-Z0-9]*
+number        [0-9]+
+hex_number    0[xX][0-9a-fA-F]+
 
 
 %%
+
+"if"      { return tIF; }
+"else"    { return tELSE; }
+"while"   { return tWHILE; }
+"print"   { return tPRINT; }
+"return"  { return tRETURN; }
+"int"     { return tINT; }
+"void"    { return tVOID; }
 
 {alpha} {
     yylval.s = strdup(yytext);
@@ -35,13 +44,7 @@ hex_number        (0[xX][0-9a-fA-F])+
     return tNB;
 }
 
-"if"      { return tIF; }
-"else"    { return tELSE; }
-"while"   { return tWHILE; }
-"print"   { return tPRINT; }
-"return"  { return tRETURN; }
-"int"     { return tINT; }
-"void"    { return tVOID; }
+
 "+"       { return tADD; }
 "-"       { return tSUB; }
 "*"       { return tMUL; }
@@ -72,11 +75,13 @@ hex_number        (0[xX][0-9a-fA-F])+
 [ \t\n]+                      { /* Ignore white spaces */ }
 
 
-.                             { showError(); return(tERROR); } //Ignore strange characters
+.                             { showError(); return(tERROR);} //Ignore strange characters
 
 %%
+ 
+
 
 void showError (){
-        printf("Other Input");
+        printf("Other Input: %s\n", yytext);
 }
 
