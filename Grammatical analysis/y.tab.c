@@ -146,6 +146,9 @@
 /* Copy the first part of user declarations.  */
 #line 1 "analizador.y"
 
+/* Oussama Eljid */
+/*  Cristian Martinez */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -177,13 +180,13 @@ int yylex(void);
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 13 "analizador.y"
+#line 16 "analizador.y"
 { 
     char *s;
     int i;
 }
 /* Line 193 of yacc.c.  */
-#line 187 "y.tab.c"
+#line 190 "y.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -196,7 +199,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 200 "y.tab.c"
+#line 203 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -510,13 +513,13 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    30,    30,    31,    35,    35,    36,    36,    40,    41,
-      45,    48,    49,    53,    57,    58,    59,    60,    63,    64,
-      67,    68,    71,    74,    75,    78,    79,    80,    81,    82,
-      83,    84,    85,    86,    87,    88,    89,    93,    94,    95,
-      96,    97,    98,    99,   100,   103,   106,   108,   112,   113,
-     116,   117,   118,   119,   120,   124,   125,   128,   130,   134,
-     135,   136
+       0,    33,    33,    34,    38,    38,    39,    39,    43,    44,
+      48,    51,    52,    56,    60,    61,    62,    63,    66,    67,
+      70,    71,    74,    77,    78,    81,    82,    83,    84,    85,
+      86,    87,    88,    89,    90,    91,    92,    96,    97,    98,
+      99,   100,   101,   102,   103,   106,   109,   111,   115,   116,
+     119,   120,   121,   122,   123,   127,   128,   131,   133,   137,
+     138,   139
 };
 #endif
 
@@ -1510,18 +1513,18 @@ yyreduce:
   switch (yyn)
     {
         case 4:
-#line 35 "analizador.y"
+#line 38 "analizador.y"
     { printf("Function VOID Found : %s\n", yytext); }
     break;
 
   case 6:
-#line 36 "analizador.y"
+#line 39 "analizador.y"
     { printf("Function INT Found : %s\n", yytext); }
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1525 "y.tab.c"
+#line 1528 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1735,7 +1738,7 @@ yyreturn:
 }
 
 
-#line 139 "analizador.y"
+#line 142 "analizador.y"
 
 
 void yyerror(const char *s) {
