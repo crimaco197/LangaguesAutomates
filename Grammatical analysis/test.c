@@ -4,20 +4,21 @@ int compute(int a, int d) {
     while (c > 0) {
       b = b + a * 4;
     }
-    return b;
+    returnO b;
 }
 
 int hola ()
 {
-    return 1;
+    returnO 1; 
 }
 
 void main(void) {
   int a;
   if (a == 3) {
-    print(a);
-  } else {
     int b = compute(a, 2 * a);
-    print(b);
+    print(a);
+  } else { 
+    compute(a, 2 * a);
+    print(a);
   }
 }

@@ -5,12 +5,13 @@
 #include <stdio.h>
 #include <string.h>
 #include "y.tab.h"
+int line_num = 1;
 
 /* Oussama Eljid */
 /*  Cristian Martinez */
 
 
-void showError();
+void showError(const char *text);
 
 %}
 
@@ -20,7 +21,7 @@ hex_number    0[xX][0-9a-fA-F]+
 
 
 %%
-
+\n        { line_num++; }
 "if"      { return tIF; }
 "else"    { return tELSE; }
 "while"   { return tWHILE; }
@@ -75,7 +76,7 @@ hex_number    0[xX][0-9a-fA-F]+
 [ \t\n]+                      { /* Ignore white spaces */ }
 
 
-.                             { showError();
+.                             { showError(yytext); 
 printf("Error Symbol NOT EXPECTED: %s\n", yytext); 
     return tERROR;} //Ignore strange characters
 
@@ -85,7 +86,7 @@ printf("Error Symbol NOT EXPECTED: %s\n", yytext);
  
 
 
-void showError (){
-        printf("Other Input: %s\n", yytext);
+void showError (const char *text){
+        fprintf(stderr, "Error Symbol NOT EXPECTED: %s at line %d\n", text, line_num);
 }
 

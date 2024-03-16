@@ -355,8 +355,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 35
-#define YY_END_OF_BUFFER 36
+#define YY_NUM_RULES 36
+#define YY_END_OF_BUFFER 37
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -366,14 +366,14 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[73] =
     {   0,
-        0,    0,   36,   34,   33,   33,   24,   34,   27,   28,
-       13,   11,   30,   12,   14,    9,    9,   29,   15,   21,
-       16,    8,    8,    8,    8,    8,    8,    8,   25,   34,
-       26,   33,   17,   22,    0,   31,    9,    0,   20,   18,
-       19,    8,    8,    1,    8,    8,    8,    8,    8,   23,
-        0,    0,   31,   10,    8,    6,    8,    8,    8,    8,
-        0,   32,    2,    8,    8,    7,    8,    4,    8,    3,
-        5,    0
+        0,    0,   37,   35,   34,    1,   25,   35,   28,   29,
+       14,   12,   31,   13,   15,   10,   10,   30,   16,   22,
+       17,    9,    9,    9,    9,    9,    9,    9,   26,   35,
+       27,   34,   18,   23,    0,   32,   10,    0,   21,   19,
+       20,    9,    9,    2,    9,    9,    9,    9,    9,   24,
+        0,    0,   32,   11,    9,    7,    9,    9,    9,    9,
+        0,   33,    3,    9,    9,    8,    9,    5,    9,    4,
+        6,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -498,15 +498,16 @@ char *yytext;
 #include <stdio.h>
 #include <string.h>
 #include "y.tab.h"
+int line_num = 1;
 
 /* Oussama Eljid */
 /*  Cristian Martinez */
 
 
-void showError();
+void showError(const char *text);
 
-#line 508 "lex.yy.c"
 #line 509 "lex.yy.c"
+#line 510 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -721,8 +722,7 @@ YY_DECL
 		}
 
 	{
-#line 22 "analizador.l"
-
+#line 23 "analizador.l"
 
 #line 727 "lex.yy.c"
 
@@ -782,194 +782,200 @@ do_action:	/* This label is used only to access EOF actions. */
 			goto yy_find_action;
 
 case 1:
+/* rule 1 can match eol */
 YY_RULE_SETUP
 #line 24 "analizador.l"
-{ return tIF; }
+{ line_num++; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 25 "analizador.l"
-{ return tELSE; }
+{ return tIF; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 26 "analizador.l"
-{ return tWHILE; }
+{ return tELSE; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 27 "analizador.l"
-{ return tPRINT; }
+{ return tWHILE; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 28 "analizador.l"
-{ return tRETURN; }
+{ return tPRINT; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 29 "analizador.l"
-{ return tINT; }
+{ return tRETURN; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 30 "analizador.l"
-{ return tVOID; }
+{ return tINT; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 32 "analizador.l"
+#line 31 "analizador.l"
+{ return tVOID; }
+	YY_BREAK
+case 9:
+YY_RULE_SETUP
+#line 33 "analizador.l"
 {
     yylval.s = strdup(yytext);
     return tID;
 }
 	YY_BREAK
-case 9:
+case 10:
 YY_RULE_SETUP
-#line 37 "analizador.l"
+#line 38 "analizador.l"
 {
     yylval.i = atoi(yytext);
     return tNB;
 }
 	YY_BREAK
-case 10:
+case 11:
 YY_RULE_SETUP
-#line 42 "analizador.l"
+#line 43 "analizador.l"
 {
     yylval.i = (int)strtol(yytext, NULL, 16);
     return tNB;
 }
 	YY_BREAK
-case 11:
-YY_RULE_SETUP
-#line 48 "analizador.l"
-{ return tADD; }
-	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 49 "analizador.l"
-{ return tSUB; }
+{ return tADD; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 50 "analizador.l"
-{ return tMUL; }
+{ return tSUB; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 51 "analizador.l"
-{ return tDIV; }
+{ return tMUL; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 52 "analizador.l"
-{ return tLT; }
+{ return tDIV; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 53 "analizador.l"
-{ return tGT; }
+{ return tLT; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 54 "analizador.l"
-{ return tNE; }
+{ return tGT; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 55 "analizador.l"
-{ return tEQ; }
+{ return tNE; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 56 "analizador.l"
-{ return tGE; }
+{ return tEQ; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 57 "analizador.l"
-{ return tLE; }
+{ return tGE; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 58 "analizador.l"
-{ return tASSIGN; }
+{ return tLE; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 59 "analizador.l"
-{ return tAND; }
+{ return tASSIGN; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 60 "analizador.l"
-{ return tOR; }
+{ return tAND; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 61 "analizador.l"
-{ return tNOT; }
+{ return tOR; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 62 "analizador.l"
-{ return tLBRACE; }
+{ return tNOT; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 63 "analizador.l"
-{ return tRBRACE; }
+{ return tLBRACE; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 64 "analizador.l"
-{ return tLPAR; }
+{ return tRBRACE; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 65 "analizador.l"
-{ return tRPAR; }
+{ return tLPAR; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 66 "analizador.l"
-{ return tSEMI; }
+{ return tRPAR; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 67 "analizador.l"
-{ return tCOMMA; }
+{ return tSEMI; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 70 "analizador.l"
-{ /* Ignore one line comments */ }
+#line 68 "analizador.l"
+{ return tCOMMA; }
 	YY_BREAK
 case 32:
-/* rule 32 can match eol */
 YY_RULE_SETUP
 #line 71 "analizador.l"
-{ /* Ignore multiline comments */ }
+{ /* Ignore one line comments */ }
 	YY_BREAK
 case 33:
 /* rule 33 can match eol */
 YY_RULE_SETUP
-#line 75 "analizador.l"
-{ /* Ignore white spaces */ }
+#line 72 "analizador.l"
+{ /* Ignore multiline comments */ }
 	YY_BREAK
 case 34:
+/* rule 34 can match eol */
 YY_RULE_SETUP
-#line 78 "analizador.l"
-{ showError();
-printf("Error Symbol NOT EXPECTED: %s\n", yytext); 
-    return tERROR;} //Ignore strange characters
+#line 76 "analizador.l"
+{ /* Ignore white spaces */ }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 82 "analizador.l"
+#line 79 "analizador.l"
+{ showError(yytext); 
+printf("Error Symbol NOT EXPECTED: %s\n", yytext); 
+    return tERROR;} //Ignore strange characters
+	YY_BREAK
+case 36:
+YY_RULE_SETUP
+#line 83 "analizador.l"
 ECHO;
 	YY_BREAK
-#line 972 "lex.yy.c"
+#line 978 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1937,15 +1943,15 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 82 "analizador.l"
+#line 83 "analizador.l"
 
 
 
  
 
 
-void showError (){
-        printf("Other Input: %s\n", yytext);
+void showError (const char *text){
+        fprintf(stderr, "Error Symbol NOT EXPECTED: %s at line %d\n", text, line_num);
 }
 
 

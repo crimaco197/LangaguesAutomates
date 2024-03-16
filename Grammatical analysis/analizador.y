@@ -4,6 +4,7 @@
 #include <string.h>
 
 extern char *yytext; // Acceso a yytext de Flex
+extern int line_num;
 void yyerror(const char *s);
 int yylex(void); 
 %}
@@ -30,16 +31,13 @@ Program : fun
 ;
 
 fun: 
-      tVOID tID { printf("Function VOID Found : %s\n", yytext); } tLPAR args tRPAR tLBRACE structure tRBRACE  { printf("ERROR in VOID Found : %s\n", yytext); }
+      tVOID tID { printf("Function VOID Found : %s\n", yytext); } tLPAR args tRPAR tLBRACE structure tRBRACE 
     | tINT tID { printf("Function INT Found : %s\n", yytext); } tLPAR args tRPAR functionBody  
 ;
 
 functionBody:
     tLBRACE structure returnStatement tRBRACE
   | tLBRACE returnStatement tRBRACE
-  | tLBRACE error tRBRACE {
-      yyerror("Syntax Error, Token EXPECTED return.");
-    }
 ;
 
 returnStatement:
@@ -58,6 +56,7 @@ action :
          declaration tSEMI
        | print tSEMI
        | bucles
+       | functionName tSEMI
 ;
 
 print : tPRINT tLPAR tID tRPAR
@@ -138,7 +137,7 @@ argList:
 %%
 
 void yyerror(const char *s) {
-    fprintf(stderr, "Error: %s SYMBOL FOUND %s\n", s, yytext);
+    fprintf(stderr, "Error: %s at line %d - ERROR JUST BEFORE SYMBOL %s\n", s, line_num, yytext);
 }
 
 int main() {
