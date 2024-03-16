@@ -30,18 +30,22 @@ Program :
 
 fun: 
     tVOID tID tLPAR args tRPAR tLBRACE structure tRBRACE { printf("Function Found : void\n"); }
-    | tINT tID tLPAR args tRPAR tLBRACE structure tRBRACE { printf("Function Found : int\n"); }
+    | tINT tID tLPAR args tRPAR tLBRACE structure return tRBRACE { printf("Function Found : int\n"); }
 ;
 
 structure : context 
           | context structure     
 ;
 
-context : action 
+context : 
+        | action 
 ;
 
 action : 
         declaration tSEMI
+;
+
+return  : tRETURN  var tSEMI
 ;
 
 
@@ -50,8 +54,10 @@ declaration:
            | tINT tID tCOMMA declaration
            | tINT tID tASSIGN resultat tCOMMA declaration
            | tINT tID tASSIGN resultat
+           | tID tASSIGN resultat
+           | tID tCOMMA declaration
+           | tID
 ;
-
 resultat  : 
            var
           | resultat tMUL var
