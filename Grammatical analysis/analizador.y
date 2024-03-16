@@ -5,6 +5,7 @@
 
 extern char *yytext; // Acceso a yytext de Flex
 extern int line_num;
+extern int yylineno;
 void yyerror(const char *s);
 int yylex(void); 
 %}
@@ -14,7 +15,7 @@ int yylex(void);
     int i;
 }
 
-%token <s> tTEXT tID
+%token <s> tTEXT tID tSTRING
 %token <i> tNB
 %token tVOID tINT
 %token tCDIV tSPAN tCSPAN
@@ -22,7 +23,7 @@ int yylex(void);
 %token tADD tSUB tMUL tDIV
 %token tLT tGT tNE tEQ tGE tLE tASSIGN
 %token tAND tOR tNOT
-%token tLBRACE tRBRACE tLPAR tRPAR tSEMI tCOMMA
+%token tLBRACE tRBRACE tLPAR tRPAR tSEMI tCOMMA 
 %token tERROR tPRINT tRETURN
 
 %%
@@ -44,7 +45,7 @@ returnStatement:
     tRETURN var tSEMI
 ;
 
-structure : context 
+structure : context
           | context structure     
 ;
 
@@ -60,6 +61,7 @@ action :
 ;
 
 print : tPRINT tLPAR tID tRPAR
+      | tPRINT tLPAR tSTRING tID tSTRING tRPAR
 ;
 
 bucles: if
@@ -137,7 +139,7 @@ argList:
 %%
 
 void yyerror(const char *s) {
-    fprintf(stderr, "Error: %s at line %d - ERROR JUST BEFORE SYMBOL %s\n", s, line_num, yytext);
+    fprintf(stderr, "Error: %s at line %d - ERROR JUST BEFORE SYMBOL %s\n", s, yylineno, yytext);
 }
 
 int main() {

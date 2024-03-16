@@ -4,12 +4,12 @@ int compute(int a, int d) {
     while (c > 0) {
       b = b + a * 4;
     }
-    returnO b;
+    return b;
 }
 
 int hola ()
 {
-    returnO 1; 
+    return 1; 
 }
 
 void main(void) {
@@ -21,4 +21,10 @@ void main(void) {
     compute(a, 2 * a);
     print(a);
   }
+}
+
+int main (int argc,int argv)
+{
+   print(Hola);
+   return 0;
 }

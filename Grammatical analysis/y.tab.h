@@ -41,88 +41,90 @@
    enum yytokentype {
      tTEXT = 258,
      tID = 259,
-     tNB = 260,
-     tVOID = 261,
-     tINT = 262,
-     tCDIV = 263,
-     tSPAN = 264,
-     tCSPAN = 265,
-     tIF = 266,
-     tELSE = 267,
-     tWHILE = 268,
-     tADD = 269,
-     tSUB = 270,
-     tMUL = 271,
-     tDIV = 272,
-     tLT = 273,
-     tGT = 274,
-     tNE = 275,
-     tEQ = 276,
-     tGE = 277,
-     tLE = 278,
-     tASSIGN = 279,
-     tAND = 280,
-     tOR = 281,
-     tNOT = 282,
-     tLBRACE = 283,
-     tRBRACE = 284,
-     tLPAR = 285,
-     tRPAR = 286,
-     tSEMI = 287,
-     tCOMMA = 288,
-     tERROR = 289,
-     tPRINT = 290,
-     tRETURN = 291
+     tSTRING = 260,
+     tNB = 261,
+     tVOID = 262,
+     tINT = 263,
+     tCDIV = 264,
+     tSPAN = 265,
+     tCSPAN = 266,
+     tIF = 267,
+     tELSE = 268,
+     tWHILE = 269,
+     tADD = 270,
+     tSUB = 271,
+     tMUL = 272,
+     tDIV = 273,
+     tLT = 274,
+     tGT = 275,
+     tNE = 276,
+     tEQ = 277,
+     tGE = 278,
+     tLE = 279,
+     tASSIGN = 280,
+     tAND = 281,
+     tOR = 282,
+     tNOT = 283,
+     tLBRACE = 284,
+     tRBRACE = 285,
+     tLPAR = 286,
+     tRPAR = 287,
+     tSEMI = 288,
+     tCOMMA = 289,
+     tERROR = 290,
+     tPRINT = 291,
+     tRETURN = 292
    };
 #endif
 /* Tokens.  */
 #define tTEXT 258
 #define tID 259
-#define tNB 260
-#define tVOID 261
-#define tINT 262
-#define tCDIV 263
-#define tSPAN 264
-#define tCSPAN 265
-#define tIF 266
-#define tELSE 267
-#define tWHILE 268
-#define tADD 269
-#define tSUB 270
-#define tMUL 271
-#define tDIV 272
-#define tLT 273
-#define tGT 274
-#define tNE 275
-#define tEQ 276
-#define tGE 277
-#define tLE 278
-#define tASSIGN 279
-#define tAND 280
-#define tOR 281
-#define tNOT 282
-#define tLBRACE 283
-#define tRBRACE 284
-#define tLPAR 285
-#define tRPAR 286
-#define tSEMI 287
-#define tCOMMA 288
-#define tERROR 289
-#define tPRINT 290
-#define tRETURN 291
+#define tSTRING 260
+#define tNB 261
+#define tVOID 262
+#define tINT 263
+#define tCDIV 264
+#define tSPAN 265
+#define tCSPAN 266
+#define tIF 267
+#define tELSE 268
+#define tWHILE 269
+#define tADD 270
+#define tSUB 271
+#define tMUL 272
+#define tDIV 273
+#define tLT 274
+#define tGT 275
+#define tNE 276
+#define tEQ 277
+#define tGE 278
+#define tLE 279
+#define tASSIGN 280
+#define tAND 281
+#define tOR 282
+#define tNOT 283
+#define tLBRACE 284
+#define tRBRACE 285
+#define tLPAR 286
+#define tRPAR 287
+#define tSEMI 288
+#define tCOMMA 289
+#define tERROR 290
+#define tPRINT 291
+#define tRETURN 292
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 12 "analizador.y"
+#line 13 "analizador.y"
 { 
     char *s;
     int i;
 }
 /* Line 1529 of yacc.c.  */
-#line 126 "y.tab.h"
+#line 128 "y.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

@@ -1,6 +1,7 @@
 %option noyywrap
 %option noinput
 %option nounput
+%option yylineno
 %{
 #include <stdio.h>
 #include <string.h>
@@ -21,7 +22,7 @@ hex_number    0[xX][0-9a-fA-F]+
 
 
 %%
-\n        { line_num++; }
+
 "if"      { return tIF; }
 "else"    { return tELSE; }
 "while"   { return tWHILE; }
@@ -77,16 +78,11 @@ hex_number    0[xX][0-9a-fA-F]+
 
 
 .                             { showError(yytext); 
-printf("Error Symbol NOT EXPECTED: %s\n", yytext); 
     return tERROR;} //Ignore strange characters
 
 %%
 
-
- 
-
-
 void showError (const char *text){
-        fprintf(stderr, "Error Symbol NOT EXPECTED: %s at line %d\n", text, line_num);
+        fprintf(stderr, "Error Symbol NOT EXPECTED: %s at line %d\n", text, yylineno);
 }
 
