@@ -33,6 +33,18 @@ action : assignation tSEMI
        | declaration tSEMI
 ;
 
+bucles: if
+      | while
+;
+
+if: tIf
+
+
+a
+a && b && c
+a || b || c
+a OPT b
+
 
 
 condwhile : tWHILE tLPAR condition tRPAR tLBRACE structure tRBRACE

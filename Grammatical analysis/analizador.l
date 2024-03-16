@@ -75,9 +75,13 @@ hex_number    0[xX][0-9a-fA-F]+
 [ \t\n]+                      { /* Ignore white spaces */ }
 
 
-.                             { showError(); return(tERROR);} //Ignore strange characters
+.                             { showError();
+printf("Error Symbol NOT EXPECTED: %s\n", yytext); 
+    return tERROR;} //Ignore strange characters
 
 %%
+
+
  
 
 

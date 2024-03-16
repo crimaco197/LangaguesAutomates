@@ -30,8 +30,20 @@ Program : fun
 ;
 
 fun: 
-      tVOID tID { printf("Function VOID Found : %s\n", yytext); } tLPAR args tRPAR tLBRACE structure tRBRACE {if (strcmp(yytext, "}") != 0) { printf("ERROR in VOID Found : %s\n", yytext); }}
-    | tINT tID { printf("Function INT Found : %s\n", yytext); } tLPAR args tRPAR tLBRACE structure return tRBRACE  {if (strcmp(yytext, "}") != 0) { printf("ERROR in INT Found : %s\n", yytext); }}
+      tVOID tID { printf("Function VOID Found : %s\n", yytext); } tLPAR args tRPAR tLBRACE structure tRBRACE  { printf("ERROR in VOID Found : %s\n", yytext); }
+    | tINT tID { printf("Function INT Found : %s\n", yytext); } tLPAR args tRPAR functionBody  
+;
+
+functionBody:
+    tLBRACE structure returnStatement tRBRACE
+  | tLBRACE returnStatement tRBRACE
+  | tLBRACE error tRBRACE {
+      yyerror("Syntax Error, Token EXPECTED return.");
+    }
+;
+
+returnStatement:
+    tRETURN var tSEMI
 ;
 
 structure : context 
@@ -46,9 +58,6 @@ action :
          declaration tSEMI
        | print tSEMI
        | bucles
-;
-
-return  : tRETURN  var tSEMI
 ;
 
 print : tPRINT tLPAR tID tRPAR
@@ -129,10 +138,14 @@ argList:
 %%
 
 void yyerror(const char *s) {
-    fprintf(stderr, "Error: %s SYMBOL NOT EXPECTED %s\n", s, yytext);
+    fprintf(stderr, "Error: %s SYMBOL FOUND %s\n", s, yytext);
 }
 
 int main() {
     yyparse();
     return 0;
+}
+
+int hola(){
+    return 1;
 }

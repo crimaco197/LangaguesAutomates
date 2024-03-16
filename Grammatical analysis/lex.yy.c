@@ -960,14 +960,16 @@ YY_RULE_SETUP
 case 34:
 YY_RULE_SETUP
 #line 78 "analizador.l"
-{ showError(); return(tERROR);} //Ignore strange characters
+{ showError();
+printf("Error Symbol NOT EXPECTED: %s\n", yytext); 
+    return tERROR;} //Ignore strange characters
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 80 "analizador.l"
+#line 82 "analizador.l"
 ECHO;
 	YY_BREAK
-#line 970 "lex.yy.c"
+#line 972 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1935,7 +1937,9 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 80 "analizador.l"
+#line 82 "analizador.l"
+
+
 
  
 

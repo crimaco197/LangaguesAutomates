@@ -3,8 +3,13 @@ int compute(int a, int d) {
     b = a;
     while (c > 0) {
       b = b + a * 4;
-    }HOAL
+    }
     return b;
+}
+
+int hola ()
+{
+    return 1;
 }
 
 void main(void) {
@@ -14,5 +19,5 @@ void main(void) {
   } else {
     int b = compute(a, 2 * a);
     print(b);
-  }RETURN
+  }
 }
