@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 extern char *yytext; // Acceso a yytext de Flex
 void yyerror(const char *s);
@@ -24,13 +25,13 @@ int yylex(void);
 %token tERROR tPRINT tRETURN
 
 %%
-Program : 
-        | Program fun
+Program : fun
+        | fun Program
 ;
 
 fun: 
-    tVOID tID tLPAR args tRPAR tLBRACE structure tRBRACE { printf("Function Found : void\n"); }
-    | tINT tID tLPAR args tRPAR tLBRACE structure return tRBRACE { printf("Function Found : int\n"); }
+      tVOID tID { printf("Function VOID Found : %s\n", yytext); } tLPAR args tRPAR tLBRACE structure tRBRACE {if (strcmp(yytext, "}") != 0) { printf("ERROR in VOID Found : %s\n", yytext); }}
+    | tINT tID { printf("Function INT Found : %s\n", yytext); } tLPAR args tRPAR tLBRACE structure return tRBRACE  {if (strcmp(yytext, "}") != 0) { printf("ERROR in INT Found : %s\n", yytext); }}
 ;
 
 structure : context 
@@ -38,25 +39,68 @@ structure : context
 ;
 
 context : 
-        | action 
+         action 
 ;
 
 action : 
-        declaration tSEMI
+         declaration tSEMI
+       | print tSEMI
+       | bucles
 ;
 
 return  : tRETURN  var tSEMI
 ;
 
+print : tPRINT tLPAR tID tRPAR
+;
+
+bucles: if
+      | while
+;
+
+while: tWHILE tLPAR condition tRPAR tLBRACE structure tRBRACE
+;
+
+if: tIF tLPAR condition tRPAR tLBRACE structure tRBRACE
+  | tIF tLPAR condition tRPAR tLBRACE structure tRBRACE tELSE tLBRACE structure tRBRACE
+
+
+condition : var
+          | tNOT tID
+          | var tAND condition 
+          | var tNOT condition
+          | var tLE condition
+          | var tGE condition
+          | var tEQ condition
+          | var tNE condition
+          | var tGT condition
+          | var tLT condition
+          | var tOR condition 
+          | tLPAR condition tRPAR
+;
 
 declaration:
             tINT tID
            | tINT tID tCOMMA declaration
            | tINT tID tASSIGN resultat tCOMMA declaration
            | tINT tID tASSIGN resultat
+           | tINT tID tASSIGN functionName
            | tID tASSIGN resultat
            | tID tCOMMA declaration
            | tID
+;
+
+functionName: tID tLPAR argsName tRPAR
+;
+
+argsName: 
+          /* Not Arguments */
+        | argListName
+;
+
+argListName:
+     var                        /* Only one argument */
+    | argListName tCOMMA resultat
 ;
 resultat  : 
            var
@@ -77,7 +121,8 @@ args:
 ;
 
 argList:
-    tINT tID                 /* Only one argument */
+      tVOID
+    | tINT tID                 /* Only one argument */
     | argList tCOMMA tINT tID /* Several arguments, divided by commas */
 ;
 
