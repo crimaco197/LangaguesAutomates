@@ -5,6 +5,7 @@
 typedef struct Symbol {
     char *name; // Symbol Name
     char *type;   // Symbol Type
+    int adress;
     // int type;
 } Symbol;
 
