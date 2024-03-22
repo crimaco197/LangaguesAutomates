@@ -32,11 +32,11 @@ void add_symbol(SymbolTable *table, char *name, int type) {
 
 // Función para imprimir el contenido de la tabla de símbolos
 void print_symbol_table(SymbolTable *table) {
-    printf("Tabla de Símbolos:\n");
+    printf("Symbol Table:\n");
     printf("-------------------\n");
     for (int i = 0; i < table->size; ++i) {
         Symbol symbol = table->symbols[i];
-        printf("Nombre: %s, Tipo: %d\n", symbol.name, symbol.type);
+        printf("Name: %s, Type: %d\n", symbol.name, symbol.type);
         // Agregar aquí más detalles si es necesario
     }
     printf("-------------------\n");
