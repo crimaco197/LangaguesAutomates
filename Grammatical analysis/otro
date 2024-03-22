@@ -1,13 +1,11 @@
 GRM=analizador.y
 LEX=analizador.l
 BIN=analizador
-SYM=symbol_table.c # Añade esta línea para tu archivo de tabla de símbolos
-
 
 CC=gcc
 CFLAGS=-Wall -g
 
-OBJ=y.tab.o lex.yy.o $(SYM:.c=.o) # Incluye el objeto de la tabla de símbolos aquí
+OBJ=y.tab.o lex.yy.o
 
 TEST_DIR=samples
 
@@ -30,10 +28,6 @@ lex.yy.c: $(LEX)
 $(BIN): $(OBJ)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@ -L/opt/homebrew/Cellar/flex/2.6.4_2/lib -lfl
 
-# Añade una regla para compilar symbol_table.c
-$(SYM:.c=.o): $(SYM)
-	$(CC) $(CFLAGS) -c $< -o $@
-	
 # Limpiar archivos generados
 clean:
 	rm -f $(OBJ) y.tab.c y.tab.h lex.yy.c $(BIN)
@@ -48,3 +42,37 @@ test: $(BIN)
 	done
 
 .PHONY: all clean test
+
+
+
+
+
+
+VERSION 1 : 
+
+GRM=analizador.y
+LEX=analizador.l
+BIN=analizador
+
+CC=gcc
+CFLAGS=-Wall -g
+
+OBJ=y.tab.o lex.yy.o
+
+all: $(BIN)
+
+%.o: %.c
+	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
+
+y.tab.c: $(GRM)
+	yacc -d $<
+
+lex.yy.c: $(LEX)
+	flex $<
+
+$(BIN): $(OBJ)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@
+
+clean:
+	rm $(OBJ) y.tab.c y.tab.h lex.yy.c
+

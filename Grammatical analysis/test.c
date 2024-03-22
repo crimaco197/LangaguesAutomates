@@ -1,3 +1,13 @@
+void main(void) {
+  int a;
+  a = 123 + 321 * 4 / 2 - 1;
+  if (a == 1) {
+    print(a);
+  } else {
+    print(a / 1);
+  }
+}
+
 int compute(int a, int d) {
     int b, c = a + d * 5;
     b = a;
@@ -25,6 +35,6 @@ void main(void) {
 
 int main (int argc,int argv)
 {
-   print(Hola);
+   print(argc);
    return 0;
 }

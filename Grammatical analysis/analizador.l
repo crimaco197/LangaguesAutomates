@@ -3,20 +3,24 @@
 %option nounput
 %option yylineno
 %{
+/* Oussama Eljid */
+/*  Cristian Martinez */
+
 #include <stdio.h>
 #include <string.h>
 #include "y.tab.h"
-int line_num = 1;
+#include "symbol_table.h"
 
-/* Oussama Eljid */
-/*  Cristian Martinez */
+
+extern SymbolTable *symbol_table;
+int line_num = 1;
 
 
 void showError(const char *text);
 
 %}
 
-alpha         [a-zA-Z][a-zA-Z0-9]*
+alpha         [_a-zA-Z][a-zA-Z0-9]*
 number        [0-9]+
 hex_number    0[xX][0-9a-fA-F]+
 

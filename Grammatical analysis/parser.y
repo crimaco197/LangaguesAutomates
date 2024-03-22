@@ -5,22 +5,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "symbol_table.h"
-
-
 
 extern char *yytext; // Acceso a yytext de Flex
 extern int line_num;
 extern int yylineno;
-extern SymbolTable *symbol_table;
-
 void yyerror(const char *s);
 int yylex(void); 
 %}
 
 %union { 
     char *s;
-    int i;
+    int i; 
 }
 
 %token <s> tTEXT tID tSTRING
@@ -46,13 +41,14 @@ fun:
 
 functionBody:
     tLBRACE structure returnStatement tRBRACE
+  | tLBRACE returnStatement tRBRACE
 ;
 
 returnStatement:
-    tRETURN resultat tSEMI
+    tRETURN var tSEMI
 ;
 
-structure : 
+structure : context
           | context structure     
 ;
 
@@ -81,8 +77,6 @@ while: tWHILE tLPAR condition tRPAR tLBRACE structure tRBRACE
 
 if: tIF tLPAR condition tRPAR tLBRACE structure tRBRACE
   | tIF tLPAR condition tRPAR tLBRACE structure tRBRACE tELSE tLBRACE structure tRBRACE
-  | tIF tLPAR condition tRPAR tLBRACE structure tRBRACE functionBody
-  | tIF tLPAR condition tRPAR tLBRACE structure tRBRACE tELSE tLBRACE functionBody tRBRACE
 
 
 condition : var
@@ -100,10 +94,11 @@ condition : var
 ;
 
 declaration:
-            tINT tID { add_symbol(symbol_table, $2, tINT); printf("Declared int %s\n", $2);}
+            tINT tID
            | tINT tID tCOMMA declaration
            | tINT tID tASSIGN resultat tCOMMA declaration
            | tINT tID tASSIGN resultat
+           | tINT tID tASSIGN functionName
            | tID tASSIGN resultat
            | tID tCOMMA declaration
            | tID
@@ -132,7 +127,6 @@ resultat  :
 var:
      tID
     | tNB
-    | functionName
 ;
 
 args:
@@ -153,8 +147,6 @@ void yyerror(const char *s) {
 }
 
 int main() {
-    symbol_table = create_symbol_table();
     yyparse();
-    print_symbol_table(symbol_table);
     return 0;
 }
