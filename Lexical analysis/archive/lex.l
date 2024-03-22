@@ -20,7 +20,7 @@ int                           { printf("tINT\n"); }
 void                          { printf("tVOID\n"); }
 
 
-[a-zA-Z][a-zA-Z0-9]*          { printf("tID: '%s'\n", yytext); }
+[_a-zA-Z][a-zA-Z0-9]*          { printf("tID: '%s'\n", yytext); }
 
 
 [0-9]+                        {
