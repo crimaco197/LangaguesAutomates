@@ -13,7 +13,6 @@
 
 
 extern SymbolTable *symbol_table;
-int line_num = 1;
 
 
 void showError(const char *text);

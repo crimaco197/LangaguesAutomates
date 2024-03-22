@@ -1,13 +1,13 @@
 GRM=analizador.y
 LEX=analizador.l
 BIN=analizador
-SYM=symbol_table.c # Añade esta línea para tu archivo de tabla de símbolos
+SYM=symbol_table.c
 
 
 CC=gcc
 CFLAGS=-Wall -g
 
-OBJ=y.tab.o lex.yy.o $(SYM:.c=.o) # Incluye el objeto de la tabla de símbolos aquí
+OBJ=y.tab.o lex.yy.o $(SYM:.c=.o) # Include all the objects 
 
 TEST_DIR=samples
 
@@ -18,27 +18,27 @@ all: $(BIN)
 %.o: %.c
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
 
-# Generar y.tab.c y y.tab.h desde Bison
+# Generate y.tab.c y y.tab.h from Bison
 y.tab.c: $(GRM)
 	yacc -d $<
 
-# Generar lex.yy.c desde Flex
+# Generate lex.yy.c from Flex
 lex.yy.c: $(LEX)
 	flex $<
 
-# Enlazar el ejecutable
+# Mix executable
 $(BIN): $(OBJ)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@ -L/opt/homebrew/Cellar/flex/2.6.4_2/lib -lfl
 
-# Añade una regla para compilar symbol_table.c
+# Execute symbol_table.c
 $(SYM:.c=.o): $(SYM)
 	$(CC) $(CFLAGS) -c $< -o $@
-	
-# Limpiar archivos generados
+
+# Clean memory
 clean:
 	rm -f $(OBJ) y.tab.c y.tab.h lex.yy.c $(BIN)
 
-# Regla para ejecutar pruebas
+# Testing Test Files
 test: $(BIN)
 	@echo "Running tests..."
 	@for file in $(TEST_DIR)/*.c; do \

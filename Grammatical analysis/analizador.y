@@ -8,12 +8,12 @@
 #include "symbol_table.h"
 
 
-
-extern char *yytext; // Acceso a yytext de Flex
-extern int line_num;
+// EXTERN VARIABLES
+extern char *yytext;
 extern int yylineno;
 extern SymbolTable *symbol_table;
 
+// DECLARATING FUNCTIONS
 void yyerror(const char *s);
 int yylex(void); 
 %}
@@ -86,7 +86,7 @@ if: tIF tLPAR condition tRPAR tLBRACE structure tRBRACE
 
 
 condition : var
-          | tNOT tID
+          | tNOT tID { add_symbol($2, $2); }
           | var tAND condition 
           | var tNOT condition
           | var tLE condition
@@ -99,14 +99,17 @@ condition : var
           | tLPAR condition tRPAR
 ;
 
+declaration1: tINT tID { add_symbol($2, $2); };
+
 declaration:
-            tINT tID { add_symbol(symbol_table, $2, tINT); printf("Declared int %s\n", $2);}
-           | tINT tID tCOMMA declaration
-           | tINT tID tASSIGN resultat tCOMMA declaration
-           | tINT tID tASSIGN resultat
+            declaration1
+           | declaration1 tCOMMA declaration
+           | declaration1 tASSIGN resultat tCOMMA declaration
+           | declaration1 tASSIGN resultat
+           | declaration1 tASSIGN functionName
            | tID tASSIGN resultat
            | tID tCOMMA declaration
-           | tID
+           | tID 
 ;
 
 functionName: tID tLPAR argsName tRPAR
@@ -155,6 +158,6 @@ void yyerror(const char *s) {
 int main() {
     symbol_table = create_symbol_table();
     yyparse();
-    print_symbol_table(symbol_table);
+    print_symbol_table();
     return 0;
 }
