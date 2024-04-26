@@ -13,6 +13,7 @@
 
 
 extern SymbolTable *symbol_table;
+extern int address;
 
 
 void showError(const char *text);

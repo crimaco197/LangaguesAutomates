@@ -5,7 +5,7 @@
 typedef struct Symbol {
     char *name; // Symbol Name
     char *type;   // Symbol Type
-    // int type;
+    int address;
 } Symbol;
 
 typedef struct SymbolTable {

@@ -1,4 +1,4 @@
-void main(void) {
+/* void main(void) {
   int a;
   int a;
   a = 123 + 321 * 4 / 2 - 1;
@@ -7,7 +7,7 @@ void main(void) {
   } else {
     print(a / 1);
   }
-}
+} */
 
 int compute(int a, int d) {
     int b, c = a + d * 5;
@@ -17,7 +17,7 @@ int compute(int a, int d) {
     }
     return b;
 }
-
+/*
 int hola ()
 {
     return 1; 
@@ -39,3 +39,5 @@ int main (int argc,int argv)
    print(argc);
    return 0;
 }
+
+*/

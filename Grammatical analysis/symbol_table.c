@@ -5,6 +5,7 @@
 #include <stdio.h>
 
 SymbolTable *symbol_table = NULL; // Inizialate Table
+static int address = 0;
 
 SymbolTable* create_symbol_table() {
     SymbolTable *symbol_table = malloc(sizeof(SymbolTable));
@@ -20,11 +21,21 @@ void add_symbol(char *name, char *type) {
         symbol_table->capacity *= 2;
         symbol_table->symbols = realloc(symbol_table->symbols, sizeof(Symbol) * symbol_table->capacity);
     }
-
-    // Add new symbol
     Symbol new_symbol;
-    new_symbol.name = strdup(name); // Free memory - a voir... 
-    new_symbol.type = strdup(type);
+    // Add new symbol
+    if (strcmp(name, "tmp") == 0){
+        char symbolTMP [100];
+        snprintf(symbolTMP, sizeof(symbolTMP), "%s%d", name, address);  // Concantenate String and Int
+        new_symbol.name = strdup(symbolTMP); // Free memory - a voir... 
+        new_symbol.type = strdup(type);
+        new_symbol.address = address++;
+    }else{
+        new_symbol.name = strdup(name); // Free memory - a voir... 
+        new_symbol.type = strdup(type);
+        new_symbol.address = address++;
+    }
+    
+    
     symbol_table->symbols[symbol_table->size++] = new_symbol;
 }
 
@@ -35,7 +46,7 @@ void print_symbol_table() {
     printf("-------------------\n");
     for (int i = 0; i < symbol_table->size; ++i) {
         Symbol symbol = symbol_table->symbols[i];
-        printf("Name: %s, Type: %d\n", symbol.name, symbol.type);
+        printf("Name: %s, Type: %s\n", symbol.name, symbol.type);
     }
     printf("-------------------\n");
 }

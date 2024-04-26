@@ -12,6 +12,7 @@
 extern char *yytext;
 extern int yylineno;
 extern SymbolTable *symbol_table;
+extern int address;
 
 // DECLARATING FUNCTIONS
 void yyerror(const char *s);
@@ -86,12 +87,12 @@ if: tIF tLPAR condition tRPAR tLBRACE structure tRBRACE
 
 
 condition : var
-          | tNOT tID { add_symbol($2, $2); }
+          | tNOT tID { add_symbol($2, "int"); }
           | var tAND condition 
           | var tNOT condition
           | var tLE condition
           | var tGE condition
-          | var tEQ condition
+          | var { add_symbol("tmp", "int"); } tEQ condition
           | var tNE condition
           | var tGT condition
           | var tLT condition
@@ -99,7 +100,7 @@ condition : var
           | tLPAR condition tRPAR
 ;
 
-declaration1: tINT tID { add_symbol($2, $2); };
+declaration1: tINT tID { add_symbol($2, "int"); };
 
 declaration:
             declaration1
@@ -107,9 +108,9 @@ declaration:
            | declaration1 tASSIGN resultat tCOMMA declaration
            | declaration1 tASSIGN resultat
            | declaration1 tASSIGN functionName
-           | tID tASSIGN resultat
+           | tID tASSIGN resultat 
            | tID tCOMMA declaration
-           | tID 
+           | tID { add_symbol($1, "int"); }
 ;
 
 functionName: tID tLPAR argsName tRPAR
@@ -125,16 +126,16 @@ argListName:
     | argListName tCOMMA resultat
 ;
 resultat  : 
-           var
-          | resultat tMUL var
-          | resultat tDIV var
-          | resultat tADD var
-          | resultat tSUB var
+           var { add_symbol("tmp" , "int"); }
+          | resultat tMUL var { add_symbol("tmp" , "int"); }
+          | resultat tDIV var { add_symbol("tmp" , "int"); }
+          | resultat tADD var { add_symbol("tmp" , "int"); }
+          | resultat tSUB var { add_symbol("tmp", "int"); }
 ;
 
 var:
-     tID
-    | tNB
+     tID //{ add_symbol($1, "int"); }
+    | tNB 
     | functionName
 ;
 
