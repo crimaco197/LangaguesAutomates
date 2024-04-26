@@ -21,6 +21,7 @@ void add_symbol(char *name, char *type) {
         symbol_table->capacity *= 2;
         symbol_table->symbols = realloc(symbol_table->symbols, sizeof(Symbol) * symbol_table->capacity);
     }
+
     Symbol new_symbol;
     // Add new symbol
     if (strcmp(name, "tmp") == 0){
@@ -36,6 +37,15 @@ void add_symbol(char *name, char *type) {
     }
     
     
+
+
+    // Add new symbol
+//    static int next_address = 0;
+//    Symbol new_symbol;
+//    new_symbol.name = strdup(name); // Free memory - a voir... 
+//    new_symbol.type = strdup(type);
+//    new_symbol.adress = next_address++;
+
     symbol_table->symbols[symbol_table->size++] = new_symbol;
 }
 
@@ -46,7 +56,11 @@ void print_symbol_table() {
     printf("-------------------\n");
     for (int i = 0; i < symbol_table->size; ++i) {
         Symbol symbol = symbol_table->symbols[i];
+
         printf("Name: %s, Type: %s\n", symbol.name, symbol.type);
+
+//         printf("Name: %s, Type: %s, Adress: %d\n", symbol.name, symbol.type , symbol.adress);
+
     }
     printf("-------------------\n");
 }
