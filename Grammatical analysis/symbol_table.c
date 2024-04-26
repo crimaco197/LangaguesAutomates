@@ -57,9 +57,9 @@ void print_symbol_table() {
     for (int i = 0; i < symbol_table->size; ++i) {
         Symbol symbol = symbol_table->symbols[i];
 
-        printf("Name: %s, Type: %s\n", symbol.name, symbol.type);
+//        printf("Name: %s, Type: %s\n", symbol.name, symbol.type);
 
-//         printf("Name: %s, Type: %s, Adress: %d\n", symbol.name, symbol.type , symbol.adress);
+        printf("Name: %s, Type: %s, Adress: %d\n", symbol.name, symbol.type , symbol.address);
 
     }
     printf("-------------------\n");

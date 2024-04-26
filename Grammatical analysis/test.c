@@ -8,7 +8,14 @@
     print(a / 1);
   }
 } */
-
+void test(){
+int a; 
+int b , c;
+b = 6;
+c = 8;
+a = b + c * 2;
+}
+/*
 int compute(int a, int d) {
     int b, c = a + d * 5;
     b = a;
@@ -17,6 +24,7 @@ int compute(int a, int d) {
     }
     return b;
 }
+*/
 /*
 int hola ()
 {

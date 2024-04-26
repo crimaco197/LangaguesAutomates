@@ -2,12 +2,16 @@ GRM=analizador.y
 LEX=analizador.l
 BIN=analizador
 SYM=symbol_table.c
+INST=instruction_table.c
 
 
 CC=gcc
 CFLAGS=-Wall -g
 
-OBJ=y.tab.o lex.yy.o $(SYM:.c=.o) # Include all the objects 
+OBJ=y.tab.o lex.yy.o $(SYM:.c=.o) $(INST:.c=.o)
+
+# OBJ=y.tab.o lex.yy.o $(SYM:.c=.o) # Include all the objects 
+# OBJ=y.tab.o lex.yy.o $(INST:.c=.o) # Include all the objects 
 
 TEST_DIR=samples
 
@@ -32,6 +36,10 @@ $(BIN): $(OBJ)
 
 # Execute symbol_table.c
 $(SYM:.c=.o): $(SYM)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Execute instruction_table.c
+$(INST:.c=.o): $(INST)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Clean memory

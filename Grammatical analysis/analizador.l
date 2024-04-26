@@ -10,9 +10,10 @@
 #include <string.h>
 #include "y.tab.h"
 #include "symbol_table.h"
+#include "instruction_table.h"
 
 
-extern SymbolTable *symbol_table;
+extern InstructionTable *instruction_table;
 extern int address;
 
 

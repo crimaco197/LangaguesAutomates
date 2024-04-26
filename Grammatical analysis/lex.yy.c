@@ -529,16 +529,17 @@ char *yytext;
 #include <string.h>
 #include "y.tab.h"
 #include "symbol_table.h"
+#include "instruction_table.h"
 
 
-extern SymbolTable *symbol_table;
+extern InstructionTable *instruction_table;
 extern int address;
 
 
 void showError(const char *text);
 
-#line 540 "lex.yy.c"
 #line 541 "lex.yy.c"
+#line 542 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -753,10 +754,10 @@ YY_DECL
 		}
 
 	{
-#line 28 "analizador.l"
+#line 29 "analizador.l"
 
 
-#line 759 "lex.yy.c"
+#line 760 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -825,42 +826,42 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 30 "analizador.l"
+#line 31 "analizador.l"
 { return tIF; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 31 "analizador.l"
+#line 32 "analizador.l"
 { return tELSE; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 32 "analizador.l"
+#line 33 "analizador.l"
 { return tWHILE; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 33 "analizador.l"
+#line 34 "analizador.l"
 { return tPRINT; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 34 "analizador.l"
+#line 35 "analizador.l"
 { return tRETURN; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 35 "analizador.l"
+#line 36 "analizador.l"
 { return tINT; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 36 "analizador.l"
+#line 37 "analizador.l"
 { return tVOID; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 38 "analizador.l"
+#line 39 "analizador.l"
 {
     yylval.s = strdup(yytext);
     return tID;
@@ -868,7 +869,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 43 "analizador.l"
+#line 44 "analizador.l"
 {
     yylval.i = atoi(yytext);
     return tNB;
@@ -876,7 +877,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 48 "analizador.l"
+#line 49 "analizador.l"
 {
     yylval.i = (int)strtol(yytext, NULL, 16);
     return tNB;
@@ -884,133 +885,133 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 54 "analizador.l"
+#line 55 "analizador.l"
 { return tADD; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 55 "analizador.l"
+#line 56 "analizador.l"
 { return tSUB; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 56 "analizador.l"
+#line 57 "analizador.l"
 { return tMUL; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 57 "analizador.l"
+#line 58 "analizador.l"
 { return tDIV; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 58 "analizador.l"
+#line 59 "analizador.l"
 { return tLT; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 59 "analizador.l"
+#line 60 "analizador.l"
 { return tGT; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 60 "analizador.l"
+#line 61 "analizador.l"
 { return tNE; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 61 "analizador.l"
+#line 62 "analizador.l"
 { return tEQ; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 62 "analizador.l"
+#line 63 "analizador.l"
 { return tGE; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 63 "analizador.l"
+#line 64 "analizador.l"
 { return tLE; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 64 "analizador.l"
+#line 65 "analizador.l"
 { return tASSIGN; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 65 "analizador.l"
+#line 66 "analizador.l"
 { return tAND; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 66 "analizador.l"
+#line 67 "analizador.l"
 { return tOR; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 67 "analizador.l"
+#line 68 "analizador.l"
 { return tNOT; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 68 "analizador.l"
+#line 69 "analizador.l"
 { return tLBRACE; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 69 "analizador.l"
+#line 70 "analizador.l"
 { return tRBRACE; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 70 "analizador.l"
+#line 71 "analizador.l"
 { return tLPAR; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 71 "analizador.l"
+#line 72 "analizador.l"
 { return tRPAR; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 72 "analizador.l"
+#line 73 "analizador.l"
 { return tSEMI; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 73 "analizador.l"
+#line 74 "analizador.l"
 { return tCOMMA; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 76 "analizador.l"
+#line 77 "analizador.l"
 { /* Ignore one line comments */ }
 	YY_BREAK
 case 32:
 /* rule 32 can match eol */
 YY_RULE_SETUP
-#line 77 "analizador.l"
+#line 78 "analizador.l"
 { /* Ignore multiline comments */ }
 	YY_BREAK
 case 33:
 /* rule 33 can match eol */
 YY_RULE_SETUP
-#line 81 "analizador.l"
+#line 82 "analizador.l"
 { /* Ignore white spaces */ }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 84 "analizador.l"
+#line 85 "analizador.l"
 { showError(yytext); 
     return tERROR;} //Ignore strange characters
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 87 "analizador.l"
+#line 88 "analizador.l"
 ECHO;
 	YY_BREAK
-#line 1013 "lex.yy.c"
+#line 1014 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1986,7 +1987,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 87 "analizador.l"
+#line 88 "analizador.l"
 
 
 void showError (const char *text){

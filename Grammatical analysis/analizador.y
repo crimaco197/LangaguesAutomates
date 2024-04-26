@@ -6,12 +6,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include "symbol_table.h"
+#include "instruction_table.h"
 
 
 // EXTERN VARIABLES
 extern char *yytext;
 extern int yylineno;
 extern SymbolTable *symbol_table;
+extern InstructionTable *instruction_table;
 extern int address;
 
 // DECLARATING FUNCTIONS
@@ -108,9 +110,9 @@ declaration:
            | declaration1 tASSIGN resultat tCOMMA declaration
            | declaration1 tASSIGN resultat
            | declaration1 tASSIGN functionName
-           | tID tASSIGN resultat 
+           | tID tASSIGN { add_instruction("COP", 0, 0, 0); }  resultat 
            | tID tCOMMA declaration
-           | tID { add_symbol($1, "int"); }
+           | tID { add_symbol($1, "int"); add_instruction( "COP", 0 , 0 , 0 );  }
 ;
 
 functionName: tID tLPAR argsName tRPAR
@@ -158,7 +160,9 @@ void yyerror(const char *s) {
 
 int main() {
     symbol_table = create_symbol_table();
+    instruction_table = create_instruction_table();
     yyparse();
     print_symbol_table();
+    print_instruction_table();
     return 0;
 }
