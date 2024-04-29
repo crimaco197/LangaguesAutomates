@@ -23,29 +23,12 @@ void add_instruction(char *name, int numberRegister, int addressMemory, int valN
     }
 
     Instruction new_instruction;
-    // Add new symbol
-    //if (strcmp(name, "tmp") == 0){
-        char symbolTMP [100];
-       // snprintf(symbolTMP, sizeof(symbolTMP), "%s%d", name, address);  // Concantenate String and Int
-        new_instruction.name = strdup(symbolTMP); // Free memory - a voir... 
-        new_instruction.numberRegister = 0;
+    // Add new instruction ASM
+  
+        new_instruction.name = strdup(name); // Free memory - a voir... 
+        new_instruction.numberRegister = numberRegister;
         new_instruction.addressMemory = address++;
         new_instruction.valNonDefined = 0;
-   // }else{
-        new_instruction.name = strdup(name); // Free memory - a voir... 
-      //  new_symbol.type = strdup(type);
-      //  new_symbol.address = address++;
-  //  }
-    
-    
-
-
-    // Add new symbol
-//    static int next_address = 0;
-//    Symbol new_symbol;
-//    new_symbol.name = strdup(name); // Free memory - a voir... 
-//    new_symbol.type = strdup(type);
-//    new_symbol.adress = next_address++;
 
     instruction_table->instructions[instruction_table->size++] = new_instruction;
 }

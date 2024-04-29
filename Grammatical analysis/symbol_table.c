@@ -6,6 +6,7 @@
 
 SymbolTable *symbol_table = NULL; // Inizialate Table
 static int address = 0;
+//static char variableTMP ;
 
 SymbolTable* create_symbol_table() {
     SymbolTable *symbol_table = malloc(sizeof(SymbolTable));
@@ -16,7 +17,7 @@ SymbolTable* create_symbol_table() {
 }
 
 
-void add_symbol(char *name, char *type) {
+void add_symbol(char *name, char *type) {  // ajouter la valeur de chaque variable ?? 
     if (symbol_table->size >= symbol_table->capacity) {
         symbol_table->capacity *= 2;
         symbol_table->symbols = realloc(symbol_table->symbols, sizeof(Symbol) * symbol_table->capacity);
@@ -35,18 +36,23 @@ void add_symbol(char *name, char *type) {
         new_symbol.type = strdup(type);
         new_symbol.address = address++;
     }
-    
-    
-
-
-    // Add new symbol
-//    static int next_address = 0;
-//    Symbol new_symbol;
-//    new_symbol.name = strdup(name); // Free memory - a voir... 
-//    new_symbol.type = strdup(type);
-//    new_symbol.adress = next_address++;
 
     symbol_table->symbols[symbol_table->size++] = new_symbol;
+}
+
+int find_symbol_address(const char *name) {
+    for (int i = 0; i < symbol_table->size; ++i) {
+        Symbol symbol = symbol_table->symbols[i];  // we get the symbol stocked in i
+        if (strcmp(symbol.name, name) == 0) {
+            return symbol.address;
+        }
+    }
+    // Symbol NOT found, return -1
+    return -1;
+}
+
+void delete_symbol(){
+
 }
 
 

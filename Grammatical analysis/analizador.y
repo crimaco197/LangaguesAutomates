@@ -15,6 +15,7 @@ extern int yylineno;
 extern SymbolTable *symbol_table;
 extern InstructionTable *instruction_table;
 extern int address;
+extern char variableTMP;
 
 // DECLARATING FUNCTIONS
 void yyerror(const char *s);
@@ -64,14 +65,13 @@ context :
 ;
 
 action : 
-         declaration tSEMI
+         declaration tSEMI { add_instruction( "COP", 1 , address , 0 );  }
        | print tSEMI
        | bucles
        | functionName tSEMI
 ;
 
-print : tPRINT tLPAR tID tRPAR
-      | tPRINT tLPAR tSTRING tID tSTRING tRPAR
+print : tPRINT tLPAR tSTRING tID tSTRING tRPAR /*tPRINT tLPAR tID tRPAR*/
       | tPRINT tLPAR resultat tRPAR
 ;
 
@@ -112,7 +112,7 @@ declaration:
            | declaration1 tASSIGN functionName
            | tID tASSIGN { add_instruction("COP", 0, 0, 0); }  resultat 
            | tID tCOMMA declaration
-           | tID { add_symbol($1, "int"); add_instruction( "COP", 0 , 0 , 0 );  }
+           | tID {  int adrs = find_symbol($1);  add_symbol($1, "int"); add_instruction( "COP", adrs , address , 0 );  } /*variableTMP = $1;*/
 ;
 
 functionName: tID tLPAR argsName tRPAR
@@ -137,8 +137,8 @@ resultat  :
 
 var:
      tID //{ add_symbol($1, "int"); }
-    | tNB 
-    | functionName
+    | tNB { add_instruction( "AFC", address , $1 , 0 ); printf("AFC"); }
+    
 ;
 
 args:

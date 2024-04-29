@@ -20,7 +20,7 @@ extern SymbolTable *symbol_table;
 
 SymbolTable* create_symbol_table();
 void add_symbol(char *name, char *type);
-Symbol* find_symbol(SymbolTable *table, char *name);
+int find_symbol(char *name);
 void print_symbol_table();
 
 #endif // SYMBOL_TABLE_H
