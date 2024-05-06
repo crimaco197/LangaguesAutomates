@@ -2,7 +2,6 @@
 #ifndef SYMBOL_TABLE_H
 #define SYMBOL_TABLE_H
 
-
 typedef struct Symbol {
     char *name; // Symbol Name
     char *type;   // Symbol Type

@@ -6,7 +6,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+<<<<<<< HEAD
 // VARIABLES GLOBALES
+=======
+>>>>>>> c25f7d5c2148e5f11aeb63fbfb10ddaf9fa638fe
 extern char *yytext; // Acceso a yytext de Flex
 extern int line_num;
 extern int yylineno;
