@@ -10,6 +10,7 @@ extern int address_symbol_previous;
 extern int address_variable;
 extern int address_var_TMP;
 extern char symbolTMP [100];
+extern char varTMP [100];
 
 
 extern char *yytext;                // last ID read

@@ -23,6 +23,10 @@ int address_var_TMP;
 char* variableTMP;
 
 
+
+
+
+
 // DECLARATING FUNCTIONS
 void yyerror(const char *s);
 int yylex(void); 
@@ -50,7 +54,7 @@ Program : fun
 ;
 
 fun: 
-      tVOID tID { printf("Function VOID Found : %s\n", yytext); } tLPAR args tRPAR tLBRACE structure tRBRACE 
+      tVOID tID { printf("Function VOID Found : %s\n", yytext); } tLPAR args tRPAR tLBRACE structure tRBRACE { add_instruction( "NOP", 0 , 0 , 0 );  }
     | tINT tID { printf("Function INT Found : %s\n", yytext); } tLPAR args tRPAR functionBody  
 ;
 
@@ -72,7 +76,7 @@ context :
 ;
 
 action : 
-         declaration // tSEMI // { add_instruction( "COP", 1 , address_symbol , 0 );  }
+         declaration // tSEMI 
       // | declaration
        | print tSEMI
        | bucles
@@ -110,29 +114,44 @@ condition : var
           | tLPAR condition tRPAR
 ;
 
-declaration1: tINT tID { add_symbol($2, "int"); } // tSEMI // { add_instruction( "COP", 1 , address_symbol , 0 );  }
+declaration1: tINT tID { add_symbol($2, "int"); } // tSEMI // 
 ;
 
 declaration:
             declaration1 tSEMI
            | declaration1 tCOMMA declaration tSEMI
-           | declaration1 tASSIGN resultat tCOMMA declaration tSEMI
-           | declaration1 tASSIGN resultat tSEMI
+           | declaration1 tASSIGN resultat tCOMMA declaration tSEMI {
+                                              //                   
+           }
+           | declaration1 tASSIGN resultat tSEMI {
+                                           //      
+           }
            | declaration1 tASSIGN functionName tSEMI
+           | tID tASSIGN var tSEMI {
+                                      address_variable = find_symbol($1);  
+                                      delete_symbol(address_symbol_previous);  
+                                      add_instruction( "COP", address_variable , address_symbol_previous , 0 );
+                                      
+           }
            | tID tASSIGN resultat tSEMI {   address_variable = find_symbol($1);  
                                             //add_symbol($1, "int"); 
                                           //  printf("address_variable : %d\n", address_variable);
                                          //   printf("find_symbol($1) : %s\n", $1);
+                                            process_arithmetic_instructions();
+                             //               printf("address_variable : %d\n", address_variable);
+                           //                 printf("address_symbol_previous : %d\n", address_symbol_previous);
+                                      //       
                                             add_instruction( "COP", address_variable , address_symbol_previous , 0 );
-                                            delete_symbol(address_symbol_previous);  
-                                        } 
+                                            delete_symbol(address_symbol_previous); 
+                                            
+                                        }                             
            | tID tCOMMA declaration tSEMI
            | tID {  address_variable = find_symbol($1);  
                     add_symbol($1, "int"); 
                   //  printf("address_variable : %d\n", address_variable);
                   //  printf("find_symbol($1) : %s\n", $1);
                  }
-            // tSEMI // { add_instruction( "COP", 1 , address_symbol , 0 );  } 
+            // tSEMI 
 ;
 
 functionName: tID tLPAR argsName tRPAR
@@ -151,34 +170,56 @@ resultat  :
            var 
           | resultat tMUL { 
                             address_symbol_previous = find_symbol(symbolTMP);
-                            printf("symbolTMP %s \n" , symbolTMP);
-                            add_instruction( "MUL", address_symbol_previous  , address_symbol_previous , address_symbol ); 
-                            delete_symbol(address_symbol_previous);
+                      //      printf("symbolTMP %s \n" , symbolTMP);
+                           // add_instruction( "MUL", address_symbol_previous  , address_symbol_previous , address_symbol ); 
+                            add_arithmetic_instruction("MUL", address_symbol_previous, address_symbol_previous, address_symbol); 
+                       //     delete_symbol(address_symbol);
                           } 
             var 
-          | resultat tDIV var
+          | resultat tDIV {
+                            add_arithmetic_instruction("DIV", address_symbol_previous, address_symbol_previous, address_symbol); 
+          }
+            var
           | resultat tADD { 
                             address_symbol_previous = find_symbol(symbolTMP);
-                            printf("symbolTMP %s \n" , symbolTMP);
-                            add_instruction( "ADD", address_symbol_previous  , address_symbol_previous , address_symbol ); 
-                         //  delete_symbol(address_symbol_previous);
+                      //      printf("symbolTMP %s \n" , symbolTMP);
+                            // add_instruction( "ADD", address_symbol_previous  , address_symbol_previous , address_symbol ); 
+                            add_arithmetic_instruction("ADD", address_symbol_previous, address_symbol_previous, address_symbol); 
+                     //     delete_symbol(address_symbol);
                           } 
             var 
-          | resultat tSUB var 
+          | resultat tSUB {
+                            add_arithmetic_instruction("SUB", address_symbol_previous, address_symbol_previous, address_symbol); 
+          } 
+          var 
 ;
 
 var:
      tID  { variableTMP = "tmp";
-            add_symbol(variableTMP , "int");
+            printf("COP 1 BEFORE - ID : %s address_symbol : %d, address_symbol_previous : %d\n", $1, address_symbol  , address_symbol_previous);
             address_symbol_previous = find_symbol($1); 
             address_var_TMP = address_symbol_previous;
-            add_instruction( "COP", address_symbol  , address_symbol_previous , 0 ); 
-            //printf("AFC : %d\n", global_number);
+         //   delete_symbol(address_var_TMP);
+         printf("COP 1 - address_symbol : %d, address_symbol_previous : %d\n", address_symbol  , address_symbol_previous);
+         //   add_instruction( "COP", address_symbol  , address_symbol_previous , 0 ); 
+            
+            add_symbol(variableTMP , "int");
+      //      printf("address_var_TMP : %d\n", address_var_TMP);
           }
-    | tNB { add_symbol("tmp" , "int");
-            address_symbol_previous = address_symbol; 
-            add_instruction( "AFC", address_symbol  , global_number , 0 ); 
-            //printf("AFC : %d\n", global_number);
+    | tNB { 
+       //     printf("address_symbol before : %d\n", address_symbol);
+            
+            printf("address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d \n", address_symbol_previous, address_variable , address_var_TMP);
+            
+            add_symbol("tmp" , "int");
+           //  address_symbol_previous = address_symbol; 
+            add_instruction( "AFC", address_symbol_previous , global_number , 0 ); 
+        //    add_instruction( "COP", address_variable  , address_symbol_previous , 0 ); 
+            
+
+        //    snprintf(varTMP, sizeof(varTMP), "%s%d", "tmp", address_symbol);
+      //      address_symbol_previous = find_symbol(symbolTMP);
+           printf("AFC - symbolTMP : %s, address_symbol_previous : %d\n", symbolTMP,  address_symbol_previous);
           }
     | functionName { add_symbol("tmp" , "int"); }
 ;
@@ -195,6 +236,8 @@ argList:
 ;
 
 %%
+
+
 
 void yyerror(const char *s) {
     fprintf(stderr, "Error: %s at line %d - ERROR JUST BEFORE SYMBOL %s\n", s, yylineno, yytext);

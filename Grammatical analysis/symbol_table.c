@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include "instruction_table.h"
+
 
 SymbolTable *symbol_table = NULL; // Inizialate Table
 int address_symbol = 0;
@@ -32,6 +34,7 @@ void add_symbol(char *name, char *type) {  // ajouter la valeur de chaque variab
         snprintf(symbolTMP, sizeof(symbolTMP), "%s%d", name, address_symbol);  // Concantenate String and Int
         new_symbol.name = strdup(symbolTMP); // Free memory - a voir... 
         new_symbol.type = strdup(type);
+        address_symbol_previous = address_symbol; 
         new_symbol.address = address_symbol++;
         
     }else{

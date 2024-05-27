@@ -3,17 +3,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-<<<<<<< HEAD
 #include "symbol_table.h"
 #include "declaration_var.h"
 
 InstructionTable *instruction_table = NULL; // Inizialate Table
 int address_instruction = 0;
-=======
-
-InstructionTable *instruction_table = NULL; // Inizialate Table
-static int address = 0;
->>>>>>> c25f7d5c2148e5f11aeb63fbfb10ddaf9fa638fe
 
 InstructionTable* create_instruction_table() {
     InstructionTable *instruction_table = malloc(sizeof(InstructionTable));
@@ -24,11 +18,7 @@ InstructionTable* create_instruction_table() {
 }
 
 
-<<<<<<< HEAD
 void add_instruction(char *name, int numberRegister, int addressMemory, int addressValTMP) {
-=======
-void add_instruction(char *name, int numberRegister, int addressMemory, int valNotDefined) {
->>>>>>> c25f7d5c2148e5f11aeb63fbfb10ddaf9fa638fe
     if (instruction_table->size >= instruction_table->capacity) {
         instruction_table->capacity *= 2;
         instruction_table->instructions = realloc(instruction_table->instructions, sizeof(Instruction) * instruction_table->capacity);  // modify the size of memory assigned by malloc
@@ -39,14 +29,9 @@ void add_instruction(char *name, int numberRegister, int addressMemory, int valN
   
         new_instruction.name = strdup(name); // Free memory - a voir... 
         new_instruction.numberRegister = numberRegister;
-<<<<<<< HEAD
         new_instruction.addressMemory = addressMemory;
         new_instruction.valNonDefined = addressValTMP;
         address_instruction++;
-=======
-        new_instruction.addressMemory = address++;
-        new_instruction.valNonDefined = 0;
->>>>>>> c25f7d5c2148e5f11aeb63fbfb10ddaf9fa638fe
 
     instruction_table->instructions[instruction_table->size++] = new_instruction;
 }
@@ -68,7 +53,55 @@ void print_instruction_table() {
 }
 
 
+// TABLE TO STOCK ARTIHMETIC INSTRUCTIONS 
+typedef struct ArithmeticInstruction {
+    char *name;
+    int operand1;
+    int operand2;
+    int result;
+    struct ArithmeticInstruction *next;
+} ArithmeticInstruction;
 
-//Symbol* find_symbol(SymbolTable *table, char *name) {
-    // Implementación...
-//}
+ArithmeticInstruction *arithmetic_instructions = NULL;
+
+// TODO - COMMENTS AND UNDERSTAND HOW IT WORKS.
+void add_arithmetic_instruction(char *name, int operand1, int operand2, int result) {
+    ArithmeticInstruction *new_instruction = malloc(sizeof(ArithmeticInstruction));
+//    delete_symbol(result);
+
+  printf("address_symbol_previous: %d, address_symbol: %d\n", operand1, result);
+    new_instruction->name = strdup(name);
+    new_instruction->operand1 = operand1;
+    new_instruction->operand2 = operand2;
+    new_instruction->result = result;
+    new_instruction->next = arithmetic_instructions;
+    arithmetic_instructions = new_instruction;
+    
+}
+
+void process_arithmetic_instructions() {
+    ArithmeticInstruction *current = arithmetic_instructions;
+    int last_operand1_value = 0; // Variable para almacenar el último valor de operand1
+    int result = 0;
+    while (current != NULL) {
+        last_operand1_value = current->operand1; // Almacenar el valor de operand1
+        result = current->result;
+        printf("Operand1 Value: %d\n", last_operand1_value);
+        
+        add_instruction(current->name, current->operand1, current->operand2, current->result);
+        ArithmeticInstruction *temp = current;
+        current = current->next;
+        free(temp->name);
+        free(temp);
+        delete_symbol(result);  // it is gonna delete all the tmp but not the last one, the last tmp is deleted after doing COP
+    }
+
+    // Asigna el último valor de operand1 a address_symbol_previous
+    address_symbol_previous = last_operand1_value;
+    
+    printf("Final address_symbol_previous: %d\n", address_symbol_previous);
+
+    arithmetic_instructions = NULL;
+}
+
+

@@ -1,78 +1,225 @@
-GRM=analizador.y
-LEX=analizador.l
-BIN=analizador
+%{
+/* Oussama Eljid */
+/*  Cristian Martinez */
 
-CC=gcc
-CFLAGS=-Wall -g
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "symbol_table.h"
+#include "instruction_table.h"
+#include "declaration_var.h"
 
-OBJ=y.tab.o lex.yy.o
+// Estructura para almacenar instrucciones aritméticas
+typedef struct ArithmeticInstruction {
+    char *name;
+    int operand1;
+    int operand2;
+    int result;
+    struct ArithmeticInstruction *next;
+} ArithmeticInstruction;
 
-TEST_DIR=samples
+ArithmeticInstruction *arithmetic_instructions = NULL;
 
-# Regla por defecto
-all: $(BIN)
+void add_arithmetic_instruction(char *name, int operand1, int operand2, int result);
+void process_arithmetic_instructions();
+void yyerror(const char *s);
+int yylex(void);
 
-# Reglas para compilar objetos
-%.o: %.c
-	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
+int global_number;
+int address_symbol_previous;
+int address_variable;
+int address_var_TMP;
+char* variableTMP;
 
-# Generar y.tab.c y y.tab.h desde Bison
-y.tab.c: $(GRM)
-	yacc -d $<
+%}
 
-# Generar lex.yy.c desde Flex
-lex.yy.c: $(LEX)
-	flex $<
+%union { 
+    char *s;
+    int i;
+}
 
-# Enlazar el ejecutable
-$(BIN): $(OBJ)
-	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@ -L/opt/homebrew/Cellar/flex/2.6.4_2/lib -lfl
+%token <s> tTEXT tID tSTRING
+%token <i> tNB
+%token tVOID tINT
+%token tCDIV tSPAN tCSPAN
+%token tIF tELSE tWHILE
+%token tADD tSUB tMUL tDIV
+%token tLT tGT tNE tEQ tGE tLE tASSIGN
+%token tAND tOR tNOT
+%token tLBRACE tRBRACE tLPAR tRPAR tSEMI tCOMMA 
+%token tERROR tPRINT tRETURN
 
-# Limpiar archivos generados
-clean:
-	rm -f $(OBJ) y.tab.c y.tab.h lex.yy.c $(BIN)
+%%
 
-# Regla para ejecutar pruebas
-test: $(BIN)
-	@echo "Running tests..."
-	@for file in $(TEST_DIR)/*.c; do \
-		echo "Testing $$file..."; \
-		./$(BIN) < $$file; \
-		echo ""; \
-	done
+Program : fun
+        | fun Program
+;
 
-.PHONY: all clean test
+fun: 
+      tVOID tID { printf("Function VOID Found : %s\n", yytext); } tLPAR args tRPAR tLBRACE structure tRBRACE 
+    | tINT tID { printf("Function INT Found : %s\n", yytext); } tLPAR args tRPAR functionBody  
+;
 
+functionBody:
+    tLBRACE structure returnStatement tRBRACE
+    | tLBRACE returnStatement tRBRACE
+;
 
+returnStatement:
+    tRETURN resultat tSEMI
+;
 
+structure : context
+          | context structure     
+;
 
+context : 
+         action 
+;
 
+action : 
+         declaration 
+       | print tSEMI
+       | bucles
+       | functionName tSEMI
+;
 
-VERSION 1 : 
+print : tPRINT tLPAR tSTRING tID tSTRING tRPAR 
+      | tPRINT tLPAR resultat tRPAR
+;
 
-GRM=analizador.y
-LEX=analizador.l
-BIN=analizador
+bucles: if
+      | while
+;
 
-CC=gcc
-CFLAGS=-Wall -g
+while: tWHILE tLPAR condition tRPAR tLBRACE structure tRBRACE
+;
 
-OBJ=y.tab.o lex.yy.o
+if: tIF tLPAR condition tRPAR tLBRACE structure tRBRACE
+  | tIF tLPAR condition tRPAR tLBRACE structure tRBRACE tELSE tLBRACE structure tRBRACE
+  | tIF tLPAR condition tRPAR tLBRACE structure tRBRACE functionBody
+  | tIF tLPAR condition tRPAR tLBRACE structure tRBRACE tELSE tLBRACE functionBody tRBRACE
 
-all: $(BIN)
+condition : var
+          | tNOT tID
+          | var tAND condition 
+          | var tNOT condition
+          | var tLE condition
+          | var tGE condition
+          | var tEQ condition
+          | var tNE condition
+          | var tGT condition
+          | var tLT condition
+          | var tOR condition 
+          | tLPAR condition tRPAR
+;
 
-%.o: %.c
-	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
+declaration1: tINT tID { add_symbol($2, "int"); }
+;
 
-y.tab.c: $(GRM)
-	yacc -d $<
+declaration:
+            declaration1 tSEMI
+           | declaration1 tCOMMA declaration tSEMI
+           | declaration1 tASSIGN resultat tCOMMA declaration tSEMI
+           | declaration1 tASSIGN resultat tSEMI
+           | declaration1 tASSIGN functionName tSEMI
+           | tID tASSIGN resultat tSEMI {   
+                                            address_variable = find_symbol($1);  
+                                            add_instruction("COP", address_variable, address_symbol_previous, 0);
+                                            delete_symbol("tmp");  
+                                        } 
+           | tID tCOMMA declaration tSEMI
+           | tID {  address_variable = find_symbol($1);  
+                    add_symbol($1, "int"); 
+                 }
+;
 
-lex.yy.c: $(LEX)
-	flex $<
+functionName: tID tLPAR argsName tRPAR
+;
 
-$(BIN): $(OBJ)
-	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@
+argsName: 
+        | argListName
+;
 
-clean:
-	rm $(OBJ) y.tab.c y.tab.h lex.yy.c
+argListName:
+     var
+    | argListName tCOMMA resultat
+;
 
+resultat  : 
+           var 
+          | resultat tMUL var {
+                            add_arithmetic_instruction("MUL", address_symbol_previous, address_symbol_previous, address_symbol); 
+                          } 
+          | resultat tDIV var {
+                            add_arithmetic_instruction("DIV", address_symbol_previous, address_symbol_previous, address_symbol); 
+                          } 
+          | resultat tADD var {
+                            add_arithmetic_instruction("ADD", address_symbol_previous, address_symbol_previous, address_symbol); 
+                          } 
+          | resultat tSUB var {
+                            add_arithmetic_instruction("SUB", address_symbol_previous, address_symbol_previous, address_symbol); 
+                          } 
+;
+
+var:
+     tID  { variableTMP = "tmp";
+            add_symbol(variableTMP , "int");
+            address_symbol_previous = find_symbol($1); 
+            address_var_TMP = address_symbol_previous;
+            add_instruction("COP", address_symbol, address_symbol_previous, 0); 
+          }
+    | tNB { add_symbol("tmp", "int");
+            address_symbol_previous = address_symbol; 
+            add_instruction("AFC", address_symbol, global_number, 0); 
+          }
+    | functionName { add_symbol("tmp", "int"); }
+;
+
+args:
+    | argList
+;
+
+argList:
+      tVOID
+    | tINT tID
+    | argList tCOMMA tINT tID
+;
+
+%%
+
+void yyerror(const char *s) {
+    fprintf(stderr, "Error: %s at line %d - ERROR JUST BEFORE SYMBOL %s\n", s, yylineno, yytext);
+}
+
+void add_arithmetic_instruction(char *name, int operand1, int operand2, int result) {
+    ArithmeticInstruction *new_instruction = malloc(sizeof(ArithmeticInstruction));
+    new_instruction->name = strdup(name);
+    new_instruction->operand1 = operand1;
+    new_instruction->operand2 = operand2;
+    new_instruction->result = result;
+    new_instruction->next = arithmetic_instructions;
+    arithmetic_instructions = new_instruction;
+}
+
+void process_arithmetic_instructions() {
+    ArithmeticInstruction *current = arithmetic_instructions;
+    while (current != NULL) {
+        add_instruction(current->name, current->operand1, current->operand2, current->result);
+        ArithmeticInstruction *temp = current;
+        current = current->next;
+        free(temp->name);
+        free(temp);
+    }
+    arithmetic_instructions = NULL;
+}
+
+int main() {
+    symbol_table = create_symbol_table();
+    instruction_table = create_instruction_table();
+    yyparse();
+    process_arithmetic_instructions();
+    print_symbol_table();
+    print_instruction_table();
+    return 0;
+}

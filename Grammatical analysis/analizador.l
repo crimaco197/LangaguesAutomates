@@ -11,17 +11,9 @@
 #include "y.tab.h"
 #include "symbol_table.h"
 #include "instruction_table.h"
-<<<<<<< HEAD
 #include "declaration_var.h"
 
 
-=======
-
-
-extern InstructionTable *instruction_table;
-extern int address;
-
->>>>>>> c25f7d5c2148e5f11aeb63fbfb10ddaf9fa638fe
 
 void showError(const char *text);
 
@@ -48,21 +40,14 @@ hex_number    0[xX][0-9a-fA-F]+
 }
 
 {number} {
-<<<<<<< HEAD
     yylval.i = atoi(yytext);\
     global_number = yylval.i;
-=======
-    yylval.i = atoi(yytext);
->>>>>>> c25f7d5c2148e5f11aeb63fbfb10ddaf9fa638fe
     return tNB;
 }
 
 {hex_number} {
     yylval.i = (int)strtol(yytext, NULL, 16);
-<<<<<<< HEAD
     global_number = yylval.i;
-=======
->>>>>>> c25f7d5c2148e5f11aeb63fbfb10ddaf9fa638fe
     return tNB;
 }
 
