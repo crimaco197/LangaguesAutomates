@@ -1,0 +1,1689 @@
+Terminals which are not used
+
+   tTEXT
+   tCDIV
+   tSPAN
+   tCSPAN
+   tERROR
+
+
+Grammar
+
+    0 $accept: Program $end
+
+    1 Program: fun
+    2        | fun Program
+
+    3 @1: /* empty */
+
+    4 fun: tVOID tID @1 tLPAR args tRPAR tLBRACE structure tRBRACE
+
+    5 @2: /* empty */
+
+    6 fun: tINT tID @2 tLPAR args tRPAR functionBody
+
+    7 functionBody: tLBRACE structure returnStatement tRBRACE
+    8             | tLBRACE returnStatement tRBRACE
+
+    9 returnStatement: tRETURN resultat tSEMI
+
+   10 structure: context
+   11          | context structure
+
+   12 context: action
+
+   13 action: declaration
+   14       | print tSEMI
+   15       | bucles
+   16       | functionName tSEMI
+
+   17 print: tPRINT tLPAR tSTRING tID tSTRING tRPAR
+   18      | tPRINT tLPAR resultat tRPAR
+
+   19 bucles: if
+   20       | while
+
+   21 while: tWHILE tLPAR condition tRPAR tLBRACE structure tRBRACE
+
+   22 @3: /* empty */
+
+   23 if: tIF tLPAR condition tRPAR @3 ifStructure
+
+   24 ifStructure: tLBRACE structure tRBRACE
+   25            | tLBRACE structure tRBRACE tELSE tLBRACE structure tRBRACE
+   26            | tLBRACE structure tRBRACE functionBody
+   27            | tLBRACE structure tRBRACE tELSE tLBRACE functionBody tRBRACE
+
+   28 condition: var
+   29          | tNOT tID
+   30          | var tAND condition
+   31          | var tNOT condition
+   32          | var tLE condition
+   33          | var tGE condition
+   34          | var tEQ condition
+   35          | var tNE condition
+   36          | var tGT condition
+   37          | var tLT condition
+   38          | var tOR condition
+   39          | tLPAR condition tRPAR
+
+   40 declaration1: tINT tID
+
+   41 declaration3: tASSIGN resultat tSEMI
+
+   42 declaration: declaration1 tSEMI
+   43            | declaration1 tCOMMA declaration tSEMI
+   44            | declaration1 tASSIGN resultat tCOMMA declaration tSEMI
+   45            | declaration1 tASSIGN resultat tSEMI
+
+   46 @4: /* empty */
+
+   47 declaration: tID @4 declaration3
+   48            | tID tCOMMA declaration tSEMI
+   49            | tID
+
+   50 functionName: tID tLPAR argsName tRPAR
+
+   51 argsName: /* empty */
+   52         | argListName
+
+   53 argListName: var
+   54            | argListName tCOMMA resultat
+
+   55 resultat: var
+
+   56 @5: /* empty */
+
+   57 resultat: resultat @5 tMUL var
+
+   58 @6: /* empty */
+
+   59 resultat: resultat tDIV @6 var
+
+   60 @7: /* empty */
+
+   61 resultat: resultat @7 tADD var
+
+   62 @8: /* empty */
+
+   63 resultat: resultat tSUB @8 var
+
+   64 var: tID
+   65    | tNB
+   66    | functionName
+
+   67 args: /* empty */
+   68     | argList
+
+   69 argList: tVOID
+   70        | tINT tID
+   71        | argList tCOMMA tINT tID
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+tTEXT (258)
+tID (259) 4 6 17 29 40 47 48 49 50 64 70 71
+tSTRING (260) 17
+tNB (261) 65
+tVOID (262) 4 69
+tINT (263) 6 40 70 71
+tCDIV (264)
+tSPAN (265)
+tCSPAN (266)
+tIF (267) 23
+tELSE (268) 25 27
+tWHILE (269) 21
+tSUB (270) 63
+tADD (271) 61
+tDIV (272) 59
+tMUL (273) 57
+tASSIGN (274) 41 44 45
+tLT (275) 37
+tGT (276) 36
+tNE (277) 35
+tEQ (278) 34
+tGE (279) 33
+tLE (280) 32
+tAND (281) 30
+tOR (282) 38
+tNOT (283) 29 31
+tLBRACE (284) 4 7 8 21 24 25 26 27
+tRBRACE (285) 4 7 8 21 24 25 26 27
+tLPAR (286) 4 6 17 18 21 23 39 50
+tRPAR (287) 4 6 17 18 21 23 39 50
+tSEMI (288) 9 14 16 41 42 43 44 45 48
+tCOMMA (289) 43 44 48 54 71
+tERROR (290)
+tPRINT (291) 17 18
+tRETURN (292) 9
+
+
+Nonterminals, with rules where they appear
+
+$accept (38)
+    on left: 0
+Program (39)
+    on left: 1 2, on right: 0 2
+fun (40)
+    on left: 4 6, on right: 1 2
+@1 (41)
+    on left: 3, on right: 4
+@2 (42)
+    on left: 5, on right: 6
+functionBody (43)
+    on left: 7 8, on right: 6 26 27
+returnStatement (44)
+    on left: 9, on right: 7 8
+structure (45)
+    on left: 10 11, on right: 4 7 11 21 24 25 26 27
+context (46)
+    on left: 12, on right: 10 11
+action (47)
+    on left: 13 14 15 16, on right: 12
+print (48)
+    on left: 17 18, on right: 14
+bucles (49)
+    on left: 19 20, on right: 15
+while (50)
+    on left: 21, on right: 20
+if (51)
+    on left: 23, on right: 19
+@3 (52)
+    on left: 22, on right: 23
+ifStructure (53)
+    on left: 24 25 26 27, on right: 23
+condition (54)
+    on left: 28 29 30 31 32 33 34 35 36 37 38 39, on right: 21 23 30
+    31 32 33 34 35 36 37 38 39
+declaration1 (55)
+    on left: 40, on right: 42 43 44 45
+declaration3 (56)
+    on left: 41, on right: 47
+declaration (57)
+    on left: 42 43 44 45 47 48 49, on right: 13 43 44 48
+@4 (58)
+    on left: 46, on right: 47
+functionName (59)
+    on left: 50, on right: 16 66
+argsName (60)
+    on left: 51 52, on right: 50
+argListName (61)
+    on left: 53 54, on right: 52 54
+resultat (62)
+    on left: 55 57 59 61 63, on right: 9 18 41 44 45 54 57 59 61 63
+@5 (63)
+    on left: 56, on right: 57
+@6 (64)
+    on left: 58, on right: 59
+@7 (65)
+    on left: 60, on right: 61
+@8 (66)
+    on left: 62, on right: 63
+var (67)
+    on left: 64 65 66, on right: 28 30 31 32 33 34 35 36 37 38 53 55
+    57 59 61 63
+args (68)
+    on left: 67 68, on right: 4 6
+argList (69)
+    on left: 69 70 71, on right: 68 71
+
+
+state 0
+
+    0 $accept: . Program $end
+
+    tVOID  shift, and go to state 1
+    tINT   shift, and go to state 2
+
+    Program  go to state 3
+    fun      go to state 4
+
+
+state 1
+
+    4 fun: tVOID . tID @1 tLPAR args tRPAR tLBRACE structure tRBRACE
+
+    tID  shift, and go to state 5
+
+
+state 2
+
+    6 fun: tINT . tID @2 tLPAR args tRPAR functionBody
+
+    tID  shift, and go to state 6
+
+
+state 3
+
+    0 $accept: Program . $end
+
+    $end  shift, and go to state 7
+
+
+state 4
+
+    1 Program: fun .
+    2        | fun . Program
+
+    tVOID  shift, and go to state 1
+    tINT   shift, and go to state 2
+
+    $default  reduce using rule 1 (Program)
+
+    Program  go to state 8
+    fun      go to state 4
+
+
+state 5
+
+    4 fun: tVOID tID . @1 tLPAR args tRPAR tLBRACE structure tRBRACE
+
+    $default  reduce using rule 3 (@1)
+
+    @1  go to state 9
+
+
+state 6
+
+    6 fun: tINT tID . @2 tLPAR args tRPAR functionBody
+
+    $default  reduce using rule 5 (@2)
+
+    @2  go to state 10
+
+
+state 7
+
+    0 $accept: Program $end .
+
+    $default  accept
+
+
+state 8
+
+    2 Program: fun Program .
+
+    $default  reduce using rule 2 (Program)
+
+
+state 9
+
+    4 fun: tVOID tID @1 . tLPAR args tRPAR tLBRACE structure tRBRACE
+
+    tLPAR  shift, and go to state 11
+
+
+state 10
+
+    6 fun: tINT tID @2 . tLPAR args tRPAR functionBody
+
+    tLPAR  shift, and go to state 12
+
+
+state 11
+
+    4 fun: tVOID tID @1 tLPAR . args tRPAR tLBRACE structure tRBRACE
+
+    tVOID  shift, and go to state 13
+    tINT   shift, and go to state 14
+
+    $default  reduce using rule 67 (args)
+
+    args     go to state 15
+    argList  go to state 16
+
+
+state 12
+
+    6 fun: tINT tID @2 tLPAR . args tRPAR functionBody
+
+    tVOID  shift, and go to state 13
+    tINT   shift, and go to state 14
+
+    $default  reduce using rule 67 (args)
+
+    args     go to state 17
+    argList  go to state 16
+
+
+state 13
+
+   69 argList: tVOID .
+
+    $default  reduce using rule 69 (argList)
+
+
+state 14
+
+   70 argList: tINT . tID
+
+    tID  shift, and go to state 18
+
+
+state 15
+
+    4 fun: tVOID tID @1 tLPAR args . tRPAR tLBRACE structure tRBRACE
+
+    tRPAR  shift, and go to state 19
+
+
+state 16
+
+   68 args: argList .
+   71 argList: argList . tCOMMA tINT tID
+
+    tCOMMA  shift, and go to state 20
+
+    $default  reduce using rule 68 (args)
+
+
+state 17
+
+    6 fun: tINT tID @2 tLPAR args . tRPAR functionBody
+
+    tRPAR  shift, and go to state 21
+
+
+state 18
+
+   70 argList: tINT tID .
+
+    $default  reduce using rule 70 (argList)
+
+
+state 19
+
+    4 fun: tVOID tID @1 tLPAR args tRPAR . tLBRACE structure tRBRACE
+
+    tLBRACE  shift, and go to state 22
+
+
+state 20
+
+   71 argList: argList tCOMMA . tINT tID
+
+    tINT  shift, and go to state 23
+
+
+state 21
+
+    6 fun: tINT tID @2 tLPAR args tRPAR . functionBody
+
+    tLBRACE  shift, and go to state 24
+
+    functionBody  go to state 25
+
+
+state 22
+
+    4 fun: tVOID tID @1 tLPAR args tRPAR tLBRACE . structure tRBRACE
+
+    tID     shift, and go to state 26
+    tINT    shift, and go to state 27
+    tIF     shift, and go to state 28
+    tWHILE  shift, and go to state 29
+    tPRINT  shift, and go to state 30
+
+    structure     go to state 31
+    context       go to state 32
+    action        go to state 33
+    print         go to state 34
+    bucles        go to state 35
+    while         go to state 36
+    if            go to state 37
+    declaration1  go to state 38
+    declaration   go to state 39
+    functionName  go to state 40
+
+
+state 23
+
+   71 argList: argList tCOMMA tINT . tID
+
+    tID  shift, and go to state 41
+
+
+state 24
+
+    7 functionBody: tLBRACE . structure returnStatement tRBRACE
+    8             | tLBRACE . returnStatement tRBRACE
+
+    tID      shift, and go to state 26
+    tINT     shift, and go to state 27
+    tIF      shift, and go to state 28
+    tWHILE   shift, and go to state 29
+    tPRINT   shift, and go to state 30
+    tRETURN  shift, and go to state 42
+
+    returnStatement  go to state 43
+    structure        go to state 44
+    context          go to state 32
+    action           go to state 33
+    print            go to state 34
+    bucles           go to state 35
+    while            go to state 36
+    if               go to state 37
+    declaration1     go to state 38
+    declaration      go to state 39
+    functionName     go to state 40
+
+
+state 25
+
+    6 fun: tINT tID @2 tLPAR args tRPAR functionBody .
+
+    $default  reduce using rule 6 (fun)
+
+
+state 26
+
+   47 declaration: tID . @4 declaration3
+   48            | tID . tCOMMA declaration tSEMI
+   49            | tID .
+   50 functionName: tID . tLPAR argsName tRPAR
+
+    tLPAR   shift, and go to state 45
+    tCOMMA  shift, and go to state 46
+
+    tASSIGN   reduce using rule 46 (@4)
+    $default  reduce using rule 49 (declaration)
+
+    @4  go to state 47
+
+
+state 27
+
+   40 declaration1: tINT . tID
+
+    tID  shift, and go to state 48
+
+
+state 28
+
+   23 if: tIF . tLPAR condition tRPAR @3 ifStructure
+
+    tLPAR  shift, and go to state 49
+
+
+state 29
+
+   21 while: tWHILE . tLPAR condition tRPAR tLBRACE structure tRBRACE
+
+    tLPAR  shift, and go to state 50
+
+
+state 30
+
+   17 print: tPRINT . tLPAR tSTRING tID tSTRING tRPAR
+   18      | tPRINT . tLPAR resultat tRPAR
+
+    tLPAR  shift, and go to state 51
+
+
+state 31
+
+    4 fun: tVOID tID @1 tLPAR args tRPAR tLBRACE structure . tRBRACE
+
+    tRBRACE  shift, and go to state 52
+
+
+state 32
+
+   10 structure: context .
+   11          | context . structure
+
+    tID     shift, and go to state 26
+    tINT    shift, and go to state 27
+    tIF     shift, and go to state 28
+    tWHILE  shift, and go to state 29
+    tPRINT  shift, and go to state 30
+
+    $default  reduce using rule 10 (structure)
+
+    structure     go to state 53
+    context       go to state 32
+    action        go to state 33
+    print         go to state 34
+    bucles        go to state 35
+    while         go to state 36
+    if            go to state 37
+    declaration1  go to state 38
+    declaration   go to state 39
+    functionName  go to state 40
+
+
+state 33
+
+   12 context: action .
+
+    $default  reduce using rule 12 (context)
+
+
+state 34
+
+   14 action: print . tSEMI
+
+    tSEMI  shift, and go to state 54
+
+
+state 35
+
+   15 action: bucles .
+
+    $default  reduce using rule 15 (action)
+
+
+state 36
+
+   20 bucles: while .
+
+    $default  reduce using rule 20 (bucles)
+
+
+state 37
+
+   19 bucles: if .
+
+    $default  reduce using rule 19 (bucles)
+
+
+state 38
+
+   42 declaration: declaration1 . tSEMI
+   43            | declaration1 . tCOMMA declaration tSEMI
+   44            | declaration1 . tASSIGN resultat tCOMMA declaration tSEMI
+   45            | declaration1 . tASSIGN resultat tSEMI
+
+    tASSIGN  shift, and go to state 55
+    tSEMI    shift, and go to state 56
+    tCOMMA   shift, and go to state 57
+
+
+state 39
+
+   13 action: declaration .
+
+    $default  reduce using rule 13 (action)
+
+
+state 40
+
+   16 action: functionName . tSEMI
+
+    tSEMI  shift, and go to state 58
+
+
+state 41
+
+   71 argList: argList tCOMMA tINT tID .
+
+    $default  reduce using rule 71 (argList)
+
+
+state 42
+
+    9 returnStatement: tRETURN . resultat tSEMI
+
+    tID  shift, and go to state 59
+    tNB  shift, and go to state 60
+
+    functionName  go to state 61
+    resultat      go to state 62
+    var           go to state 63
+
+
+state 43
+
+    8 functionBody: tLBRACE returnStatement . tRBRACE
+
+    tRBRACE  shift, and go to state 64
+
+
+state 44
+
+    7 functionBody: tLBRACE structure . returnStatement tRBRACE
+
+    tRETURN  shift, and go to state 42
+
+    returnStatement  go to state 65
+
+
+state 45
+
+   50 functionName: tID tLPAR . argsName tRPAR
+
+    tID  shift, and go to state 59
+    tNB  shift, and go to state 60
+
+    $default  reduce using rule 51 (argsName)
+
+    functionName  go to state 61
+    argsName      go to state 66
+    argListName   go to state 67
+    var           go to state 68
+
+
+state 46
+
+   48 declaration: tID tCOMMA . declaration tSEMI
+
+    tID   shift, and go to state 69
+    tINT  shift, and go to state 27
+
+    declaration1  go to state 38
+    declaration   go to state 70
+
+
+state 47
+
+   47 declaration: tID @4 . declaration3
+
+    tASSIGN  shift, and go to state 71
+
+    declaration3  go to state 72
+
+
+state 48
+
+   40 declaration1: tINT tID .
+
+    $default  reduce using rule 40 (declaration1)
+
+
+state 49
+
+   23 if: tIF tLPAR . condition tRPAR @3 ifStructure
+
+    tID    shift, and go to state 59
+    tNB    shift, and go to state 60
+    tNOT   shift, and go to state 73
+    tLPAR  shift, and go to state 74
+
+    condition     go to state 75
+    functionName  go to state 61
+    var           go to state 76
+
+
+state 50
+
+   21 while: tWHILE tLPAR . condition tRPAR tLBRACE structure tRBRACE
+
+    tID    shift, and go to state 59
+    tNB    shift, and go to state 60
+    tNOT   shift, and go to state 73
+    tLPAR  shift, and go to state 74
+
+    condition     go to state 77
+    functionName  go to state 61
+    var           go to state 76
+
+
+state 51
+
+   17 print: tPRINT tLPAR . tSTRING tID tSTRING tRPAR
+   18      | tPRINT tLPAR . resultat tRPAR
+
+    tID      shift, and go to state 59
+    tSTRING  shift, and go to state 78
+    tNB      shift, and go to state 60
+
+    functionName  go to state 61
+    resultat      go to state 79
+    var           go to state 63
+
+
+state 52
+
+    4 fun: tVOID tID @1 tLPAR args tRPAR tLBRACE structure tRBRACE .
+
+    $default  reduce using rule 4 (fun)
+
+
+state 53
+
+   11 structure: context structure .
+
+    $default  reduce using rule 11 (structure)
+
+
+state 54
+
+   14 action: print tSEMI .
+
+    $default  reduce using rule 14 (action)
+
+
+state 55
+
+   44 declaration: declaration1 tASSIGN . resultat tCOMMA declaration tSEMI
+   45            | declaration1 tASSIGN . resultat tSEMI
+
+    tID  shift, and go to state 59
+    tNB  shift, and go to state 60
+
+    functionName  go to state 61
+    resultat      go to state 80
+    var           go to state 63
+
+
+state 56
+
+   42 declaration: declaration1 tSEMI .
+
+    $default  reduce using rule 42 (declaration)
+
+
+state 57
+
+   43 declaration: declaration1 tCOMMA . declaration tSEMI
+
+    tID   shift, and go to state 69
+    tINT  shift, and go to state 27
+
+    declaration1  go to state 38
+    declaration   go to state 81
+
+
+state 58
+
+   16 action: functionName tSEMI .
+
+    $default  reduce using rule 16 (action)
+
+
+state 59
+
+   50 functionName: tID . tLPAR argsName tRPAR
+   64 var: tID .
+
+    tLPAR  shift, and go to state 45
+
+    $default  reduce using rule 64 (var)
+
+
+state 60
+
+   65 var: tNB .
+
+    $default  reduce using rule 65 (var)
+
+
+state 61
+
+   66 var: functionName .
+
+    $default  reduce using rule 66 (var)
+
+
+state 62
+
+    9 returnStatement: tRETURN resultat . tSEMI
+   57 resultat: resultat . @5 tMUL var
+   59         | resultat . tDIV @6 var
+   61         | resultat . @7 tADD var
+   63         | resultat . tSUB @8 var
+
+    tSUB   shift, and go to state 82
+    tDIV   shift, and go to state 83
+    tSEMI  shift, and go to state 84
+
+    tADD      reduce using rule 60 (@7)
+    $default  reduce using rule 56 (@5)
+
+    @5  go to state 85
+    @7  go to state 86
+
+
+state 63
+
+   55 resultat: var .
+
+    $default  reduce using rule 55 (resultat)
+
+
+state 64
+
+    8 functionBody: tLBRACE returnStatement tRBRACE .
+
+    $default  reduce using rule 8 (functionBody)
+
+
+state 65
+
+    7 functionBody: tLBRACE structure returnStatement . tRBRACE
+
+    tRBRACE  shift, and go to state 87
+
+
+state 66
+
+   50 functionName: tID tLPAR argsName . tRPAR
+
+    tRPAR  shift, and go to state 88
+
+
+state 67
+
+   52 argsName: argListName .
+   54 argListName: argListName . tCOMMA resultat
+
+    tCOMMA  shift, and go to state 89
+
+    $default  reduce using rule 52 (argsName)
+
+
+state 68
+
+   53 argListName: var .
+
+    $default  reduce using rule 53 (argListName)
+
+
+state 69
+
+   47 declaration: tID . @4 declaration3
+   48            | tID . tCOMMA declaration tSEMI
+   49            | tID .
+
+    tCOMMA  shift, and go to state 46
+
+    tSEMI     reduce using rule 49 (declaration)
+    $default  reduce using rule 46 (@4)
+
+    @4  go to state 47
+
+
+state 70
+
+   48 declaration: tID tCOMMA declaration . tSEMI
+
+    tSEMI  shift, and go to state 90
+
+
+state 71
+
+   41 declaration3: tASSIGN . resultat tSEMI
+
+    tID  shift, and go to state 59
+    tNB  shift, and go to state 60
+
+    functionName  go to state 61
+    resultat      go to state 91
+    var           go to state 63
+
+
+state 72
+
+   47 declaration: tID @4 declaration3 .
+
+    $default  reduce using rule 47 (declaration)
+
+
+state 73
+
+   29 condition: tNOT . tID
+
+    tID  shift, and go to state 92
+
+
+state 74
+
+   39 condition: tLPAR . condition tRPAR
+
+    tID    shift, and go to state 59
+    tNB    shift, and go to state 60
+    tNOT   shift, and go to state 73
+    tLPAR  shift, and go to state 74
+
+    condition     go to state 93
+    functionName  go to state 61
+    var           go to state 76
+
+
+state 75
+
+   23 if: tIF tLPAR condition . tRPAR @3 ifStructure
+
+    tRPAR  shift, and go to state 94
+
+
+state 76
+
+   28 condition: var .
+   30          | var . tAND condition
+   31          | var . tNOT condition
+   32          | var . tLE condition
+   33          | var . tGE condition
+   34          | var . tEQ condition
+   35          | var . tNE condition
+   36          | var . tGT condition
+   37          | var . tLT condition
+   38          | var . tOR condition
+
+    tLT   shift, and go to state 95
+    tGT   shift, and go to state 96
+    tNE   shift, and go to state 97
+    tEQ   shift, and go to state 98
+    tGE   shift, and go to state 99
+    tLE   shift, and go to state 100
+    tAND  shift, and go to state 101
+    tOR   shift, and go to state 102
+    tNOT  shift, and go to state 103
+
+    $default  reduce using rule 28 (condition)
+
+
+state 77
+
+   21 while: tWHILE tLPAR condition . tRPAR tLBRACE structure tRBRACE
+
+    tRPAR  shift, and go to state 104
+
+
+state 78
+
+   17 print: tPRINT tLPAR tSTRING . tID tSTRING tRPAR
+
+    tID  shift, and go to state 105
+
+
+state 79
+
+   18 print: tPRINT tLPAR resultat . tRPAR
+   57 resultat: resultat . @5 tMUL var
+   59         | resultat . tDIV @6 var
+   61         | resultat . @7 tADD var
+   63         | resultat . tSUB @8 var
+
+    tSUB   shift, and go to state 82
+    tDIV   shift, and go to state 83
+    tRPAR  shift, and go to state 106
+
+    tADD      reduce using rule 60 (@7)
+    $default  reduce using rule 56 (@5)
+
+    @5  go to state 85
+    @7  go to state 86
+
+
+state 80
+
+   44 declaration: declaration1 tASSIGN resultat . tCOMMA declaration tSEMI
+   45            | declaration1 tASSIGN resultat . tSEMI
+   57 resultat: resultat . @5 tMUL var
+   59         | resultat . tDIV @6 var
+   61         | resultat . @7 tADD var
+   63         | resultat . tSUB @8 var
+
+    tSUB    shift, and go to state 82
+    tDIV    shift, and go to state 83
+    tSEMI   shift, and go to state 107
+    tCOMMA  shift, and go to state 108
+
+    tADD      reduce using rule 60 (@7)
+    $default  reduce using rule 56 (@5)
+
+    @5  go to state 85
+    @7  go to state 86
+
+
+state 81
+
+   43 declaration: declaration1 tCOMMA declaration . tSEMI
+
+    tSEMI  shift, and go to state 109
+
+
+state 82
+
+   63 resultat: resultat tSUB . @8 var
+
+    $default  reduce using rule 62 (@8)
+
+    @8  go to state 110
+
+
+state 83
+
+   59 resultat: resultat tDIV . @6 var
+
+    $default  reduce using rule 58 (@6)
+
+    @6  go to state 111
+
+
+state 84
+
+    9 returnStatement: tRETURN resultat tSEMI .
+
+    $default  reduce using rule 9 (returnStatement)
+
+
+state 85
+
+   57 resultat: resultat @5 . tMUL var
+
+    tMUL  shift, and go to state 112
+
+
+state 86
+
+   61 resultat: resultat @7 . tADD var
+
+    tADD  shift, and go to state 113
+
+
+state 87
+
+    7 functionBody: tLBRACE structure returnStatement tRBRACE .
+
+    $default  reduce using rule 7 (functionBody)
+
+
+state 88
+
+   50 functionName: tID tLPAR argsName tRPAR .
+
+    $default  reduce using rule 50 (functionName)
+
+
+state 89
+
+   54 argListName: argListName tCOMMA . resultat
+
+    tID  shift, and go to state 59
+    tNB  shift, and go to state 60
+
+    functionName  go to state 61
+    resultat      go to state 114
+    var           go to state 63
+
+
+state 90
+
+   48 declaration: tID tCOMMA declaration tSEMI .
+
+    $default  reduce using rule 48 (declaration)
+
+
+state 91
+
+   41 declaration3: tASSIGN resultat . tSEMI
+   57 resultat: resultat . @5 tMUL var
+   59         | resultat . tDIV @6 var
+   61         | resultat . @7 tADD var
+   63         | resultat . tSUB @8 var
+
+    tSUB   shift, and go to state 82
+    tDIV   shift, and go to state 83
+    tSEMI  shift, and go to state 115
+
+    tADD      reduce using rule 60 (@7)
+    $default  reduce using rule 56 (@5)
+
+    @5  go to state 85
+    @7  go to state 86
+
+
+state 92
+
+   29 condition: tNOT tID .
+
+    $default  reduce using rule 29 (condition)
+
+
+state 93
+
+   39 condition: tLPAR condition . tRPAR
+
+    tRPAR  shift, and go to state 116
+
+
+state 94
+
+   23 if: tIF tLPAR condition tRPAR . @3 ifStructure
+
+    $default  reduce using rule 22 (@3)
+
+    @3  go to state 117
+
+
+state 95
+
+   37 condition: var tLT . condition
+
+    tID    shift, and go to state 59
+    tNB    shift, and go to state 60
+    tNOT   shift, and go to state 73
+    tLPAR  shift, and go to state 74
+
+    condition     go to state 118
+    functionName  go to state 61
+    var           go to state 76
+
+
+state 96
+
+   36 condition: var tGT . condition
+
+    tID    shift, and go to state 59
+    tNB    shift, and go to state 60
+    tNOT   shift, and go to state 73
+    tLPAR  shift, and go to state 74
+
+    condition     go to state 119
+    functionName  go to state 61
+    var           go to state 76
+
+
+state 97
+
+   35 condition: var tNE . condition
+
+    tID    shift, and go to state 59
+    tNB    shift, and go to state 60
+    tNOT   shift, and go to state 73
+    tLPAR  shift, and go to state 74
+
+    condition     go to state 120
+    functionName  go to state 61
+    var           go to state 76
+
+
+state 98
+
+   34 condition: var tEQ . condition
+
+    tID    shift, and go to state 59
+    tNB    shift, and go to state 60
+    tNOT   shift, and go to state 73
+    tLPAR  shift, and go to state 74
+
+    condition     go to state 121
+    functionName  go to state 61
+    var           go to state 76
+
+
+state 99
+
+   33 condition: var tGE . condition
+
+    tID    shift, and go to state 59
+    tNB    shift, and go to state 60
+    tNOT   shift, and go to state 73
+    tLPAR  shift, and go to state 74
+
+    condition     go to state 122
+    functionName  go to state 61
+    var           go to state 76
+
+
+state 100
+
+   32 condition: var tLE . condition
+
+    tID    shift, and go to state 59
+    tNB    shift, and go to state 60
+    tNOT   shift, and go to state 73
+    tLPAR  shift, and go to state 74
+
+    condition     go to state 123
+    functionName  go to state 61
+    var           go to state 76
+
+
+state 101
+
+   30 condition: var tAND . condition
+
+    tID    shift, and go to state 59
+    tNB    shift, and go to state 60
+    tNOT   shift, and go to state 73
+    tLPAR  shift, and go to state 74
+
+    condition     go to state 124
+    functionName  go to state 61
+    var           go to state 76
+
+
+state 102
+
+   38 condition: var tOR . condition
+
+    tID    shift, and go to state 59
+    tNB    shift, and go to state 60
+    tNOT   shift, and go to state 73
+    tLPAR  shift, and go to state 74
+
+    condition     go to state 125
+    functionName  go to state 61
+    var           go to state 76
+
+
+state 103
+
+   31 condition: var tNOT . condition
+
+    tID    shift, and go to state 59
+    tNB    shift, and go to state 60
+    tNOT   shift, and go to state 73
+    tLPAR  shift, and go to state 74
+
+    condition     go to state 126
+    functionName  go to state 61
+    var           go to state 76
+
+
+state 104
+
+   21 while: tWHILE tLPAR condition tRPAR . tLBRACE structure tRBRACE
+
+    tLBRACE  shift, and go to state 127
+
+
+state 105
+
+   17 print: tPRINT tLPAR tSTRING tID . tSTRING tRPAR
+
+    tSTRING  shift, and go to state 128
+
+
+state 106
+
+   18 print: tPRINT tLPAR resultat tRPAR .
+
+    $default  reduce using rule 18 (print)
+
+
+state 107
+
+   45 declaration: declaration1 tASSIGN resultat tSEMI .
+
+    $default  reduce using rule 45 (declaration)
+
+
+state 108
+
+   44 declaration: declaration1 tASSIGN resultat tCOMMA . declaration tSEMI
+
+    tID   shift, and go to state 69
+    tINT  shift, and go to state 27
+
+    declaration1  go to state 38
+    declaration   go to state 129
+
+
+state 109
+
+   43 declaration: declaration1 tCOMMA declaration tSEMI .
+
+    $default  reduce using rule 43 (declaration)
+
+
+state 110
+
+   63 resultat: resultat tSUB @8 . var
+
+    tID  shift, and go to state 59
+    tNB  shift, and go to state 60
+
+    functionName  go to state 61
+    var           go to state 130
+
+
+state 111
+
+   59 resultat: resultat tDIV @6 . var
+
+    tID  shift, and go to state 59
+    tNB  shift, and go to state 60
+
+    functionName  go to state 61
+    var           go to state 131
+
+
+state 112
+
+   57 resultat: resultat @5 tMUL . var
+
+    tID  shift, and go to state 59
+    tNB  shift, and go to state 60
+
+    functionName  go to state 61
+    var           go to state 132
+
+
+state 113
+
+   61 resultat: resultat @7 tADD . var
+
+    tID  shift, and go to state 59
+    tNB  shift, and go to state 60
+
+    functionName  go to state 61
+    var           go to state 133
+
+
+state 114
+
+   54 argListName: argListName tCOMMA resultat .
+   57 resultat: resultat . @5 tMUL var
+   59         | resultat . tDIV @6 var
+   61         | resultat . @7 tADD var
+   63         | resultat . tSUB @8 var
+
+    tSUB  shift, and go to state 82
+    tDIV  shift, and go to state 83
+
+    tADD      reduce using rule 60 (@7)
+    tMUL      reduce using rule 56 (@5)
+    $default  reduce using rule 54 (argListName)
+
+    @5  go to state 85
+    @7  go to state 86
+
+
+state 115
+
+   41 declaration3: tASSIGN resultat tSEMI .
+
+    $default  reduce using rule 41 (declaration3)
+
+
+state 116
+
+   39 condition: tLPAR condition tRPAR .
+
+    $default  reduce using rule 39 (condition)
+
+
+state 117
+
+   23 if: tIF tLPAR condition tRPAR @3 . ifStructure
+
+    tLBRACE  shift, and go to state 134
+
+    ifStructure  go to state 135
+
+
+state 118
+
+   37 condition: var tLT condition .
+
+    $default  reduce using rule 37 (condition)
+
+
+state 119
+
+   36 condition: var tGT condition .
+
+    $default  reduce using rule 36 (condition)
+
+
+state 120
+
+   35 condition: var tNE condition .
+
+    $default  reduce using rule 35 (condition)
+
+
+state 121
+
+   34 condition: var tEQ condition .
+
+    $default  reduce using rule 34 (condition)
+
+
+state 122
+
+   33 condition: var tGE condition .
+
+    $default  reduce using rule 33 (condition)
+
+
+state 123
+
+   32 condition: var tLE condition .
+
+    $default  reduce using rule 32 (condition)
+
+
+state 124
+
+   30 condition: var tAND condition .
+
+    $default  reduce using rule 30 (condition)
+
+
+state 125
+
+   38 condition: var tOR condition .
+
+    $default  reduce using rule 38 (condition)
+
+
+state 126
+
+   31 condition: var tNOT condition .
+
+    $default  reduce using rule 31 (condition)
+
+
+state 127
+
+   21 while: tWHILE tLPAR condition tRPAR tLBRACE . structure tRBRACE
+
+    tID     shift, and go to state 26
+    tINT    shift, and go to state 27
+    tIF     shift, and go to state 28
+    tWHILE  shift, and go to state 29
+    tPRINT  shift, and go to state 30
+
+    structure     go to state 136
+    context       go to state 32
+    action        go to state 33
+    print         go to state 34
+    bucles        go to state 35
+    while         go to state 36
+    if            go to state 37
+    declaration1  go to state 38
+    declaration   go to state 39
+    functionName  go to state 40
+
+
+state 128
+
+   17 print: tPRINT tLPAR tSTRING tID tSTRING . tRPAR
+
+    tRPAR  shift, and go to state 137
+
+
+state 129
+
+   44 declaration: declaration1 tASSIGN resultat tCOMMA declaration . tSEMI
+
+    tSEMI  shift, and go to state 138
+
+
+state 130
+
+   63 resultat: resultat tSUB @8 var .
+
+    $default  reduce using rule 63 (resultat)
+
+
+state 131
+
+   59 resultat: resultat tDIV @6 var .
+
+    $default  reduce using rule 59 (resultat)
+
+
+state 132
+
+   57 resultat: resultat @5 tMUL var .
+
+    $default  reduce using rule 57 (resultat)
+
+
+state 133
+
+   61 resultat: resultat @7 tADD var .
+
+    $default  reduce using rule 61 (resultat)
+
+
+state 134
+
+   24 ifStructure: tLBRACE . structure tRBRACE
+   25            | tLBRACE . structure tRBRACE tELSE tLBRACE structure tRBRACE
+   26            | tLBRACE . structure tRBRACE functionBody
+   27            | tLBRACE . structure tRBRACE tELSE tLBRACE functionBody tRBRACE
+
+    tID     shift, and go to state 26
+    tINT    shift, and go to state 27
+    tIF     shift, and go to state 28
+    tWHILE  shift, and go to state 29
+    tPRINT  shift, and go to state 30
+
+    structure     go to state 139
+    context       go to state 32
+    action        go to state 33
+    print         go to state 34
+    bucles        go to state 35
+    while         go to state 36
+    if            go to state 37
+    declaration1  go to state 38
+    declaration   go to state 39
+    functionName  go to state 40
+
+
+state 135
+
+   23 if: tIF tLPAR condition tRPAR @3 ifStructure .
+
+    $default  reduce using rule 23 (if)
+
+
+state 136
+
+   21 while: tWHILE tLPAR condition tRPAR tLBRACE structure . tRBRACE
+
+    tRBRACE  shift, and go to state 140
+
+
+state 137
+
+   17 print: tPRINT tLPAR tSTRING tID tSTRING tRPAR .
+
+    $default  reduce using rule 17 (print)
+
+
+state 138
+
+   44 declaration: declaration1 tASSIGN resultat tCOMMA declaration tSEMI .
+
+    $default  reduce using rule 44 (declaration)
+
+
+state 139
+
+   24 ifStructure: tLBRACE structure . tRBRACE
+   25            | tLBRACE structure . tRBRACE tELSE tLBRACE structure tRBRACE
+   26            | tLBRACE structure . tRBRACE functionBody
+   27            | tLBRACE structure . tRBRACE tELSE tLBRACE functionBody tRBRACE
+
+    tRBRACE  shift, and go to state 141
+
+
+state 140
+
+   21 while: tWHILE tLPAR condition tRPAR tLBRACE structure tRBRACE .
+
+    $default  reduce using rule 21 (while)
+
+
+state 141
+
+   24 ifStructure: tLBRACE structure tRBRACE .
+   25            | tLBRACE structure tRBRACE . tELSE tLBRACE structure tRBRACE
+   26            | tLBRACE structure tRBRACE . functionBody
+   27            | tLBRACE structure tRBRACE . tELSE tLBRACE functionBody tRBRACE
+
+    tELSE    shift, and go to state 142
+    tLBRACE  shift, and go to state 24
+
+    $default  reduce using rule 24 (ifStructure)
+
+    functionBody  go to state 143
+
+
+state 142
+
+   25 ifStructure: tLBRACE structure tRBRACE tELSE . tLBRACE structure tRBRACE
+   27            | tLBRACE structure tRBRACE tELSE . tLBRACE functionBody tRBRACE
+
+    tLBRACE  shift, and go to state 144
+
+
+state 143
+
+   26 ifStructure: tLBRACE structure tRBRACE functionBody .
+
+    $default  reduce using rule 26 (ifStructure)
+
+
+state 144
+
+   25 ifStructure: tLBRACE structure tRBRACE tELSE tLBRACE . structure tRBRACE
+   27            | tLBRACE structure tRBRACE tELSE tLBRACE . functionBody tRBRACE
+
+    tID      shift, and go to state 26
+    tINT     shift, and go to state 27
+    tIF      shift, and go to state 28
+    tWHILE   shift, and go to state 29
+    tLBRACE  shift, and go to state 24
+    tPRINT   shift, and go to state 30
+
+    functionBody  go to state 145
+    structure     go to state 146
+    context       go to state 32
+    action        go to state 33
+    print         go to state 34
+    bucles        go to state 35
+    while         go to state 36
+    if            go to state 37
+    declaration1  go to state 38
+    declaration   go to state 39
+    functionName  go to state 40
+
+
+state 145
+
+   27 ifStructure: tLBRACE structure tRBRACE tELSE tLBRACE functionBody . tRBRACE
+
+    tRBRACE  shift, and go to state 147
+
+
+state 146
+
+   25 ifStructure: tLBRACE structure tRBRACE tELSE tLBRACE structure . tRBRACE
+
+    tRBRACE  shift, and go to state 148
+
+
+state 147
+
+   27 ifStructure: tLBRACE structure tRBRACE tELSE tLBRACE functionBody tRBRACE .
+
+    $default  reduce using rule 27 (ifStructure)
+
+
+state 148
+
+   25 ifStructure: tLBRACE structure tRBRACE tELSE tLBRACE structure tRBRACE .
+
+    $default  reduce using rule 25 (ifStructure)

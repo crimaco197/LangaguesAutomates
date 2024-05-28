@@ -5,12 +5,15 @@
 // VARIABLES GLOBALES
 extern int address_symbol;          // Address symbol on Table Symbol
 extern int address_instruction;     // Address Instruction on Table Instruction
+extern int idJMF;
+extern int varFirstIF;
+extern int in_bucle_if;
 
 extern int address_symbol_previous;
 extern int address_variable;
 extern int address_var_TMP;
 extern char symbolTMP [100];
-extern char varTMP [100];
+extern char *nameID;
 
 
 extern char *yytext;                // last ID read

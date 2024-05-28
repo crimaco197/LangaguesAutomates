@@ -59,6 +59,10 @@ int find_symbol(const char *name) {
 
 void delete_symbol(int index) {
    //  int index = find_symbol(name); 
+   if (symbol_table->size == 1) {
+        printf("No se puede eliminar el único símbolo restante.\n");
+        return;
+    }
 
     // If symbol is found, delete it. 
     if (index != -1) {
@@ -69,6 +73,7 @@ void delete_symbol(int index) {
         }
         symbol_table->size--; // Reduce table size
         address_symbol--;
+     //   address_symbol_previous--;
     } else {
         printf("Symbol \"%d\" not found.\n", index);
     }

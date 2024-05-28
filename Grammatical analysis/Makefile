@@ -13,7 +13,7 @@ OBJ=y.tab.o lex.yy.o $(SYM:.c=.o) $(INST:.c=.o)
 # OBJ=y.tab.o lex.yy.o $(SYM:.c=.o) # Include all the objects 
 # OBJ=y.tab.o lex.yy.o $(INST:.c=.o) # Include all the objects 
 
-TEST_DIR=samples
+TEST_DIR=tests
 
 # Regla por defecto
 all: $(BIN)
@@ -47,6 +47,14 @@ clean:
 	rm -f $(OBJ) y.tab.c y.tab.h lex.yy.c $(BIN)
 
 # Testing Test Files
+#test: $(BIN)
+#	@echo "Running tests..."
+#	@for file in $(TEST_DIR)/*.c; do \
+#		echo "Testing $$file..."; \
+#		./$(BIN) < $$file; \
+#		echo ""; \
+#	done
+
 test: $(BIN)
 	@echo "Running tests..."
 	@for file in $(TEST_DIR)/*.c; do \

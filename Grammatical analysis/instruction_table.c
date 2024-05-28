@@ -18,7 +18,7 @@ InstructionTable* create_instruction_table() {
 }
 
 
-void add_instruction(char *name, int numberRegister, int addressMemory, int addressValTMP) {
+void add_instruction(char *name,int indexInstruction, int numberRegister, int addressMemory, int addressValTMP) {
     if (instruction_table->size >= instruction_table->capacity) {
         instruction_table->capacity *= 2;
         instruction_table->instructions = realloc(instruction_table->instructions, sizeof(Instruction) * instruction_table->capacity);  // modify the size of memory assigned by malloc
@@ -28,12 +28,25 @@ void add_instruction(char *name, int numberRegister, int addressMemory, int addr
     // Add new instruction ASM
   
         new_instruction.name = strdup(name); // Free memory - a voir... 
+        new_instruction.indexInstruction = indexInstruction;
         new_instruction.numberRegister = numberRegister;
         new_instruction.addressMemory = addressMemory;
         new_instruction.valNonDefined = addressValTMP;
         address_instruction++;
 
     instruction_table->instructions[instruction_table->size++] = new_instruction;
+}
+
+void update_instruction(char *name, int indexInstruction, int numberRegister, int newAddressMemory, int newAddressValTMP) {
+    for (int i = 0; i < instruction_table->size; ++i) {
+        Instruction *instruction = &instruction_table->instructions[i];
+        if (strcmp(instruction->name, name) == 0 && instruction->indexInstruction == indexInstruction) {
+            instruction->numberRegister = numberRegister;
+            instruction->addressMemory = newAddressMemory;
+            instruction->valNonDefined = newAddressValTMP;
+            break;
+        }
+    }
 }
 
 
@@ -54,14 +67,6 @@ void print_instruction_table() {
 
 
 // TABLE TO STOCK ARTIHMETIC INSTRUCTIONS 
-typedef struct ArithmeticInstruction {
-    char *name;
-    int operand1;
-    int operand2;
-    int result;
-    struct ArithmeticInstruction *next;
-} ArithmeticInstruction;
-
 ArithmeticInstruction *arithmetic_instructions = NULL;
 
 // TODO - COMMENTS AND UNDERSTAND HOW IT WORKS.
@@ -86,22 +91,64 @@ void process_arithmetic_instructions() {
     while (current != NULL) {
         last_operand1_value = current->operand1; // Almacenar el valor de operand1
         result = current->result;
-        printf("Operand1 Value: %d\n", last_operand1_value);
+       //  printf("Operand1 Value: %d\n", last_operand1_value);
         
-        add_instruction(current->name, current->operand1, current->operand2, current->result);
+        add_instruction(current->name, 0, current->operand1, current->operand2, current->result);
         ArithmeticInstruction *temp = current;
         current = current->next;
         free(temp->name);
         free(temp);
-        delete_symbol(result);  // it is gonna delete all the tmp but not the last one, the last tmp is deleted after doing COP
+       delete_symbol(result);  // it is gonna delete all the tmp but not the last one, the last tmp is deleted after doing COP
     }
+    
 
     // Asigna el último valor de operand1 a address_symbol_previous
     address_symbol_previous = last_operand1_value;
     
-    printf("Final address_symbol_previous: %d\n", address_symbol_previous);
+    
+    // printf("Final address_symbol_previous: %d\n", address_symbol_previous);
 
     arithmetic_instructions = NULL;
+}
+
+
+// STACK TO SAVE THE INDEX OF JMF (IF - WHILE) - FILO
+
+
+
+StackNode *jmf_stack = NULL;
+
+// ADD A NEW INDEX TO THE STACK
+void push(int index) {
+    StackNode *new_node = (StackNode *)malloc(sizeof(StackNode));
+    new_node->index = index;
+    new_node->next = jmf_stack;
+    jmf_stack = new_node;
+    print_stack();
+}
+
+// DELETE DE LAST ELEMENT AND RETURN THE NEW INDEX
+int pop() {
+    if (jmf_stack == NULL) {
+        return -1; // STACK EMPTY
+    }
+    StackNode *temp = jmf_stack;
+    int index = temp->index;
+    jmf_stack = jmf_stack->next;
+    free(temp);
+    print_stack();
+    return index;
+}
+
+// Función para imprimir la pila
+void print_stack() {
+    StackNode *current = jmf_stack;
+    printf("Stack content:\n");
+    while (current != NULL) {
+        printf("%d -> ", current->index);
+        current = current->next;
+    }
+    printf("NULL\n");
 }
 
 

@@ -1,13 +1,3 @@
-/* void main(void) {
-  int a;
-  int a;
-  a = 123 + 321 * 4 / 2 - 1;
-  if (a == 1) {
-    print(a);
-  } else {
-    print(a / 1);
-  }
-} */
 void test(){
 int a; 
 int b , c;
@@ -35,8 +25,18 @@ Name: MUL, Number Register: 4, Adress Memory: 4, Val: 5
 Name: ADD, Number Register: 3, Adress Memory: 3, Val: 4
 Name: COP, Number Register: 0, Adress Memory: 3, Val: 0
 Name: NOP, Number Register: 0, Adress Memory: 0, Val: 0
-
 */
+
+/* void main(void) {
+  int a;
+  int a;
+  a = 123 + 321 * 4 / 2 - 1;
+  if (a == 1) {
+    print(a);
+  } else {
+    print(a / 1);
+  }
+} */
 /*
 int compute(int a, int d) {
     int b, c = a + d * 5;

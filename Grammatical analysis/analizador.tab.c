@@ -171,8 +171,6 @@ char* variableTMP;
 char* nameID;
 int in_arithmetic_operation = 0; // variable test add COP or NOT in tNB
 int idJMF = 0;
-int varFirstIF = 0;
-int in_bucle_if = 0;
 
 
 
@@ -186,7 +184,7 @@ int yylex(void);
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 0
+# define YYDEBUG 1
 #endif
 
 /* Enabling verbose error messages.  */
@@ -204,13 +202,13 @@ int yylex(void);
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 40 "analizador.y"
+#line 38 "analizador.y"
 { 
     char *s;
     int i;
 }
 /* Line 193 of yacc.c.  */
-#line 214 "y.tab.c"
+#line 212 "analizador.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -223,7 +221,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 227 "y.tab.c"
+#line 225 "analizador.tab.c"
 
 #ifdef short
 # undef short
@@ -445,9 +443,9 @@ union yyalloc
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  32
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  73
+#define YYNRULES  72
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  151
+#define YYNSTATES  149
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
@@ -494,16 +492,16 @@ static const yytype_uint8 yytranslate[] =
 #if YYDEBUG
 /* YYPRHS[YYN] -- Index of the first RHS symbol of rule number YYN in
    YYRHS.  */
-static const yytype_uint16 yyprhs[] =
+static const yytype_uint8 yyprhs[] =
 {
        0,     0,     3,     5,     8,     9,    19,    20,    28,    33,
       37,    41,    43,    46,    48,    50,    53,    55,    58,    65,
       70,    72,    74,    82,    83,    90,    94,   102,   107,   115,
      117,   120,   124,   128,   132,   136,   140,   144,   148,   152,
-     156,   160,   163,   167,   171,   174,   179,   186,   191,   192,
-     196,   201,   203,   208,   209,   211,   213,   217,   219,   220,
-     225,   226,   231,   232,   237,   238,   243,   245,   247,   249,
-     250,   252,   254,   257
+     156,   160,   163,   167,   170,   175,   182,   187,   188,   192,
+     197,   199,   204,   205,   207,   209,   213,   215,   216,   221,
+     222,   227,   228,   233,   234,   239,   241,   243,   245,   246,
+     248,   250,   253
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
@@ -525,30 +523,29 @@ static const yytype_int8 yyrhs[] =
       54,    -1,    67,    24,    54,    -1,    67,    23,    54,    -1,
       67,    22,    54,    -1,    67,    21,    54,    -1,    67,    20,
       54,    -1,    67,    27,    54,    -1,    31,    54,    32,    -1,
-       8,     4,    -1,    19,    67,    33,    -1,    19,    62,    33,
-      -1,    55,    33,    -1,    55,    34,    57,    33,    -1,    55,
-      19,    62,    34,    57,    33,    -1,    55,    19,    62,    33,
-      -1,    -1,     4,    58,    56,    -1,     4,    34,    57,    33,
-      -1,     4,    -1,     4,    31,    60,    32,    -1,    -1,    61,
-      -1,    67,    -1,    61,    34,    62,    -1,    67,    -1,    -1,
-      62,    63,    18,    67,    -1,    -1,    62,    17,    64,    67,
-      -1,    -1,    62,    65,    16,    67,    -1,    -1,    62,    15,
-      66,    67,    -1,     4,    -1,     6,    -1,    59,    -1,    -1,
-      69,    -1,     7,    -1,     8,     4,    -1,    69,    34,     8,
-       4,    -1
+       8,     4,    -1,    19,    62,    33,    -1,    55,    33,    -1,
+      55,    34,    57,    33,    -1,    55,    19,    62,    34,    57,
+      33,    -1,    55,    19,    62,    33,    -1,    -1,     4,    58,
+      56,    -1,     4,    34,    57,    33,    -1,     4,    -1,     4,
+      31,    60,    32,    -1,    -1,    61,    -1,    67,    -1,    61,
+      34,    62,    -1,    67,    -1,    -1,    62,    63,    18,    67,
+      -1,    -1,    62,    17,    64,    67,    -1,    -1,    62,    65,
+      16,    67,    -1,    -1,    62,    15,    66,    67,    -1,     4,
+      -1,     6,    -1,    59,    -1,    -1,    69,    -1,     7,    -1,
+       8,     4,    -1,    69,    34,     8,     4,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    59,    59,    60,    64,    64,    65,    65,    69,    70,
-      74,    77,    78,    82,    86,    88,    89,    90,    93,    94,
-      97,    98,   101,   104,   104,   127,   150,   151,   152,   155,
-     156,   157,   158,   159,   160,   161,   162,   163,   164,   165,
-     166,   169,   174,   175,   191,   192,   193,   194,   196,   196,
-     197,   198,   207,   210,   212,   216,   217,   220,   221,   221,
-     236,   236,   244,   244,   259,   259,   270,   293,   315,   318,
-     320,   324,   325,   326
+       0,    57,    57,    58,    62,    62,    63,    63,    67,    68,
+      72,    75,    76,    80,    84,    86,    87,    88,    91,    92,
+      95,    96,    99,   102,   102,   112,   122,   123,   124,   127,
+     128,   129,   130,   131,   132,   133,   134,   135,   136,   137,
+     138,   141,   146,   162,   163,   164,   165,   167,   167,   168,
+     169,   178,   181,   183,   187,   188,   191,   192,   192,   207,
+     207,   215,   215,   230,   230,   241,   264,   284,   287,   289,
+     293,   294,   295
 };
 #endif
 
@@ -589,10 +586,10 @@ static const yytype_uint8 yyr1[] =
       44,    45,    45,    46,    47,    47,    47,    47,    48,    48,
       49,    49,    50,    52,    51,    53,    53,    53,    53,    54,
       54,    54,    54,    54,    54,    54,    54,    54,    54,    54,
-      54,    55,    56,    56,    57,    57,    57,    57,    58,    57,
-      57,    57,    59,    60,    60,    61,    61,    62,    63,    62,
-      64,    62,    65,    62,    66,    62,    67,    67,    67,    68,
-      68,    69,    69,    69
+      54,    55,    56,    57,    57,    57,    57,    58,    57,    57,
+      57,    59,    60,    60,    61,    61,    62,    63,    62,    64,
+      62,    65,    62,    66,    62,    67,    67,    67,    68,    68,
+      69,    69,    69
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
@@ -602,10 +599,10 @@ static const yytype_uint8 yyr2[] =
        3,     1,     2,     1,     1,     2,     1,     2,     6,     4,
        1,     1,     7,     0,     6,     3,     7,     4,     7,     1,
        2,     3,     3,     3,     3,     3,     3,     3,     3,     3,
-       3,     2,     3,     3,     2,     4,     6,     4,     0,     3,
-       4,     1,     4,     0,     1,     1,     3,     1,     0,     4,
-       0,     4,     0,     4,     0,     4,     1,     1,     1,     0,
-       1,     1,     2,     4
+       3,     2,     3,     2,     4,     6,     4,     0,     3,     4,
+       1,     4,     0,     1,     1,     3,     1,     0,     4,     0,
+       4,     0,     4,     0,     4,     1,     1,     1,     0,     1,
+       1,     2,     4
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -614,109 +611,107 @@ static const yytype_uint8 yyr2[] =
 static const yytype_uint8 yydefact[] =
 {
        0,     0,     0,     0,     2,     4,     6,     1,     3,     0,
-       0,    69,    69,    71,     0,     0,    70,     0,    72,     0,
-       0,     0,     0,     0,     0,     7,    51,     0,     0,     0,
+       0,    68,    68,    70,     0,     0,    69,     0,    71,     0,
+       0,     0,     0,     0,     0,     7,    50,     0,     0,     0,
        0,     0,    11,    13,     0,    16,    21,    20,     0,    14,
-       0,    73,     0,     0,     0,    53,     0,     0,    41,     0,
-       0,     0,     5,    12,    15,     0,    44,     0,    17,    66,
-      67,    68,    58,    57,     9,     0,     0,    54,    55,    48,
-       0,     0,    49,     0,     0,     0,    29,     0,     0,    58,
-      58,     0,    64,    60,    10,     0,     0,     8,    52,     0,
-      50,    58,    57,    30,     0,    23,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,    19,    47,     0,
-      45,     0,     0,     0,     0,    56,    43,    42,    40,     0,
-      38,    37,    36,    35,    34,    33,    31,    39,    32,     0,
-       0,     0,    65,    61,    59,    63,     0,    24,     0,    18,
-      46,     0,    22,    25,     0,    27,     0,     0,     0,    28,
-      26
+       0,    72,     0,     0,     0,    52,     0,     0,    41,     0,
+       0,     0,     5,    12,    15,     0,    43,     0,    17,    65,
+      66,    67,    57,    56,     9,     0,     0,    53,    54,    47,
+       0,     0,    48,     0,     0,     0,    29,     0,     0,    57,
+      57,     0,    63,    59,    10,     0,     0,     8,    51,     0,
+      49,    57,    30,     0,    23,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,    19,    46,     0,    44,
+       0,     0,     0,     0,    55,    42,    40,     0,    38,    37,
+      36,    35,    34,    33,    31,    39,    32,     0,     0,     0,
+      64,    60,    58,    62,     0,    24,     0,    18,    45,     0,
+      22,    25,     0,    27,     0,     0,     0,    28,    26
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int16 yydefgoto[] =
 {
       -1,     3,     4,     9,    10,    25,    43,    31,    32,    33,
-      34,    35,    36,    37,   119,   137,    75,    38,    72,    39,
-      47,    61,    66,    67,    62,    85,   112,    86,   111,    76,
+      34,    35,    36,    37,   117,   135,    75,    38,    72,    39,
+      47,    61,    66,    67,    62,    85,   111,    86,   110,    76,
       15,    16
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -121
+#define YYPACT_NINF -137
 static const yytype_int16 yypact[] =
 {
-      35,     4,    17,    63,    35,  -121,  -121,  -121,  -121,     2,
-      30,    41,    41,  -121,    65,    39,    59,    66,  -121,    70,
-      93,    73,    26,   101,    10,  -121,    -6,   104,    78,    81,
-      88,    74,    26,  -121,    87,  -121,  -121,  -121,    77,  -121,
-      89,  -121,    33,    91,    97,    33,    27,   116,  -121,    13,
-      13,    85,  -121,  -121,  -121,    33,  -121,    27,  -121,   106,
-    -121,  -121,    64,  -121,  -121,   108,   107,   102,  -121,    32,
-     109,    33,  -121,   136,    13,   111,   105,   112,   137,    71,
-      61,   113,  -121,  -121,  -121,   127,   131,  -121,  -121,    33,
-    -121,    67,   115,  -121,   117,  -121,    13,    13,    13,    13,
-      13,    13,    13,    13,    13,   121,   146,  -121,  -121,    27,
-    -121,    33,    33,    33,    33,   100,  -121,  -121,  -121,   123,
-    -121,  -121,  -121,  -121,  -121,  -121,  -121,  -121,  -121,    26,
-     122,   120,  -121,  -121,  -121,  -121,    26,  -121,   125,  -121,
-    -121,   126,  -121,     7,   128,  -121,    56,   129,   130,  -121,
-    -121
+      87,     7,    16,    36,    87,  -137,  -137,  -137,  -137,    18,
+      30,    90,    90,  -137,    63,    60,    46,    74,  -137,    81,
+      95,    84,    26,   110,    10,  -137,    65,   111,    85,    86,
+      88,   102,    26,  -137,   100,  -137,  -137,  -137,    68,  -137,
+     101,  -137,    33,   105,    83,    33,    21,    99,  -137,    17,
+      17,    37,  -137,  -137,  -137,    33,  -137,    21,  -137,   106,
+    -137,  -137,    11,  -137,  -137,   108,   104,   107,  -137,    75,
+     109,    33,  -137,   135,    17,   112,   103,   113,   136,    61,
+      48,   114,  -137,  -137,  -137,   125,   130,  -137,  -137,    33,
+    -137,    53,  -137,   116,  -137,    17,    17,    17,    17,    17,
+      17,    17,    17,    17,   120,   145,  -137,  -137,    21,  -137,
+      33,    33,    33,    33,    73,  -137,  -137,   122,  -137,  -137,
+    -137,  -137,  -137,  -137,  -137,  -137,  -137,    26,   121,   119,
+    -137,  -137,  -137,  -137,    26,  -137,   124,  -137,  -137,   126,
+    -137,     6,   128,  -137,    71,   129,   131,  -137,  -137
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
-    -121,   154,  -121,  -121,  -121,  -120,   118,   -23,  -121,  -121,
-    -121,  -121,  -121,  -121,  -121,  -121,   -45,  -121,  -121,   -42,
-    -121,   -22,  -121,  -121,   -44,  -121,  -121,  -121,  -121,   -39,
-     149,  -121
+    -137,   151,  -137,  -137,  -137,  -136,   118,   -23,  -137,  -137,
+    -137,  -137,  -137,  -137,  -137,  -137,   -43,  -137,  -137,   -42,
+    -137,   -22,  -137,  -137,   -38,  -137,  -137,  -137,  -137,   -39,
+     146,  -137
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule which
    number is the opposite.  If zero, do what YYDEFACT says.
    If YYTABLE_NINF, syntax error.  */
-#define YYTABLE_NINF -63
+#define YYTABLE_NINF -62
 static const yytype_int16 yytable[] =
 {
-      40,    44,    40,    63,    70,    77,    68,    79,     5,    53,
-      40,    80,    63,   -48,    26,    81,    63,    59,    27,    60,
-     144,     6,    28,   145,    29,    45,   147,    91,    46,    94,
-      26,    69,    92,    11,    27,    27,    24,    59,    28,    60,
-      29,    73,     1,     2,    74,   115,    30,    42,    13,    14,
-      63,   120,   121,   122,   123,   124,   125,   126,   127,   128,
-      26,    12,    30,     7,    27,   -51,    46,   131,    28,    18,
-      29,    19,   132,   133,   134,   135,    82,   -62,    83,    82,
-     -62,    83,    82,   -62,    83,    24,    82,   -62,    83,    59,
-      78,    60,    30,    20,   108,   109,    55,    84,    21,    22,
-     116,    23,    24,   107,    52,    41,   138,    40,    48,    49,
-      56,    57,    50,   141,    40,    82,   -62,    83,   -58,    51,
-      54,    64,    58,   148,    40,    96,    97,    98,    99,   100,
-     101,   102,   103,   104,    42,    71,    89,    45,    87,    88,
-      93,   106,    90,    95,   105,   113,   110,   114,   117,   118,
-     129,   130,   136,   140,   139,   142,   143,   146,     8,   149,
-     150,    17,    65
+      40,    44,    40,    63,    70,   143,    68,    77,   145,    53,
+      40,     5,    63,    79,    26,    81,    63,    80,    27,   142,
+       6,    59,    28,    60,    29,    69,    82,   -61,    83,    27,
+      26,    93,    63,    91,    27,    24,     7,    59,    28,    60,
+      29,    59,    78,    60,    84,    73,    30,    42,    74,    11,
+      63,   114,   118,   119,   120,   121,   122,   123,   124,   125,
+     126,    12,    30,    82,   -61,    83,   129,    18,    82,   -61,
+      83,   130,   131,   132,   133,    26,    82,   -61,    83,    27,
+      20,   107,   108,    28,   -47,    29,   115,    55,    82,   -61,
+      83,   -57,    19,   106,     1,     2,    45,    13,    14,    46,
+      24,    56,    57,    23,   136,    40,    21,    30,   -50,    46,
+      22,   139,    40,    24,    41,    48,    49,    50,    71,    51,
+      42,   146,    40,    95,    96,    97,    98,    99,   100,   101,
+     102,   103,    52,    54,    58,    64,    88,    45,    87,    92,
+     105,    89,    90,   112,    94,   104,   113,   109,   116,   127,
+     128,   134,   138,   137,   140,     8,   141,   144,    17,   147,
+       0,   148,    65
 };
 
-static const yytype_uint8 yycheck[] =
+static const yytype_int16 yycheck[] =
 {
-      22,    24,    24,    42,    46,    50,    45,    51,     4,    32,
-      32,    55,    51,    19,     4,    57,    55,     4,     8,     6,
-      13,     4,    12,   143,    14,    31,   146,    71,    34,    74,
-       4,     4,    71,    31,     8,     8,    29,     4,    12,     6,
-      14,    28,     7,     8,    31,    89,    36,    37,     7,     8,
-      89,    96,    97,    98,    99,   100,   101,   102,   103,   104,
-       4,    31,    36,     0,     8,    33,    34,   109,    12,     4,
-      14,    32,   111,   112,   113,   114,    15,    16,    17,    15,
-      16,    17,    15,    16,    17,    29,    15,    16,    17,     4,
-       5,     6,    36,    34,    33,    34,    19,    33,    32,    29,
-      33,     8,    29,    32,    30,     4,   129,   129,     4,    31,
-      33,    34,    31,   136,   136,    15,    16,    17,    18,    31,
-      33,    30,    33,   146,   146,    20,    21,    22,    23,    24,
-      25,    26,    27,    28,    37,    19,    34,    31,    30,    32,
-       4,     4,    33,    32,    32,    18,    33,    16,    33,    32,
-      29,     5,    29,    33,    32,    30,    30,    29,     4,    30,
-      30,    12,    44
+      22,    24,    24,    42,    46,   141,    45,    50,   144,    32,
+      32,     4,    51,    51,     4,    57,    55,    55,     8,    13,
+       4,     4,    12,     6,    14,     4,    15,    16,    17,     8,
+       4,    74,    71,    71,     8,    29,     0,     4,    12,     6,
+      14,     4,     5,     6,    33,    28,    36,    37,    31,    31,
+      89,    89,    95,    96,    97,    98,    99,   100,   101,   102,
+     103,    31,    36,    15,    16,    17,   108,     4,    15,    16,
+      17,   110,   111,   112,   113,     4,    15,    16,    17,     8,
+      34,    33,    34,    12,    19,    14,    33,    19,    15,    16,
+      17,    18,    32,    32,     7,     8,    31,     7,     8,    34,
+      29,    33,    34,     8,   127,   127,    32,    36,    33,    34,
+      29,   134,   134,    29,     4,     4,    31,    31,    19,    31,
+      37,   144,   144,    20,    21,    22,    23,    24,    25,    26,
+      27,    28,    30,    33,    33,    30,    32,    31,    30,     4,
+       4,    34,    33,    18,    32,    32,    16,    33,    32,    29,
+       5,    29,    33,    32,    30,     4,    30,    29,    12,    30,
+      -1,    30,    44
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -732,13 +727,12 @@ static const yytype_uint8 yystos[] =
        6,    59,    62,    67,    30,    44,    60,    61,    67,     4,
       57,    19,    56,    28,    31,    54,    67,    54,     5,    62,
       62,    57,    15,    17,    33,    63,    65,    30,    32,    34,
-      33,    62,    67,     4,    54,    32,    20,    21,    22,    23,
-      24,    25,    26,    27,    28,    32,     4,    32,    33,    34,
-      33,    66,    64,    18,    16,    62,    33,    33,    32,    52,
-      54,    54,    54,    54,    54,    54,    54,    54,    54,    29,
-       5,    57,    67,    67,    67,    67,    29,    53,    45,    32,
-      33,    45,    30,    30,    13,    43,    29,    43,    45,    30,
-      30
+      33,    62,     4,    54,    32,    20,    21,    22,    23,    24,
+      25,    26,    27,    28,    32,     4,    32,    33,    34,    33,
+      66,    64,    18,    16,    62,    33,    32,    52,    54,    54,
+      54,    54,    54,    54,    54,    54,    54,    29,     5,    57,
+      67,    67,    67,    67,    29,    53,    45,    32,    33,    45,
+      30,    30,    13,    43,    29,    43,    45,    30,    30
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1553,47 +1547,34 @@ yyreduce:
   switch (yyn)
     {
         case 4:
-#line 64 "analizador.y"
-    { printf("Function VOID Found : %s\n", yytext); }
+#line 62 "analizador.y"
+    { printf("Function VOID Found : %s\n", yytext); ;}
     break;
 
   case 5:
-#line 64 "analizador.y"
-    { add_instruction( "NOP", 0, 0 , 0 , 0 );  }
+#line 62 "analizador.y"
+    { add_instruction( "NOP", 0, 0 , 0 , 0 );  ;}
     break;
 
   case 6:
-#line 65 "analizador.y"
-    { printf("Function INT Found : %s\n", yytext); }
+#line 63 "analizador.y"
+    { printf("Function INT Found : %s\n", yytext); ;}
     break;
 
   case 23:
-#line 104 "analizador.y"
+#line 102 "analizador.y"
     { //int jmf_index = instruction_table->size - 1;
-                                  printf("IF - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
-                                  printf("IF - BEFORE address_symbol  %d\n", address_symbol);
-                                  printf("IF - BEFORE address_instruction %d\n", address_instruction);
-                                  printf("IF - BEFORE idJMF %d\n", idJMF);
-                                  printf("IF - BEFORE varFirstIF %d\n", varFirstIF);
-                                
-                                in_bucle_if = 1;
+                                delete_symbol(address_symbol_previous);
+                                //printf("jmf_index ADD %d\n", jmf_index);
                                 //printf("address_instruction AGREGANDO %d\n", address_instruction);
                                 add_instruction( "JMF", address_instruction, address_symbol_previous , -999 , 0 );
                                 idJMF = address_symbol_previous;
-                                if (varFirstIF  >= idJMF && address_symbol != 0){
-                                  printf("IF - AFTER address_symbol %d\n", address_symbol);
-                                  printf("IF - AFTER address_instruction %d\n", address_instruction);
-                                  printf("IF - AFTER idJMF %d\n", idJMF);
-                                  printf("IF - AFTER varFirstIF %d\n", varFirstIF);
-                                 delete_symbol(address_symbol_previous);
-                                  printf("IF - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
-                                }
                                 push(instruction_table->size - 1);
- }
+ ;}
     break;
 
   case 25:
-#line 127 "analizador.y"
+#line 112 "analizador.y"
     { int jmf_index = pop(); // Obtener el índice de la instrucción JMF
                                           // delete_symbol(address_symbol_previous);
                                           //printf("jmf_index UPDATE %d\n", jmf_index);
@@ -1602,32 +1583,19 @@ yyreduce:
                                               //printf("ACTUALIZANDO...");
                                               update_instruction("JMF", jmf_index, idJMF, address_instruction, 0); // Actualizar la instrucción JMF
                                           } 
-                                          in_bucle_if = 1;
-                                            printf("ifStructure - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
-                                            printf("ifStructure - BEFORE address_symbol  %d\n", address_symbol);
-                                            printf("ifStructure - BEFORE jmf_index %d\n", jmf_index);
-                                            printf("ifStructure - BEFORE idJMF %d\n", idJMF);
-                                            printf("ifStructure - BEFORE varFirstIF %d\n", varFirstIF);
-                                          if (idJMF >=  varFirstIF && address_symbol != 0 ){
-                                            printf("ifStructure - AFTER address_symbol  %d\n", address_symbol);
-                                            printf("ifStructure - AFTER jmf_index  %d\n", jmf_index);
-                                            printf("ifStructure - AFTER idJMF %d\n", idJMF);
-                                            printf("ifStructure - AFTER varFirstIF %d\n", varFirstIF);
-                                           delete_symbol(address_symbol_previous);
-                                            printf("ifStructure - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
-                                          }
-                                          }
+                                          delete_symbol(address_symbol_previous);
+                                          ;}
     break;
 
   case 41:
-#line 169 "analizador.y"
+#line 141 "analizador.y"
     { 
    nameID = (yyvsp[(2) - (2)].s);
-  add_symbol((yyvsp[(2) - (2)].s), "int"); }
+  add_symbol((yyvsp[(2) - (2)].s), "int"); ;}
     break;
 
-  case 43:
-#line 175 "analizador.y"
+  case 42:
+#line 146 "analizador.y"
     {
                        //   address_variable = find_symbol($1);  
                                             //add_symbol($1, "int"); 
@@ -1638,33 +1606,33 @@ yyreduce:
                                           add_instruction( "COP", 0, address_variable , address_symbol_previous , 0 );
                                           in_arithmetic_operation = 0;
                                   // comment          delete_symbol(address_symbol); 
-            }
+            ;}
     break;
 
-  case 48:
-#line 196 "analizador.y"
-    {  nameID = (yyvsp[(1) - (1)].s);  }
+  case 47:
+#line 167 "analizador.y"
+    {  nameID = (yyvsp[(1) - (1)].s);  ;}
     break;
 
-  case 51:
-#line 198 "analizador.y"
+  case 50:
+#line 169 "analizador.y"
     { // nameID = $1;
            // printf("nameID - tID seul %s\n" , nameID);
           //  address_variable = find_symbol($1);  
                     add_symbol((yyvsp[(1) - (1)].s), "int"); 
                   //  printf("address_variable : %d\n", address_variable);
                   //  printf("find_symbol($1) : %s\n", $1);
-                 }
+                 ;}
     break;
 
-  case 58:
-#line 221 "analizador.y"
+  case 57:
+#line 192 "analizador.y"
     { 
                             address_symbol_previous = find_symbol(symbolTMP);
                   //         printf("symbolTMP %s \n" , symbolTMP);
                            // add_instruction( "MUL", address_symbol_previous  , address_symbol_previous , address_symbol ); 
 // printf("MUL - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
-                  
+
                             add_arithmetic_instruction("MUL", address_symbol_previous, address_symbol_previous, address_symbol); 
                             in_arithmetic_operation = 1;
                         //    delete_symbol(address_symbol_previous);
@@ -1672,22 +1640,22 @@ yyreduce:
                //             printf("MUL - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
 
                        //     delete_symbol(address_symbol);
-                          }
+                          ;}
     break;
 
-  case 60:
-#line 236 "analizador.y"
+  case 59:
+#line 207 "analizador.y"
     {
             address_symbol_previous = find_symbol(symbolTMP);
                             add_arithmetic_instruction("DIV", address_symbol_previous, address_symbol_previous, address_symbol); 
                             in_arithmetic_operation = 1;
                        //     delete_symbol(address_symbol_previous);
                      //       address_symbol_previous--;
-          }
+          ;}
     break;
 
-  case 62:
-#line 244 "analizador.y"
+  case 61:
+#line 215 "analizador.y"
     { 
             // printf("ADD - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
 
@@ -1701,22 +1669,22 @@ yyreduce:
            //                             printf("ADD - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
 
                      //     delete_symbol(address_symbol);
-                          }
+                          ;}
     break;
 
-  case 64:
-#line 259 "analizador.y"
+  case 63:
+#line 230 "analizador.y"
     {
                             address_symbol_previous = find_symbol(symbolTMP);
                             add_arithmetic_instruction("SUB", address_symbol_previous, address_symbol_previous, address_symbol); 
                             in_arithmetic_operation = 1;
                       //      delete_symbol(address_symbol_previous);
                        //     address_symbol_previous--;
-          }
+          ;}
     break;
 
-  case 66:
-#line 270 "analizador.y"
+  case 65:
+#line 241 "analizador.y"
     { variableTMP = "tmp";
      // nameID = $1;
   //   printf("nameID - TID %s\n" , nameID);
@@ -1725,37 +1693,35 @@ yyreduce:
         //    address_symbol_previous = find_symbol($1); 
             address_var_TMP = address_symbol_previous;
             add_symbol(variableTMP , "int");
-          varFirstIF = address_symbol_previous;
-          printf("varFirstIF - TID %d\n" , varFirstIF);
+          
             //    delete_symbol(address_var_TMP);
             
          //   delete_symbol(address_symbol_previous);
         //    delete_symbol(address_var_TMP);
        //  printf("TID AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol);
+         //  add_instruction( "COP", address_variable  , address_symbol_previous , 0 ); 
             add_instruction( "COP", 0, address_symbol_previous, address_variable , 0 ); 
       //     
    //   if (!in_arithmetic_operation) {
-       //         delete_symbol(address_symbol_previous);
+     //           delete_symbol(address_symbol_previous);
        //     }
             
       //      printf("address_var_TMP : %d\n", address_var_TMP);
-          }
+          ;}
     break;
 
-  case 67:
-#line 293 "analizador.y"
+  case 66:
+#line 264 "analizador.y"
     { 
-      printf("TNB AFTER - nameID %s\n" , nameID);
+      printf("nameID -TNB %s\n" , nameID);
        //     printf("address_symbol before : %d\n", address_symbol);
          //          printf("TNB - before address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
 add_symbol("tmp" , "int");
 if(nameID != NULL){
             address_variable = find_symbol(nameID);  
 }
-      printf("TNB AFTER - address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
-      printf("TNB AFTER - in_bucle_if %d\n" , in_bucle_if);
-
-delete_symbol(address_symbol_previous);
+           
+            delete_symbol(address_symbol_previous); 
               
      //                  printf("TNB - after address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
 add_instruction( "AFC", 0, address_symbol_previous , global_number , 0 ); 
@@ -1765,17 +1731,17 @@ add_instruction( "AFC", 0, address_symbol_previous , global_number , 0 );
                 add_instruction("COP", 0, address_variable, address_symbol_previous, 0); 
             }
 
-          }
+          ;}
     break;
 
-  case 68:
-#line 315 "analizador.y"
-    { add_symbol("tmp" , "int"); }
+  case 67:
+#line 284 "analizador.y"
+    { add_symbol("tmp" , "int"); ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1779 "y.tab.c"
+#line 1745 "analizador.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1989,7 +1955,7 @@ yyreturn:
 }
 
 
-#line 329 "analizador.y"
+#line 298 "analizador.y"
 
 
 

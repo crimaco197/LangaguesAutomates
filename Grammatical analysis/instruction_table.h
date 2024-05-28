@@ -9,6 +9,7 @@ typedef struct Instruction {
     int numberRegister;  // 
     int addressMemory;   // 
     int valNonDefined;
+    int indexInstruction;
 } Instruction;
 
 typedef struct InstructionTable {
@@ -22,8 +23,17 @@ extern InstructionTable *instruction_table;
 //extern int address_instruction;
 
 // TABLE TO STOCK INSTRUCTIONS
+typedef struct ArithmeticInstruction {
+    char *name;
+    int operand1;
+    int operand2;
+    int result;
+    struct ArithmeticInstruction *next;
+} ArithmeticInstruction;
+
 InstructionTable* create_instruction_table();
-void add_instruction(char *name, int numberRegister, int addressMemory, int addressValTMP);
+void add_instruction(char *name, int indexInstruction, int numberRegister, int addressMemory, int addressValTMP);
+void update_instruction(char *name,int indexInstruction, int numberRegister, int newAddressMemory, int newAddressValTMP);
 char* find_instruction(InstructionTable *table, char *name);
 void print_instruction_table();
 
@@ -31,4 +41,14 @@ void print_instruction_table();
 void add_arithmetic_instruction(char *name, int operand1, int operand2, int result);
 void process_arithmetic_instructions();
 
+
+
+typedef struct StackNode {
+    int index;
+    struct StackNode *next;
+} StackNode;
+
+void push(int index);
+int pop();
+void print_stack();
 #endif // INSTRUCTION_TABLE_H
