@@ -7,13 +7,18 @@ extern int address_symbol;          // Address symbol on Table Symbol
 extern int address_instruction;     // Address Instruction on Table Instruction
 extern int idJMF;
 extern int varFirstIF;
-extern int in_bucle_if;
+extern int var_to_delete;
+extern int varFirstJMP;
 
 extern int address_symbol_previous;
 extern int address_variable;
 extern int address_var_TMP;
+extern int address_function;
+extern int address_main;
 extern char symbolTMP [100];
 extern char *nameID;
+
+extern char *nameFunction;
 
 
 extern char *yytext;                // last ID read

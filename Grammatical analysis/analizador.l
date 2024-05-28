@@ -33,6 +33,7 @@ hex_number    0[xX][0-9a-fA-F]+
 "return"  { return tRETURN; }
 "int"     { return tINT; }
 "void"    { return tVOID; }
+"main"    { return tMAIN; }
 
 {alpha} {
     yylval.s = strdup(yytext);

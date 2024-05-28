@@ -26,6 +26,7 @@ SymbolTable* create_symbol_table();
 void add_symbol(char *name, char *type);
 int find_symbol(const char *name);
 void delete_symbol(int index);
+void delete_last_symbol(int index);
 void print_symbol_table();
 
 #endif // SYMBOL_TABLE_H

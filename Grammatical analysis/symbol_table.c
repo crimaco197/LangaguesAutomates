@@ -79,6 +79,24 @@ void delete_symbol(int index) {
     }
 }
 
+void delete_last_symbol(int index) {
+   //  int index = find_symbol(name); 
+
+    // If symbol is found, delete it. 
+    if (index != -1) {
+        for (int i = index; i < symbol_table->size - 1; ++i) {
+            // We move all elements in i+1 to position i. Then we reduce the table size
+            // symbol_table->symbols[i], we get the element i of symbol_table.
+            symbol_table->symbols[i] = symbol_table->symbols[i + 1];
+        }
+        symbol_table->size--; // Reduce table size
+        address_symbol--;
+     //   address_symbol_previous--;
+    } else {
+        printf("Symbol \"%d\" not found.\n", index);
+    }
+}
+
 
 
 // Print Table Symbol

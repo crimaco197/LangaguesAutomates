@@ -20,13 +20,18 @@ int global_number;
 int address_symbol_previous;
 int address_variable;
 int address_var_TMP;
+int address_function = 0;
+int address_main = 0;
 char* variableTMP;
 char* nameID;
 int in_arithmetic_operation = 0; // variable test add COP or NOT in tNB
 int idJMF = 0;
 int varFirstIF = 0;
-int in_bucle_if = 0;
+int var_to_delete = 0;
+int varFirstJMP = 0;
 
+
+char *nameFunction;
 
 
 
@@ -42,9 +47,9 @@ int yylex(void);
     int i;
 }
 
-%token <s> tTEXT tID tSTRING
+%token <s> tTEXT tID tSTRING 
 %token <i> tNB
-%token tVOID tINT
+%token tVOID tINT tMAIN
 %token tCDIV tSPAN tCSPAN
 %token tIF tELSE tWHILE
 %left tADD tSUB 
@@ -56,22 +61,92 @@ int yylex(void);
 %token tERROR tPRINT tRETURN
 
 %%
-Program : fun
+Program : main 
+        | fun
         | fun Program
 ;
 
+main: tINT  { add_instruction( "RET", 0, 0 , 0 , 0 ); } 
+      tMAIN { printf("Function MAIN Found : %s\n", yytext); 
+              nameFunction = "main"; 
+              add_symbol("?ADR", nameFunction);
+              add_symbol("?VAL", nameFunction);
+              address_main = address_instruction++;
+              }  
+              BodyMain ;
+
 fun: 
-      tVOID tID { printf("Function VOID Found : %s\n", yytext); } tLPAR args tRPAR tLBRACE structure tRBRACE { add_instruction( "NOP", 0, 0 , 0 , 0 );  }
-    | tINT tID { printf("Function INT Found : %s\n", yytext); } tLPAR args tRPAR functionBody  
+      tVOID tID { printf("Function VOID Found : %s\n", yytext); nameFunction = $2; } Body 
+    | tINT tID { printf("Function INT Found : %s\n", yytext);
+                 nameFunction = $2;
+                 add_symbol("?ADR", nameFunction);
+                 add_symbol("?VAL", nameFunction);
+
+                 
+                } 
+      tLPAR args tRPAR { varFirstJMP = address_instruction;
+                         add_instruction( "JMP", address_instruction, -999 , 0 , 0 ); 
+                         address_function = address_instruction;
+                       } 
+      functionBodyReturn  
 ;
 
-functionBody:
+Body : tLPAR args tRPAR tLBRACE structure tRBRACE { add_instruction( "NOP", 0, 0 , 0 , 0 );  }
+;
+
+BodyMain : tLPAR args tRPAR tLBRACE structure { int adr = find_symbol("!ADR");
+                                                int val = find_symbol("!VAL");
+                                                printf("structure - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                                address_variable = adr;
+                                                delete_symbol(val);
+                                                delete_symbol(adr);
+                                                //printf("structure - HALF address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                                delete_symbol(address_symbol_previous);
+                                                add_symbol("tmp", nameFunction);
+                                                address_symbol_previous = address_symbol;
+                                                printf("structure - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                                add_instruction( "PUSH", 0, adr , 0 , 0 ); 
+                                                add_instruction( "CALL", 0, address_function , 0 , 0 );
+                                                add_instruction( "POP", 0, adr, 0 , 0 );
+                                                add_instruction( "COP", 0, address_variable , address_symbol_previous , 0 );
+                                                delete_symbol(address_variable);
+} tRBRACE { address_variable = find_symbol(nameID);
+            address_symbol_previous = address_symbol;
+            printf("tRBRACE - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+            add_instruction( "COP", 0, address_variable , address_symbol_previous , 0 );
+            add_instruction( "RET", 0, 0 , 0 , 0 );
+            delete_symbol(address_variable);
+            delete_symbol(find_symbol("?VAL"));
+            delete_last_symbol(find_symbol("?ADR"));
+            update_instruction("JMP", varFirstJMP, address_main, 0,0 );  // todo - encontrar la direccion del MAIN
+            add_instruction( "NOP", 0, 0 , 0 , 0 );  }
+;
+
+functionBodyReturn:
     tLBRACE structure returnStatement tRBRACE
-    | tLBRACE returnStatement tRBRACE
+    | tLBRACE returnStatement tRBRACE {
+      int val = find_symbol("?VAL");
+      int adr = find_symbol("?ADR");
+      delete_symbol(val);
+      delete_symbol(adr);
+      delete_last_symbol(var_to_delete);
+    }
 ;
 
 returnStatement:
-    tRETURN resultat tSEMI
+    tRETURN resultat tSEMI {
+                          address_variable = find_symbol("?VAL");  
+                                            //add_symbol($1, "int"); 
+                                          //  printf("address_variable : %d\n", address_variable);
+                                         //   printf("find_symbol($1) : %s\n", $1);
+                                         process_arithmetic_instructions();
+                                     //    delete_symbol(address_symbol_previous);
+                                    //      add_instruction( "COP", 0, address_variable , address_symbol_previous , 0 );
+                                    add_instruction( "COP", 0, address_variable , address_symbol_previous , 0 );
+                                    add_instruction( "RET", 0, 0 , 0 , 0 );
+                                          in_arithmetic_operation = 0;
+                                  // comment          delete_symbol(address_symbol); 
+            }
 ;
 
 structure : context
@@ -108,7 +183,7 @@ if: tIF tLPAR condition tRPAR { //int jmf_index = instruction_table->size - 1;
                                   printf("IF - BEFORE idJMF %d\n", idJMF);
                                   printf("IF - BEFORE varFirstIF %d\n", varFirstIF);
                                 
-                                in_bucle_if = 1;
+                                
                                 //printf("address_instruction AGREGANDO %d\n", address_instruction);
                                 add_instruction( "JMF", address_instruction, address_symbol_previous , -999 , 0 );
                                 idJMF = address_symbol_previous;
@@ -132,7 +207,7 @@ ifStructure : tLBRACE structure tRBRACE { int jmf_index = pop(); // Obtener el √
                                               //printf("ACTUALIZANDO...");
                                               update_instruction("JMF", jmf_index, idJMF, address_instruction, 0); // Actualizar la instrucci√≥n JMF
                                           } 
-                                          in_bucle_if = 1;
+                                          
                                             printf("ifStructure - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
                                             printf("ifStructure - BEFORE address_symbol  %d\n", address_symbol);
                                             printf("ifStructure - BEFORE jmf_index %d\n", jmf_index);
@@ -148,8 +223,10 @@ ifStructure : tLBRACE structure tRBRACE { int jmf_index = pop(); // Obtener el √
                                           }
                                           }
             | tLBRACE structure tRBRACE tELSE tLBRACE structure tRBRACE
-            | tLBRACE structure tRBRACE functionBody
-            | tLBRACE structure tRBRACE tELSE tLBRACE functionBody tRBRACE
+            | tLBRACE structure tRBRACE functionBodyReturn
+            | tLBRACE structure tRBRACE tELSE tLBRACE functionBodyReturn tRBRACE
+            | tLBRACE structure returnStatement tRBRACE
+            | tLBRACE returnStatement tRBRACE
             ;
 
 condition : var
@@ -168,7 +245,7 @@ condition : var
 
 declaration1: tINT tID { 
    nameID = $2;
-  add_symbol($2, "int"); } // tSEMI // 
+  add_symbol($2, nameFunction); } // tSEMI // 
 ;
 
 declaration3: tASSIGN var tSEMI
@@ -198,7 +275,7 @@ declaration:
            | tID { // nameID = $1;
            // printf("nameID - tID seul %s\n" , nameID);
           //  address_variable = find_symbol($1);  
-                    add_symbol($1, "int"); 
+                    add_symbol($1, nameFunction); 
                   //  printf("address_variable : %d\n", address_variable);
                   //  printf("find_symbol($1) : %s\n", $1);
                  }
@@ -209,12 +286,22 @@ functionName: tID tLPAR argsName tRPAR
 
 argsName: 
           /* Not Arguments */
-        | argListName
+        | argListName { add_symbol("!ADR", nameFunction);
+                     add_symbol("!VAL", nameFunction);
+                     // address_symbol_previous = address_symbol;
+                     add_symbol("tmp" , nameFunction); 
+                     printf("argsName address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                     add_instruction( "AFC", 0, address_symbol_previous , global_number , 0 ); 
+                    }
 ;
 
 argListName:
-     var                        /* Only one argument */
+    // var                        /* Only one argument */
+      tID
+    | tNB 
+    | functionName
     | argListName tCOMMA resultat
+    | resultat
 ;
 resultat  : 
            var 
@@ -245,7 +332,8 @@ resultat  :
             // printf("ADD - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
 
                            address_symbol_previous = find_symbol(symbolTMP);
-             //              printf("symbolTMP %s \n" , symbolTMP);
+                  //        printf("symbolTMP %s \n" , symbolTMP);
+                  printf("agregando ADD\n");
                             // add_instruction( "ADD", address_symbol_previous  , address_symbol_previous , address_symbol ); 
                             add_arithmetic_instruction("ADD", address_symbol_previous, address_symbol_previous, address_symbol); 
                             in_arithmetic_operation = 1;
@@ -268,51 +356,51 @@ resultat  :
 
 var:
      tID  { variableTMP = "tmp";
-     // nameID = $1;
-  //   printf("nameID - TID %s\n" , nameID);
-     address_variable = find_symbol($1);  
-     //    printf("TID BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol);
-        //    address_symbol_previous = find_symbol($1); 
-            address_var_TMP = address_symbol_previous;
-            add_symbol(variableTMP , "int");
-          varFirstIF = address_symbol_previous;
-          printf("varFirstIF - TID %d\n" , varFirstIF);
-            //    delete_symbol(address_var_TMP);
-            
-         //   delete_symbol(address_symbol_previous);
-        //    delete_symbol(address_var_TMP);
-       //  printf("TID AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol);
-            add_instruction( "COP", 0, address_symbol_previous, address_variable , 0 ); 
-      //     
-   //   if (!in_arithmetic_operation) {
-       //         delete_symbol(address_symbol_previous);
-       //     }
-            
-      //      printf("address_var_TMP : %d\n", address_var_TMP);
+            // nameID = $1;
+          //   printf("nameID - TID %s\n" , nameID);
+            address_variable = find_symbol($1);  
+            //    printf("TID BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol);
+                //    address_symbol_previous = find_symbol($1); 
+                    address_var_TMP = address_symbol_previous;
+                    add_symbol(variableTMP , nameFunction);
+                  varFirstIF = address_symbol_previous;
+                  printf("varFirstIF - TID %d\n" , varFirstIF);
+                    //    delete_symbol(address_var_TMP);
+                    
+                //   delete_symbol(address_symbol_previous);
+                //    delete_symbol(address_var_TMP);
+              //  printf("TID AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol);
+                    add_instruction( "COP", 0, address_symbol_previous, address_variable , 0 ); 
+              //     
+          //   if (!in_arithmetic_operation) {
+              //         delete_symbol(address_symbol_previous);
+              //     }
+                    
+              //      printf("address_var_TMP : %d\n", address_var_TMP);
           }
     | tNB { 
-      printf("TNB AFTER - nameID %s\n" , nameID);
-       //     printf("address_symbol before : %d\n", address_symbol);
-         //          printf("TNB - before address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
-add_symbol("tmp" , "int");
-if(nameID != NULL){
-            address_variable = find_symbol(nameID);  
-}
-      printf("TNB AFTER - address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
-      printf("TNB AFTER - in_bucle_if %d\n" , in_bucle_if);
-
-delete_symbol(address_symbol_previous);
+              printf("TNB AFTER - nameID %s\n" , nameID);
+              //     printf("address_symbol before : %d\n", address_symbol);
+                //          printf("TNB - before address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+        add_symbol("tmp" , nameFunction);
+        if(nameID != NULL){
+                    address_variable = find_symbol(nameID);  
+        }
+              printf("TNB AFTER - address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
               
-     //                  printf("TNB - after address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
-add_instruction( "AFC", 0, address_symbol_previous , global_number , 0 ); 
-          //   address_symbol_previous = address_symbol; 
-            
-        if (!in_arithmetic_operation) {
-                add_instruction("COP", 0, address_variable, address_symbol_previous, 0); 
-            }
 
-          }
-    | functionName { add_symbol("tmp" , "int"); }
+              delete_symbol(address_symbol_previous);
+                      
+              printf("TNB - after address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+              add_instruction( "AFC", 0, address_symbol_previous , global_number , 0 ); 
+                  //   address_symbol_previous = address_symbol; 
+                    
+                if (!in_arithmetic_operation) {
+                        add_instruction("COP", 0, address_variable, address_symbol_previous, 0); 
+                    }
+
+                  }
+    | functionName 
 ;
 
 args:
@@ -322,8 +410,13 @@ args:
 
 argList:
       tVOID
-    | tINT tID                 /* Only one argument */
-    | argList tCOMMA tINT tID /* Several arguments, divided by commas */
+    | tINT tID { add_symbol($2, nameFunction); 
+                 printf("ARGUMENTO tID %s\n", $2);
+                 var_to_delete = find_symbol($2);
+              //   delete_symbol(var_to_delete);
+                 }                 /* Only one argument */
+    | argList tCOMMA tINT tID { add_symbol($4, nameFunction);
+                                delete_symbol(address_symbol_previous); }    /* Several arguments, divided by commas */
 ;
 
 %%
