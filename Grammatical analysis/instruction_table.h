@@ -12,16 +12,6 @@ typedef struct Instruction {
     int indexInstruction;
 } Instruction;
 
-typedef struct InstructionTable {
-    Instruction *instructions;  
-    int size;         // Table Size
-    int capacity;     // Capacity Table
-} InstructionTable;
-
-// VARIABLES GLOBALES
-extern InstructionTable *instruction_table;
-//extern int address_instruction;
-
 // TABLE TO STOCK INSTRUCTIONS
 typedef struct ArithmeticInstruction {
     char *name;
@@ -30,6 +20,26 @@ typedef struct ArithmeticInstruction {
     int result;
     struct ArithmeticInstruction *next;
 } ArithmeticInstruction;
+
+typedef struct ArithmeticInstructionTable {
+    ArithmeticInstruction *instructions;  
+    int size;         // Table Size
+    int capacity;     // Capacity Table
+} ArithmeticInstructionTable;
+
+typedef struct InstructionTable {
+    Instruction *instructions;  
+    int size;         // Table Size
+    int capacity;     // Capacity Table
+} InstructionTable;
+
+
+
+// VARIABLES GLOBALES
+extern InstructionTable *instruction_table;
+//extern int address_instruction;
+
+
 
 InstructionTable* create_instruction_table();
 void add_instruction(char *name, int indexInstruction, int numberRegister, int addressMemory, int addressValTMP);
@@ -40,6 +50,7 @@ void print_instruction_table();
 // TABLE TO STOCK ARTIHMETIC INSTRUCTIONS 
 void add_arithmetic_instruction(char *name, int operand1, int operand2, int result);
 void process_arithmetic_instructions();
+void print_arithmetic_instruction_table();
 
 
 

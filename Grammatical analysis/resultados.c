@@ -144,6 +144,7 @@ Name: POP, Number Register: 3, Adress Memory: 0, Val: 0
 Name: COP, Number Register: 3, Adress Memory: 4, Val: 0
 Name: COP, Number Register: 2, Adress Memory: 3, Val: 0
 Name: RET, Number Register: 0, Adress Memory: 0, Val: 0
+Name: RET, Number Register: 0, Adress Memory: 0, Val: 0
 Name: NOP, Number Register: 0, Adress Memory: 0, Val: 0
 SIZE : 15
 -------------------
@@ -164,9 +165,12 @@ int main() {
 
 TEST - 5
 -------------------
+Symbol Table:
+-------------------
+-------------------
 Instruction Table:
 -------------------
-Name: JMP, Number Register: -999, Adress Memory: 0, Val: 0
+Name: JMP, Number Register: 18, Adress Memory: 0, Val: 0
 Name: COP, Number Register: 3, Adress Memory: 2, Val: 0
 Name: JMF, Number Register: 3, Adress Memory: 14, Val: 0
 Name: COP, Number Register: 5, Adress Memory: 2, Val: 0
@@ -191,15 +195,44 @@ Name: POP, Number Register: 2, Adress Memory: 0, Val: 0
 Name: COP, Number Register: 2, Adress Memory: 3, Val: 0
 Name: COP, Number Register: 1, Adress Memory: 2, Val: 0
 Name: RET, Number Register: 0, Adress Memory: 0, Val: 0
+Name: RET, Number Register: 0, Adress Memory: 0, Val: 0
+Name: NOP, Number Register: 0, Adress Memory: 0, Val: 0
+SIZE : 27
+-------------------
 
+
+int main() { 
+    int a = 0;
+    while (a)
+    {
+        return fact(3); 
+    }
+}
+
+TEST 6
 -------------------
-Name: ?ADR, Type: fact, Adress: 0
-Name: ?VAL, Type: fact, Adress: 1
-Name: ?ADR, Type: main, Adress: 2
-Name: ?VAL, Type: main, Adress: 3
-Name: tmp4, Type: main, Adress: 4
-Name: tmp5, Type: main, Adress: 5
+Symbol Table:
 -------------------
+-------------------
+Instruction Table:
+-------------------
+Name: RET, Number Register: 0, Adress Memory: 0, Val: 0
+Name: AFC, Number Register: 3, Adress Memory: 0, Val: 0
+Name: COP, Number Register: 2, Adress Memory: 3, Val: 0
+Name: COP, Number Register: 3, Adress Memory: 2, Val: 0
+Name: JMF, Number Register: 3, Adress Memory: -999, Val: 0
+Name: AFC, Number Register: 5, Adress Memory: 3, Val: 0
+Name: PUSH, Number Register: 3, Adress Memory: 0, Val: 0
+Name: CALL, Number Register: 0, Adress Memory: 0, Val: 0
+Name: POP, Number Register: 3, Adress Memory: 0, Val: 0
+Name: COP, Number Register: 3, Adress Memory: 3, Val: 0
+Name: COP, Number Register: 1, Adress Memory: 3, Val: 0
+Name: RET, Number Register: 0, Adress Memory: 0, Val: 0
+Name: RET, Number Register: 0, Adress Memory: 0, Val: 0
+Name: NOP, Number Register: 0, Adress Memory: 0, Val: 0
+SIZE : 14
+-------------------
+
 
 
 solo un test : ./analizador < test1.c 

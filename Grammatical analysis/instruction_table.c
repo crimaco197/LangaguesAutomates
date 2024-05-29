@@ -6,6 +6,12 @@
 #include "symbol_table.h"
 #include "declaration_var.h"
 
+
+/*********************************************************************************************************/
+/*************************************** INSTRUCTION TABLE ***********************************************/
+/*********************************************************************************************************/
+// IT IS USED TO STOCK THE ASSEMBLEUR INSTRUCTIONS
+
 InstructionTable *instruction_table = NULL; // Inizialate Table
 int address_instruction = 0;
 
@@ -67,6 +73,14 @@ void print_instruction_table() {
 }
 
 
+/*********************************************************************************************************/
+/********************************** ARITHMETIC INSTRUCTION TABLE *****************************************/
+/*********************************************************************************************************/
+// IT IS USED TO STOCK THE ARITHMETIC INSTRUCTION IN THE ORDER WHICH IS READ, THEN WHEN ALL THE
+// VARIABLES ARE READ, IT EMPTY THE LIST ADDING TO THE INSTRUCTION TABLE THE INSTRUCTIONS 
+// FROM THE RIGHT TO THE LEFT.
+
+
 // TABLE TO STOCK ARTIHMETIC INSTRUCTIONS 
 ArithmeticInstruction *arithmetic_instructions = NULL;
 
@@ -112,10 +126,23 @@ void process_arithmetic_instructions() {
     arithmetic_instructions = NULL;
 }
 
+// Print Arithmetic Instructions
+void print_arithmetic_instruction_table() {
+    ArithmeticInstruction *current = arithmetic_instructions;
+    printf("Arithmetic Instruction Table:\n");
+    printf("-------------------\n");
+    while (current != NULL) {
+        printf("Name: %s, Operand1: %d, Operand2: %d, Result: %d\n", current->name, current->operand1, current->operand2, current->result);
+        current = current->next;
+    }
+    printf("-------------------\n");
+}
 
-// STACK TO SAVE THE INDEX OF JMF (IF - WHILE) - FILO
 
-
+/*********************************************************************************************************/
+/********************************** STACK ADDRESSES JMF - JMP ********************************************/
+/*********************************************************************************************************/
+// TO SAVE THE INDEX OF JMF (IF - WHILE) - FILO
 
 StackNode *jmf_stack = NULL;
 
@@ -141,7 +168,7 @@ int pop() {
     return index;
 }
 
-// Función para imprimir la pila
+// Function to print the stack
 void print_stack() {
     StackNode *current = jmf_stack;
     printf("Stack content:\n");
@@ -151,5 +178,3 @@ void print_stack() {
     }
     printf("NULL\n");
 }
-
-

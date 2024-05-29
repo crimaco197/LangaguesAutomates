@@ -1,15 +1,208 @@
-%{
-/* Oussama Eljid */
-/*  Cristian Martinez */
-
-#include <stdio.h>
+// instruction_table.c
+#include "instruction_table.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include "symbol_table.h"
-#include "instruction_table.h"
 #include "declaration_var.h"
 
-// Estructura para almacenar instrucciones aritméticas
+
+/*********************************************************************************************************/
+/*************************************** INSTRUCTION TABLE ***********************************************/
+/*********************************************************************************************************/
+// IT IS USED TO STOCK THE ASSEMBLEUR INSTRUCTIONS
+
+InstructionTable *instruction_table = NULL; // Inizialate Table
+int address_instruction = 0;
+
+InstructionTable* create_instruction_table() {
+    InstructionTable *instruction_table = malloc(sizeof(InstructionTable));
+    instruction_table->size = 0;
+    instruction_table->capacity = 10; // Initial Capacity
+    instruction_table->instructions = malloc(sizeof(Instruction) * instruction_table->capacity);  // assigne enough memory to stock
+    return instruction_table;
+}
+
+
+void add_instruction(char *name,int indexInstruction, int numberRegister, int addressMemory, int addressValTMP) {
+    if (instruction_table->size >= instruction_table->capacity) {
+        instruction_table->capacity *= 2;
+        instruction_table->instructions = realloc(instruction_table->instructions, sizeof(Instruction) * instruction_table->capacity);  // modify the size of memory assigned by malloc
+    }
+
+    Instruction new_instruction;
+    // Add new instruction ASM
+  
+        new_instruction.name = strdup(name); // Free memory - a voir... 
+        new_instruction.indexInstruction = indexInstruction;
+        new_instruction.numberRegister = numberRegister;
+        new_instruction.addressMemory = addressMemory;
+        new_instruction.valNonDefined = addressValTMP;
+        address_instruction++;
+
+    instruction_table->instructions[instruction_table->size++] = new_instruction;
+}
+
+void update_instruction(char *name, int indexInstruction, int numberRegister, int newAddressMemory, int newAddressValTMP) {
+    for (int i = 0; i < instruction_table->size; ++i) {
+        Instruction *instruction = &instruction_table->instructions[i];
+        if (strcmp(instruction->name, name) == 0 && instruction->indexInstruction == indexInstruction) {
+            instruction->numberRegister = numberRegister;
+            instruction->addressMemory = newAddressMemory;
+            instruction->valNonDefined = newAddressValTMP;
+            break;
+        }
+    }
+}
+
+
+// Print Table Instruction
+void print_instruction_table() {
+    printf("Instruction Table:\n");
+    printf("-------------------\n");
+    for (int i = 0; i < instruction_table->size; ++i) {
+        Instruction instruction = instruction_table->instructions[i];
+
+  //      printf("Name: %s", instruction.name);
+
+        printf("Name: %s, Number Register: %d, Adress Memory: %d, Val: %d\n", instruction.name, instruction.numberRegister , instruction.addressMemory, instruction.valNonDefined);
+
+    }
+    printf("SIZE : %d\n", instruction_table->size);
+    printf("-------------------\n");
+}
+
+
+/*********************************************************************************************************/
+/********************************** ARITHMETIC INSTRUCTION TABLE *****************************************/
+/*********************************************************************************************************/
+// IT IS USED TO STOCK THE ARITHMETIC INSTRUCTION IN THE ORDER WHICH IS READ, THEN WHEN ALL THE
+// VARIABLES ARE READ, IT EMPTY THE LIST ADDING TO THE INSTRUCTION TABLE THE INSTRUCTIONS 
+// FROM THE RIGHT TO THE LEFT.
+
+
+// TABLE TO STOCK ARTIHMETIC INSTRUCTIONS 
+ArithmeticInstruction *arithmetic_instructions = NULL;
+
+// TODO - COMMENTS AND UNDERSTAND HOW IT WORKS.
+void add_arithmetic_instruction(char *name, int operand1, int operand2, int result) {
+    ArithmeticInstruction *new_instruction = malloc(sizeof(ArithmeticInstruction));
+//    delete_symbol(result);
+
+  printf("address_symbol_previous: %d, address_symbol: %d\n", operand1, result);
+    new_instruction->name = strdup(name);
+    new_instruction->operand1 = operand1;
+    new_instruction->operand2 = operand2;
+    new_instruction->result = result;
+    new_instruction->next = arithmetic_instructions;
+    arithmetic_instructions = new_instruction;
+    
+}
+
+void process_arithmetic_instructions() {
+    ArithmeticInstruction *current = arithmetic_instructions;
+    int last_operand1_value = 0; // Variable para almacenar el último valor de operand1
+    int result = 0;
+    while (current != NULL) {
+        last_operand1_value = current->operand1; // Almacenar el valor de operand1
+        result = current->result;
+       //  printf("Operand1 Value: %d\n", last_operand1_value);
+        
+        add_instruction(current->name, 0, current->operand1, current->operand2, current->result);
+        ArithmeticInstruction *temp = current;
+        current = current->next;
+        free(temp->name);
+        free(temp);
+        delete_symbol(result);  // it is gonna delete all the tmp but not the last one, the last tmp is deleted after doing COP
+    }
+    
+
+    // Asigna el último valor de operand1 a address_symbol_previous
+    address_symbol_previous = last_operand1_value;
+    
+    
+    // printf("Final address_symbol_previous: %d\n", address_symbol_previous);
+
+    arithmetic_instructions = NULL;
+}
+
+// Print Arithmetic Instructions
+void print_arithmetic_instruction_table() {
+    ArithmeticInstruction *current = arithmetic_instructions;
+    printf("Arithmetic Instruction Table:\n");
+    printf("-------------------\n");
+    while (current != NULL) {
+        printf("Name: %s, Operand1: %d, Operand2: %d, Result: %d\n", current->name, current->operand1, current->operand2, current->result);
+        current = current->next;
+    }
+    printf("-------------------\n");
+}
+
+
+/*********************************************************************************************************/
+/********************************** STACK ADDRESSES JMF - JMP ********************************************/
+/*********************************************************************************************************/
+// TO SAVE THE INDEX OF JMF (IF - WHILE) - FILO
+
+StackNode *jmf_stack = NULL;
+
+// ADD A NEW INDEX TO THE STACK
+void push(int index) {
+    StackNode *new_node = (StackNode *)malloc(sizeof(StackNode));
+    new_node->index = index;
+    new_node->next = jmf_stack;
+    jmf_stack = new_node;
+    print_stack();
+}
+
+// DELETE DE LAST ELEMENT AND RETURN THE NEW INDEX
+int pop() {
+    if (jmf_stack == NULL) {
+        return -1; // STACK EMPTY
+    }
+    StackNode *temp = jmf_stack;
+    int index = temp->index;
+    jmf_stack = jmf_stack->next;
+    free(temp);
+    print_stack();
+    return index;
+}
+
+// Function to print the stack
+void print_stack() {
+    StackNode *current = jmf_stack;
+    printf("Stack content:\n");
+    while (current != NULL) {
+        printf("%d -> ", current->index);
+        current = current->next;
+    }
+    printf("NULL\n");
+}
+
+
+
+/*********************************************************************************************************/
+/*********************************************************************************************************/
+/*********************************************************************************************************/
+/*********************************************************************************************************/
+/*********************************************************************************************************/
+
+
+// instruction_table.h
+#ifndef INSTRUCTION_TABLE_H
+#define INSTRUCTION_TABLE_H
+
+#include "declaration_var.h"
+
+typedef struct Instruction {
+    char *name; // Instruction Name
+    int numberRegister;  // 
+    int addressMemory;   // 
+    int valNonDefined;
+    int indexInstruction;
+} Instruction;
+
+// TABLE TO STOCK INSTRUCTIONS
 typedef struct ArithmeticInstruction {
     char *name;
     int operand1;
@@ -18,208 +211,45 @@ typedef struct ArithmeticInstruction {
     struct ArithmeticInstruction *next;
 } ArithmeticInstruction;
 
-ArithmeticInstruction *arithmetic_instructions = NULL;
+typedef struct ArithmeticInstructionTable {
+    ArithmeticInstruction *instructions;  
+    int size;         // Table Size
+    int capacity;     // Capacity Table
+} ArithmeticInstructionTable;
 
+typedef struct InstructionTable {
+    Instruction *instructions;  
+    int size;         // Table Size
+    int capacity;     // Capacity Table
+} InstructionTable;
+
+
+
+// VARIABLES GLOBALES
+extern InstructionTable *instruction_table;
+//extern int address_instruction;
+
+
+
+InstructionTable* create_instruction_table();
+void add_instruction(char *name, int indexInstruction, int numberRegister, int addressMemory, int addressValTMP);
+void update_instruction(char *name,int indexInstruction, int numberRegister, int newAddressMemory, int newAddressValTMP);
+char* find_instruction(InstructionTable *table, char *name);
+void print_instruction_table();
+
+// TABLE TO STOCK ARTIHMETIC INSTRUCTIONS 
 void add_arithmetic_instruction(char *name, int operand1, int operand2, int result);
 void process_arithmetic_instructions();
-void yyerror(const char *s);
-int yylex(void);
+void print_arithmetic_instruction_table();
 
-int global_number;
-int address_symbol_previous;
-int address_variable;
-int address_var_TMP;
-char* variableTMP;
 
-%}
 
-%union { 
-    char *s;
-    int i;
-}
+typedef struct StackNode {
+    int index;
+    struct StackNode *next;
+} StackNode;
 
-%token <s> tTEXT tID tSTRING
-%token <i> tNB
-%token tVOID tINT
-%token tCDIV tSPAN tCSPAN
-%token tIF tELSE tWHILE
-%token tADD tSUB tMUL tDIV
-%token tLT tGT tNE tEQ tGE tLE tASSIGN
-%token tAND tOR tNOT
-%token tLBRACE tRBRACE tLPAR tRPAR tSEMI tCOMMA 
-%token tERROR tPRINT tRETURN
-
-%%
-
-Program : fun
-        | fun Program
-;
-
-fun: 
-      tVOID tID { printf("Function VOID Found : %s\n", yytext); } tLPAR args tRPAR tLBRACE structure tRBRACE 
-    | tINT tID { printf("Function INT Found : %s\n", yytext); } tLPAR args tRPAR functionBody  
-;
-
-functionBody:
-    tLBRACE structure returnStatement tRBRACE
-    | tLBRACE returnStatement tRBRACE
-;
-
-returnStatement:
-    tRETURN resultat tSEMI
-;
-
-structure : context
-          | context structure     
-;
-
-context : 
-         action 
-;
-
-action : 
-         declaration 
-       | print tSEMI
-       | bucles
-       | functionName tSEMI
-;
-
-print : tPRINT tLPAR tSTRING tID tSTRING tRPAR 
-      | tPRINT tLPAR resultat tRPAR
-;
-
-bucles: if
-      | while
-;
-
-while: tWHILE tLPAR condition tRPAR tLBRACE structure tRBRACE
-;
-
-if: tIF tLPAR condition tRPAR tLBRACE structure tRBRACE
-  | tIF tLPAR condition tRPAR tLBRACE structure tRBRACE tELSE tLBRACE structure tRBRACE
-  | tIF tLPAR condition tRPAR tLBRACE structure tRBRACE functionBody
-  | tIF tLPAR condition tRPAR tLBRACE structure tRBRACE tELSE tLBRACE functionBody tRBRACE
-
-condition : var
-          | tNOT tID
-          | var tAND condition 
-          | var tNOT condition
-          | var tLE condition
-          | var tGE condition
-          | var tEQ condition
-          | var tNE condition
-          | var tGT condition
-          | var tLT condition
-          | var tOR condition 
-          | tLPAR condition tRPAR
-;
-
-declaration1: tINT tID { add_symbol($2, "int"); }
-;
-
-declaration:
-            declaration1 tSEMI
-           | declaration1 tCOMMA declaration tSEMI
-           | declaration1 tASSIGN resultat tCOMMA declaration tSEMI
-           | declaration1 tASSIGN resultat tSEMI
-           | declaration1 tASSIGN functionName tSEMI
-           | tID tASSIGN resultat tSEMI {   
-                                            address_variable = find_symbol($1);  
-                                            add_instruction("COP", address_variable, address_symbol_previous, 0);
-                                            delete_symbol("tmp");  
-                                        } 
-           | tID tCOMMA declaration tSEMI
-           | tID {  address_variable = find_symbol($1);  
-                    add_symbol($1, "int"); 
-                 }
-;
-
-functionName: tID tLPAR argsName tRPAR
-;
-
-argsName: 
-        | argListName
-;
-
-argListName:
-     var
-    | argListName tCOMMA resultat
-;
-
-resultat  : 
-           var 
-          | resultat tMUL var {
-                            add_arithmetic_instruction("MUL", address_symbol_previous, address_symbol_previous, address_symbol); 
-                          } 
-          | resultat tDIV var {
-                            add_arithmetic_instruction("DIV", address_symbol_previous, address_symbol_previous, address_symbol); 
-                          } 
-          | resultat tADD var {
-                            add_arithmetic_instruction("ADD", address_symbol_previous, address_symbol_previous, address_symbol); 
-                          } 
-          | resultat tSUB var {
-                            add_arithmetic_instruction("SUB", address_symbol_previous, address_symbol_previous, address_symbol); 
-                          } 
-;
-
-var:
-     tID  { variableTMP = "tmp";
-            add_symbol(variableTMP , "int");
-            address_symbol_previous = find_symbol($1); 
-            address_var_TMP = address_symbol_previous;
-            add_instruction("COP", address_symbol, address_symbol_previous, 0); 
-          }
-    | tNB { add_symbol("tmp", "int");
-            address_symbol_previous = address_symbol; 
-            add_instruction("AFC", address_symbol, global_number, 0); 
-          }
-    | functionName { add_symbol("tmp", "int"); }
-;
-
-args:
-    | argList
-;
-
-argList:
-      tVOID
-    | tINT tID
-    | argList tCOMMA tINT tID
-;
-
-%%
-
-void yyerror(const char *s) {
-    fprintf(stderr, "Error: %s at line %d - ERROR JUST BEFORE SYMBOL %s\n", s, yylineno, yytext);
-}
-
-void add_arithmetic_instruction(char *name, int operand1, int operand2, int result) {
-    ArithmeticInstruction *new_instruction = malloc(sizeof(ArithmeticInstruction));
-    new_instruction->name = strdup(name);
-    new_instruction->operand1 = operand1;
-    new_instruction->operand2 = operand2;
-    new_instruction->result = result;
-    new_instruction->next = arithmetic_instructions;
-    arithmetic_instructions = new_instruction;
-}
-
-void process_arithmetic_instructions() {
-    ArithmeticInstruction *current = arithmetic_instructions;
-    while (current != NULL) {
-        add_instruction(current->name, current->operand1, current->operand2, current->result);
-        ArithmeticInstruction *temp = current;
-        current = current->next;
-        free(temp->name);
-        free(temp);
-    }
-    arithmetic_instructions = NULL;
-}
-
-int main() {
-    symbol_table = create_symbol_table();
-    instruction_table = create_instruction_table();
-    yyparse();
-    process_arithmetic_instructions();
-    print_symbol_table();
-    print_instruction_table();
-    return 0;
-}
+void push(int index);
+int pop();
+void print_stack();
+#endif // INSTRUCTION_TABLE_H
