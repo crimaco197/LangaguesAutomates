@@ -62,6 +62,7 @@ void print_instruction_table() {
         printf("Name: %s, Number Register: %d, Adress Memory: %d, Val: %d\n", instruction.name, instruction.numberRegister , instruction.addressMemory, instruction.valNonDefined);
 
     }
+    printf("SIZE : %d\n", instruction_table->size);
     printf("-------------------\n");
 }
 
@@ -98,7 +99,7 @@ void process_arithmetic_instructions() {
         current = current->next;
         free(temp->name);
         free(temp);
-       delete_symbol(result);  // it is gonna delete all the tmp but not the last one, the last tmp is deleted after doing COP
+        delete_symbol(result);  // it is gonna delete all the tmp but not the last one, the last tmp is deleted after doing COP
     }
     
 

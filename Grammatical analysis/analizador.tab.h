@@ -45,35 +45,36 @@
      tNB = 261,
      tVOID = 262,
      tINT = 263,
-     tCDIV = 264,
-     tSPAN = 265,
-     tCSPAN = 266,
-     tIF = 267,
-     tELSE = 268,
-     tWHILE = 269,
-     tSUB = 270,
-     tADD = 271,
-     tDIV = 272,
-     tMUL = 273,
-     tASSIGN = 274,
-     tLT = 275,
-     tGT = 276,
-     tNE = 277,
-     tEQ = 278,
-     tGE = 279,
-     tLE = 280,
-     tAND = 281,
-     tOR = 282,
-     tNOT = 283,
-     tLBRACE = 284,
-     tRBRACE = 285,
-     tLPAR = 286,
-     tRPAR = 287,
-     tSEMI = 288,
-     tCOMMA = 289,
-     tERROR = 290,
-     tPRINT = 291,
-     tRETURN = 292
+     tMAIN = 264,
+     tCDIV = 265,
+     tSPAN = 266,
+     tCSPAN = 267,
+     tIF = 268,
+     tELSE = 269,
+     tWHILE = 270,
+     tSUB = 271,
+     tADD = 272,
+     tDIV = 273,
+     tMUL = 274,
+     tASSIGN = 275,
+     tLT = 276,
+     tGT = 277,
+     tNE = 278,
+     tEQ = 279,
+     tGE = 280,
+     tLE = 281,
+     tAND = 282,
+     tOR = 283,
+     tNOT = 284,
+     tLBRACE = 285,
+     tRBRACE = 286,
+     tLPAR = 287,
+     tRPAR = 288,
+     tSEMI = 289,
+     tCOMMA = 290,
+     tERROR = 291,
+     tPRINT = 292,
+     tRETURN = 293
    };
 #endif
 /* Tokens.  */
@@ -83,48 +84,49 @@
 #define tNB 261
 #define tVOID 262
 #define tINT 263
-#define tCDIV 264
-#define tSPAN 265
-#define tCSPAN 266
-#define tIF 267
-#define tELSE 268
-#define tWHILE 269
-#define tSUB 270
-#define tADD 271
-#define tDIV 272
-#define tMUL 273
-#define tASSIGN 274
-#define tLT 275
-#define tGT 276
-#define tNE 277
-#define tEQ 278
-#define tGE 279
-#define tLE 280
-#define tAND 281
-#define tOR 282
-#define tNOT 283
-#define tLBRACE 284
-#define tRBRACE 285
-#define tLPAR 286
-#define tRPAR 287
-#define tSEMI 288
-#define tCOMMA 289
-#define tERROR 290
-#define tPRINT 291
-#define tRETURN 292
+#define tMAIN 264
+#define tCDIV 265
+#define tSPAN 266
+#define tCSPAN 267
+#define tIF 268
+#define tELSE 269
+#define tWHILE 270
+#define tSUB 271
+#define tADD 272
+#define tDIV 273
+#define tMUL 274
+#define tASSIGN 275
+#define tLT 276
+#define tGT 277
+#define tNE 278
+#define tEQ 279
+#define tGE 280
+#define tLE 281
+#define tAND 282
+#define tOR 283
+#define tNOT 284
+#define tLBRACE 285
+#define tRBRACE 286
+#define tLPAR 287
+#define tRPAR 288
+#define tSEMI 289
+#define tCOMMA 290
+#define tERROR 291
+#define tPRINT 292
+#define tRETURN 293
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 38 "analizador.y"
+#line 46 "analizador.y"
 { 
     char *s;
     int i;
 }
 /* Line 1529 of yacc.c.  */
-#line 128 "analizador.tab.h"
+#line 130 "analizador.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

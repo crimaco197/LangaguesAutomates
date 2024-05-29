@@ -178,6 +178,9 @@ int idJMF = 0;
 int varFirstIF = 0;
 int var_to_delete = 0;
 int varFirstJMP = 0;
+int returnBool = 0;
+int args_operation = 0;
+int mainBool = 0;
 
 
 char *nameFunction;
@@ -211,13 +214,13 @@ int yylex(void);
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 45 "analizador.y"
+#line 48 "analizador.y"
 { 
     char *s;
     int i;
 }
 /* Line 193 of yacc.c.  */
-#line 221 "y.tab.c"
+#line 224 "y.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -230,7 +233,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 234 "y.tab.c"
+#line 237 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -445,16 +448,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  9
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   190
+#define YYLAST   202
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  39
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  39
+#define YYNNTS  47
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  86
+#define YYNRULES  100
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  172
+#define YYNSTATES  191
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
@@ -503,64 +506,73 @@ static const yytype_uint8 yytranslate[] =
    YYRHS.  */
 static const yytype_uint16 yyprhs[] =
 {
-       0,     0,     3,     5,     7,    10,    11,    12,    18,    19,
-      24,    25,    26,    35,    42,    43,    51,    56,    60,    64,
-      66,    69,    71,    73,    76,    78,    81,    88,    93,    95,
-      97,   105,   106,   113,   117,   125,   130,   138,   143,   147,
-     149,   152,   156,   160,   164,   168,   172,   176,   180,   184,
-     188,   192,   195,   199,   203,   206,   211,   218,   223,   224,
-     228,   233,   235,   240,   241,   243,   245,   247,   249,   253,
-     255,   257,   258,   263,   264,   269,   270,   275,   276,   281,
-     283,   285,   287,   288,   290,   292,   295
+       0,     0,     3,     5,     7,    10,    11,    12,    19,    20,
+      25,    26,    27,    37,    44,    50,    58,    59,    66,    70,
+      73,    74,    79,    81,    84,    86,    88,    91,    93,    96,
+     103,   108,   110,   112,   113,   120,   124,   128,   129,   136,
+     140,   148,   153,   161,   166,   170,   172,   175,   179,   183,
+     187,   191,   195,   199,   203,   207,   211,   215,   218,   222,
+     226,   229,   234,   241,   246,   247,   251,   256,   258,   259,
+     265,   266,   268,   270,   272,   274,   278,   279,   284,   285,
+     290,   291,   296,   297,   302,   304,   305,   310,   311,   316,
+     317,   322,   323,   328,   330,   332,   334,   335,   337,   339,
+     342
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
       40,     0,    -1,    41,    -1,    44,    -1,    44,    40,    -1,
-      -1,    -1,     8,    42,     9,    43,    49,    -1,    -1,     7,
-       4,    45,    48,    -1,    -1,    -1,     8,     4,    46,    32,
-      76,    33,    47,    51,    -1,    32,    76,    33,    30,    53,
-      31,    -1,    -1,    32,    76,    33,    30,    53,    50,    31,
-      -1,    30,    53,    52,    31,    -1,    30,    52,    31,    -1,
-      38,    70,    34,    -1,    54,    -1,    54,    53,    -1,    55,
-      -1,    65,    -1,    56,    34,    -1,    57,    -1,    67,    34,
-      -1,    37,    32,     5,     4,     5,    33,    -1,    37,    32,
-      70,    33,    -1,    59,    -1,    58,    -1,    15,    32,    62,
-      33,    30,    53,    31,    -1,    -1,    13,    32,    62,    33,
-      60,    61,    -1,    30,    53,    31,    -1,    30,    53,    31,
-      14,    30,    53,    31,    -1,    30,    53,    31,    51,    -1,
-      30,    53,    31,    14,    30,    51,    31,    -1,    30,    53,
-      52,    31,    -1,    30,    52,    31,    -1,    75,    -1,    29,
-       4,    -1,    75,    27,    62,    -1,    75,    29,    62,    -1,
-      75,    26,    62,    -1,    75,    25,    62,    -1,    75,    24,
-      62,    -1,    75,    23,    62,    -1,    75,    22,    62,    -1,
-      75,    21,    62,    -1,    75,    28,    62,    -1,    32,    62,
-      33,    -1,     8,     4,    -1,    20,    75,    34,    -1,    20,
-      70,    34,    -1,    63,    34,    -1,    63,    35,    65,    34,
-      -1,    63,    20,    70,    35,    65,    34,    -1,    63,    20,
-      70,    34,    -1,    -1,     4,    66,    64,    -1,     4,    35,
-      65,    34,    -1,     4,    -1,     4,    32,    68,    33,    -1,
-      -1,    69,    -1,     4,    -1,     6,    -1,    67,    -1,    69,
-      35,    70,    -1,    70,    -1,    75,    -1,    -1,    70,    71,
-      19,    75,    -1,    -1,    70,    18,    72,    75,    -1,    -1,
-      70,    73,    17,    75,    -1,    -1,    70,    16,    74,    75,
-      -1,     4,    -1,     6,    -1,    67,    -1,    -1,    77,    -1,
-       7,    -1,     8,     4,    -1,    77,    35,     8,     4,    -1
+      -1,    -1,     8,    42,     9,    43,    49,    31,    -1,    -1,
+       7,     4,    45,    48,    -1,    -1,    -1,     8,     4,    46,
+      32,    84,    33,    47,    51,    31,    -1,    32,    84,    33,
+      30,    54,    31,    -1,    32,    84,    33,    30,    54,    -1,
+      32,    84,    33,    30,    54,    52,    31,    -1,    -1,    32,
+      84,    33,    30,    50,    52,    -1,    30,    54,    52,    -1,
+      30,    52,    -1,    -1,    38,    53,    78,    34,    -1,    55,
+      -1,    55,    54,    -1,    56,    -1,    68,    -1,    57,    34,
+      -1,    58,    -1,    70,    34,    -1,    37,    32,     5,     4,
+       5,    33,    -1,    37,    32,    78,    33,    -1,    62,    -1,
+      59,    -1,    -1,    15,    32,    65,    33,    60,    61,    -1,
+      30,    54,    31,    -1,    30,    52,    31,    -1,    -1,    13,
+      32,    65,    33,    63,    64,    -1,    30,    54,    31,    -1,
+      30,    54,    31,    14,    30,    54,    31,    -1,    30,    54,
+      31,    51,    -1,    30,    54,    31,    14,    30,    51,    31,
+      -1,    30,    54,    52,    31,    -1,    30,    52,    31,    -1,
+      83,    -1,    29,     4,    -1,    83,    27,    65,    -1,    83,
+      29,    65,    -1,    83,    26,    65,    -1,    83,    25,    65,
+      -1,    83,    24,    65,    -1,    83,    23,    65,    -1,    83,
+      22,    65,    -1,    83,    21,    65,    -1,    83,    28,    65,
+      -1,    32,    65,    33,    -1,     8,     4,    -1,    20,    83,
+      34,    -1,    20,    78,    34,    -1,    66,    34,    -1,    66,
+      35,    68,    34,    -1,    66,    20,    78,    35,    68,    34,
+      -1,    66,    20,    78,    34,    -1,    -1,     4,    69,    67,
+      -1,     4,    35,    68,    34,    -1,     4,    -1,    -1,     4,
+      32,    71,    72,    33,    -1,    -1,    73,    -1,     4,    -1,
+       6,    -1,    70,    -1,    73,    35,    73,    -1,    -1,    73,
+      18,    74,    73,    -1,    -1,    73,    19,    75,    73,    -1,
+      -1,    73,    76,    16,    73,    -1,    -1,    73,    17,    77,
+      73,    -1,    83,    -1,    -1,    78,    79,    19,    83,    -1,
+      -1,    78,    18,    80,    83,    -1,    -1,    78,    81,    17,
+      83,    -1,    -1,    78,    16,    82,    83,    -1,     4,    -1,
+       6,    -1,    70,    -1,    -1,    85,    -1,     7,    -1,     8,
+       4,    -1,    85,    35,     8,     4,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    64,    64,    65,    66,    69,    70,    69,    79,    79,
-      80,    87,    80,    94,    97,    97,   126,   127,   137,   152,
-     153,   157,   161,   163,   164,   165,   168,   169,   172,   173,
-     176,   179,   179,   202,   225,   226,   227,   228,   229,   232,
-     233,   234,   235,   236,   237,   238,   239,   240,   241,   242,
-     243,   246,   251,   252,   268,   269,   270,   271,   273,   273,
-     274,   275,   284,   287,   289,   300,   301,   302,   303,   304,
-     307,   308,   308,   323,   323,   331,   331,   347,   347,   358,
-     381,   403,   406,   408,   412,   413,   418
+       0,    67,    67,    68,    69,    72,    73,    72,   110,   110,
+     111,   118,   111,   134,   137,   155,   156,   156,   179,   180,
+     183,   183,   213,   214,   218,   222,   223,   224,   225,   228,
+     229,   232,   233,   236,   236,   258,   268,   279,   279,   302,
+     325,   326,   327,   328,   329,   340,   341,   342,   343,   344,
+     345,   346,   347,   348,   349,   350,   351,   354,   359,   360,
+     376,   377,   378,   379,   380,   380,   381,   382,   391,   391,
+     443,   445,   455,   462,   471,   472,   473,   473,   477,   477,
+     481,   481,   492,   492,   499,   500,   500,   515,   515,   523,
+     523,   539,   539,   550,   576,   600,   603,   605,   609,   610,
+     615
 };
 #endif
 
@@ -575,11 +587,12 @@ static const char *const yytname[] =
   "tEQ", "tGE", "tLE", "tAND", "tOR", "tNOT", "tLBRACE", "tRBRACE",
   "tLPAR", "tRPAR", "tSEMI", "tCOMMA", "tERROR", "tPRINT", "tRETURN",
   "$accept", "Program", "main", "@1", "@2", "fun", "@3", "@4", "@5",
-  "Body", "BodyMain", "@6", "functionBodyReturn", "returnStatement",
-  "structure", "context", "action", "print", "bucles", "while", "if", "@7",
-  "ifStructure", "condition", "declaration1", "declaration3",
-  "declaration", "@8", "functionName", "argsName", "argListName",
-  "resultat", "@9", "@10", "@11", "@12", "var", "args", "argList", 0
+  "Body", "BodyMain", "@6", "functionBodyReturn", "returnStatement", "@7",
+  "structure", "context", "action", "print", "bucles", "while", "@8",
+  "whileStructure", "if", "@9", "ifStructure", "condition", "declaration1",
+  "declaration3", "declaration", "@10", "functionName", "@11", "argsName",
+  "argListName", "@12", "@13", "@14", "@15", "resultat", "@16", "@17",
+  "@18", "@19", "var", "args", "argList", 0
 };
 #endif
 
@@ -599,28 +612,32 @@ static const yytype_uint16 yytoknum[] =
 static const yytype_uint8 yyr1[] =
 {
        0,    39,    40,    40,    40,    42,    43,    41,    45,    44,
-      46,    47,    44,    48,    50,    49,    51,    51,    52,    53,
-      53,    54,    55,    55,    55,    55,    56,    56,    57,    57,
-      58,    60,    59,    61,    61,    61,    61,    61,    61,    62,
-      62,    62,    62,    62,    62,    62,    62,    62,    62,    62,
-      62,    63,    64,    64,    65,    65,    65,    65,    66,    65,
-      65,    65,    67,    68,    68,    69,    69,    69,    69,    69,
-      70,    71,    70,    72,    70,    73,    70,    74,    70,    75,
-      75,    75,    76,    76,    77,    77,    77
+      46,    47,    44,    48,    49,    49,    50,    49,    51,    51,
+      53,    52,    54,    54,    55,    56,    56,    56,    56,    57,
+      57,    58,    58,    60,    59,    61,    61,    63,    62,    64,
+      64,    64,    64,    64,    64,    65,    65,    65,    65,    65,
+      65,    65,    65,    65,    65,    65,    65,    66,    67,    67,
+      68,    68,    68,    68,    69,    68,    68,    68,    71,    70,
+      72,    72,    73,    73,    73,    73,    74,    73,    75,    73,
+      76,    73,    77,    73,    78,    79,    78,    80,    78,    81,
+      78,    82,    78,    83,    83,    83,    84,    84,    85,    85,
+      85
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     1,     1,     2,     0,     0,     5,     0,     4,
-       0,     0,     8,     6,     0,     7,     4,     3,     3,     1,
-       2,     1,     1,     2,     1,     2,     6,     4,     1,     1,
-       7,     0,     6,     3,     7,     4,     7,     4,     3,     1,
-       2,     3,     3,     3,     3,     3,     3,     3,     3,     3,
-       3,     2,     3,     3,     2,     4,     6,     4,     0,     3,
-       4,     1,     4,     0,     1,     1,     1,     1,     3,     1,
-       1,     0,     4,     0,     4,     0,     4,     0,     4,     1,
-       1,     1,     0,     1,     1,     2,     4
+       0,     2,     1,     1,     2,     0,     0,     6,     0,     4,
+       0,     0,     9,     6,     5,     7,     0,     6,     3,     2,
+       0,     4,     1,     2,     1,     1,     2,     1,     2,     6,
+       4,     1,     1,     0,     6,     3,     3,     0,     6,     3,
+       7,     4,     7,     4,     3,     1,     2,     3,     3,     3,
+       3,     3,     3,     3,     3,     3,     3,     2,     3,     3,
+       2,     4,     6,     4,     0,     3,     4,     1,     0,     5,
+       0,     1,     1,     1,     1,     3,     0,     4,     0,     4,
+       0,     4,     0,     4,     1,     0,     4,     0,     4,     0,
+       4,     0,     4,     1,     1,     1,     0,     1,     1,     2,
+       4
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -629,119 +646,127 @@ static const yytype_uint8 yyr2[] =
 static const yytype_uint8 yydefact[] =
 {
        0,     0,     5,     0,     2,     3,     8,    10,     0,     1,
-       4,     0,     0,     6,    82,     9,    82,     0,    84,     0,
-       0,    83,     0,    82,     7,    85,     0,     0,    11,     0,
-       0,     0,     0,     0,    61,     0,     0,     0,     0,     0,
-      19,    21,     0,    24,    29,    28,     0,    22,     0,    86,
-       0,    12,     0,    63,     0,     0,    51,     0,     0,     0,
-      13,    20,    23,     0,    54,     0,    25,     0,     0,     0,
-      14,    79,    80,    81,     0,    64,    69,    70,    58,     0,
-       0,    59,    79,    80,     0,     0,     0,    81,    39,     0,
-       0,    71,    71,     0,    71,    17,     0,     0,    62,     0,
-      77,    73,     0,     0,    60,    71,    70,    40,     0,    31,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,    27,    57,     0,    55,    18,    16,    15,    68,     0,
-       0,     0,     0,    53,    52,    50,     0,    48,    47,    46,
-      45,    44,    43,    41,    49,    42,     0,     0,     0,    78,
-      74,    72,    76,     0,    32,     0,    26,    56,     0,     0,
-      30,    38,    33,     0,     0,    35,    37,     0,     0,     0,
-      36,    34
+       4,     0,     0,     6,    96,     9,    96,     0,    98,     0,
+       0,    97,     0,    96,     0,    99,     0,     0,    11,     0,
+       7,     0,     0,     0,     0,    67,     0,     0,     0,     0,
+       0,    22,    24,     0,    27,    32,    31,     0,    25,     0,
+     100,     0,     0,    16,    68,     0,     0,    57,     0,     0,
+       0,    13,    23,    26,     0,    60,     0,    28,    20,    19,
+       0,    12,     0,    14,    70,    64,     0,     0,    65,    93,
+      94,     0,     0,     0,    95,    45,     0,     0,    85,    84,
+      85,     0,     0,    18,    17,     0,    72,    73,    74,     0,
+      71,    66,    85,    84,    46,     0,    37,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,    33,     0,    91,    87,
+      30,     0,     0,    63,     0,    61,    85,    15,    69,    82,
+      76,    78,     0,     0,    59,    58,    56,     0,    54,    53,
+      52,    51,    50,    49,    47,    55,    48,     0,     0,     0,
+       0,     0,     0,     0,    21,     0,     0,     0,    75,     0,
+       0,    38,     0,    34,    29,    92,    88,    86,    90,    62,
+      83,    77,    79,    81,     0,     0,     0,     0,    44,    39,
+       0,    36,    35,     0,    41,    43,     0,     0,     0,    42,
+      40
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int16 yydefgoto[] =
 {
-      -1,     3,     4,     8,    17,     5,    11,    12,    32,    15,
-      24,    97,    51,    68,    39,    40,    41,    42,    43,    44,
-      45,   136,   154,    86,    46,    81,    47,    55,    87,    74,
-      75,    76,   102,   130,   103,   129,    88,    20,    21
+      -1,     3,     4,     8,    17,     5,    11,    12,    33,    15,
+      24,    72,    52,    69,    92,    40,    41,    42,    43,    44,
+      45,   147,   163,    46,   137,   161,    83,    47,    78,    48,
+      56,    84,    74,    99,   100,   156,   157,   133,   155,    88,
+     121,   150,   122,   149,    85,    20,    21
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -98
+#define YYPACT_NINF -138
 static const yytype_int16 yypact[] =
 {
-     118,     2,    32,    34,   -98,   118,   -98,   -98,    38,   -98,
-     -98,    39,    67,   -98,   122,   -98,   122,    90,   -98,    53,
-      91,    98,    94,   122,   -98,   -98,   104,   127,   -98,   103,
-      48,   143,   119,   120,     7,   144,   121,   123,   124,   126,
-      48,   -98,   125,   -98,   -98,   -98,    78,   -98,   128,   -98,
-      22,   -98,    48,    13,    50,   131,   -98,    37,    37,   115,
-     -98,   -98,   -98,   100,   -98,    50,   -98,   100,   129,   114,
-     -98,    58,   -28,    82,   130,   132,    92,   -98,    97,   134,
-     100,   -98,   133,   -98,   150,    37,   136,   -98,   117,   137,
-     154,    85,    33,   138,    66,   -98,   135,   140,   -98,   100,
-     -98,   -98,   142,   147,   -98,    71,   139,   -98,   141,   -98,
-      37,    37,    37,    37,    37,    37,    37,    37,    37,   145,
-     171,   -98,   -98,    50,   -98,   -98,   -98,   -98,    92,   100,
-     100,   100,   100,   -98,   -98,   -98,   148,   -98,   -98,   -98,
-     -98,   -98,   -98,   -98,   -98,   -98,    48,   146,   149,   -98,
-     -98,   -98,   -98,    22,   -98,   151,   -98,   -98,   153,   -22,
-     -98,   -98,     1,   155,   157,   -98,   -98,    25,   158,   159,
-     -98,   -98
+      16,    11,    14,    39,  -138,    16,  -138,  -138,    55,  -138,
+    -138,    18,    42,  -138,    83,  -138,    83,    64,  -138,   117,
+      90,   104,   107,    83,   112,  -138,   111,   136,  -138,   114,
+    -138,    58,   144,   120,   121,   110,   145,   133,   134,   137,
+     122,    58,  -138,   118,  -138,  -138,  -138,    -1,  -138,   138,
+    -138,    23,   139,    58,  -138,    76,   147,  -138,     3,     3,
+      77,  -138,  -138,  -138,    41,  -138,    76,  -138,  -138,  -138,
+     130,  -138,   130,   130,   108,    99,   140,    41,  -138,   141,
+    -138,   167,     3,   142,  -138,   135,   143,   173,    60,  -138,
+      51,   146,    41,  -138,  -138,   148,   141,  -138,  -138,   149,
+      92,  -138,    71,   150,  -138,   152,  -138,     3,     3,     3,
+       3,     3,     3,     3,     3,     3,  -138,   176,  -138,  -138,
+    -138,   159,   166,  -138,    76,  -138,   101,  -138,  -138,  -138,
+    -138,  -138,   108,   170,  -138,  -138,  -138,   157,  -138,  -138,
+    -138,  -138,  -138,  -138,  -138,  -138,  -138,   158,   156,    41,
+      41,    41,    41,   160,  -138,   108,   108,   108,   119,   108,
+      23,  -138,    23,  -138,  -138,  -138,  -138,  -138,  -138,  -138,
+      97,   155,   155,    97,   161,   -10,   162,   164,  -138,     0,
+     165,  -138,  -138,   168,  -138,  -138,    33,   169,   171,  -138,
+    -138
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
-     -98,   172,   -98,   -98,   -98,   -98,   -98,   -98,   -98,   -98,
-     -98,   -98,   -97,   -67,   -39,   -98,   -98,   -98,   -98,   -98,
-     -98,   -98,   -98,   -37,   -98,   -98,   -51,   -98,   -30,   -98,
-     -98,   -55,   -98,   -98,   -98,   -98,   -35,    30,   -98
+    -138,   186,  -138,  -138,  -138,  -138,  -138,  -138,  -138,  -138,
+    -138,  -138,  -137,   -68,  -138,   -40,  -138,  -138,  -138,  -138,
+    -138,  -138,  -138,  -138,  -138,  -138,   -56,  -138,  -138,   -49,
+    -138,   -31,  -138,  -138,   -53,  -138,  -138,  -138,  -138,   -48,
+    -138,  -138,  -138,  -138,   -52,    49,  -138
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule which
    number is the opposite.  If zero, do what YYDEFACT says.
    If YYTABLE_NINF, syntax error.  */
-#define YYTABLE_NINF -76
+#define YYTABLE_NINF -90
 static const yytype_int16 yytable[] =
 {
-      48,    61,    96,    79,    91,   -66,     6,   -66,    92,   162,
-      48,    69,    94,    70,    93,   164,    67,    71,    77,    72,
-      48,    89,    48,    73,    77,   105,    34,   -58,    77,    34,
-      35,    50,    77,    35,     9,    36,     7,    37,    36,    53,
-      37,    82,    54,    83,   128,   106,    22,    13,   108,   100,
-     -75,   101,    34,    29,    78,    50,    35,    25,    35,    38,
-      67,    36,    38,    37,    77,   165,    84,   122,   123,    85,
-     168,    14,   148,   137,   138,   139,   140,   141,   142,   143,
-     144,   145,   100,   -75,   101,    38,   158,   100,   -75,   101,
-      53,   -65,   163,   -65,   149,   150,   151,   152,    63,    16,
-     125,   100,   -75,   101,    82,   133,    83,   155,   100,   -75,
-     101,   -71,    64,    65,   159,   -67,    48,   -67,   121,    82,
-      90,    83,    23,    48,    26,     1,     2,    28,   169,    18,
-      19,   -61,    54,    27,    30,    31,    33,    48,   110,   111,
-     112,   113,   114,   115,   116,   117,   118,    49,    56,    50,
-      52,    80,    67,    57,   107,    58,    59,    60,   120,    62,
-      95,   131,    66,    98,   132,    53,   126,    99,   104,   109,
-     119,   127,   124,   134,   135,   146,   147,    10,   153,   156,
-       0,     0,   160,   157,   161,     0,   166,   167,     0,   170,
-     171
+      49,    62,    93,    86,    94,    95,    76,    79,    89,    80,
+      49,    70,    89,    73,   183,     6,    90,    91,     7,    64,
+      49,   179,    49,     1,     2,   103,   105,    35,    68,   102,
+      51,    36,    81,    65,    66,    82,    37,    35,    38,     9,
+      89,    36,   184,    98,   126,    79,    37,    80,    38,   187,
+      14,   138,   139,   140,   141,   142,   143,   144,   145,   146,
+      39,    68,    35,    51,    13,    22,    36,   118,   -89,   119,
+      39,    37,    29,    38,    16,   153,   118,   -89,   119,   158,
+      75,    79,    87,    80,    36,   123,   124,   118,   -89,   119,
+      18,    19,   174,   120,   176,    39,    23,   165,   166,   167,
+     168,    98,   170,   171,   172,   134,   173,   180,   -80,   129,
+     130,   131,    96,   -80,    97,   130,   131,   118,   -89,   119,
+     175,    25,   177,    26,    98,    98,    98,   132,    98,    49,
+     -64,    49,   132,   -67,    55,   154,   129,   130,   131,    27,
+      28,    31,    54,    30,    32,    55,   188,    34,    50,    57,
+      51,    53,    63,    61,   132,    49,   107,   108,   109,   110,
+     111,   112,   113,   114,   115,    58,    59,    77,    68,    60,
+      71,   104,    67,    54,   101,   106,   116,   117,   151,   127,
+     125,   148,   128,   152,   135,   136,   159,   160,   162,   164,
+     132,    10,   178,   181,   169,   182,   185,     0,   186,     0,
+     189,     0,   190
 };
 
 static const yytype_int16 yycheck[] =
 {
-      30,    40,    69,    54,    59,    33,     4,    35,    63,    31,
-      40,    50,    67,    52,    65,    14,    38,     4,    53,     6,
-      50,    58,    52,    53,    59,    80,     4,    20,    63,     4,
-       8,    30,    67,     8,     0,    13,     4,    15,    13,    32,
-      15,     4,    35,     6,    99,    80,    16,     9,    85,    16,
-      17,    18,     4,    23,     4,    30,     8,     4,     8,    37,
-      38,    13,    37,    15,    99,   162,    29,    34,    35,    32,
-     167,    32,   123,   110,   111,   112,   113,   114,   115,   116,
-     117,   118,    16,    17,    18,    37,   153,    16,    17,    18,
-      32,    33,   159,    35,   129,   130,   131,   132,    20,    32,
-      34,    16,    17,    18,     4,    34,     6,   146,    16,    17,
-      18,    19,    34,    35,   153,    33,   146,    35,    33,     4,
-       5,     6,    32,   153,    33,     7,     8,    33,   167,     7,
-       8,    34,    35,    35,    30,     8,    33,   167,    21,    22,
-      23,    24,    25,    26,    27,    28,    29,     4,     4,    30,
-      30,    20,    38,    32,     4,    32,    32,    31,     4,    34,
-      31,    19,    34,    33,    17,    32,    31,    35,    34,    33,
-      33,    31,    34,    34,    33,    30,     5,     5,    30,    33,
-      -1,    -1,    31,    34,    31,    -1,    31,    30,    -1,    31,
-      31
+      31,    41,    70,    59,    72,    73,    55,     4,    60,     6,
+      41,    51,    64,    53,    14,     4,    64,    66,     4,    20,
+      51,    31,    53,     7,     8,    77,    82,     4,    38,    77,
+      30,     8,    29,    34,    35,    32,    13,     4,    15,     0,
+      92,     8,   179,    74,    92,     4,    13,     6,    15,   186,
+      32,   107,   108,   109,   110,   111,   112,   113,   114,   115,
+      37,    38,     4,    30,     9,    16,     8,    16,    17,    18,
+      37,    13,    23,    15,    32,   124,    16,    17,    18,   132,
+       4,     4,     5,     6,     8,    34,    35,    16,    17,    18,
+       7,     8,   160,    33,   162,    37,    32,   149,   150,   151,
+     152,   132,   155,   156,   157,    34,   159,   175,    16,    17,
+      18,    19,     4,    16,     6,    18,    19,    16,    17,    18,
+     160,     4,   162,    33,   155,   156,   157,    35,   159,   160,
+      20,   162,    35,    34,    35,    34,    17,    18,    19,    35,
+      33,    30,    32,    31,     8,    35,   186,    33,     4,     4,
+      30,    30,    34,    31,    35,   186,    21,    22,    23,    24,
+      25,    26,    27,    28,    29,    32,    32,    20,    38,    32,
+      31,     4,    34,    32,    34,    33,    33,     4,    19,    31,
+      34,     5,    33,    17,    34,    33,    16,    30,    30,    33,
+      35,     5,    31,    31,    34,    31,    31,    -1,    30,    -1,
+      31,    -1,    31
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -750,22 +775,24 @@ static const yytype_uint8 yystos[] =
 {
        0,     7,     8,    40,    41,    44,     4,     4,    42,     0,
       40,    45,    46,     9,    32,    48,    32,    43,     7,     8,
-      76,    77,    76,    32,    49,     4,    33,    35,    33,    76,
-      30,     8,    47,    33,     4,     8,    13,    15,    37,    53,
-      54,    55,    56,    57,    58,    59,    63,    65,    67,     4,
-      30,    51,    30,    32,    35,    66,     4,    32,    32,    32,
-      31,    53,    34,    20,    34,    35,    34,    38,    52,    53,
-      53,     4,     6,    67,    68,    69,    70,    75,     4,    65,
-      20,    64,     4,     6,    29,    32,    62,    67,    75,    62,
-       5,    70,    70,    65,    70,    31,    52,    50,    33,    35,
-      16,    18,    71,    73,    34,    70,    75,     4,    62,    33,
-      21,    22,    23,    24,    25,    26,    27,    28,    29,    33,
-       4,    33,    34,    35,    34,    34,    31,    31,    70,    74,
-      72,    19,    17,    34,    34,    33,    60,    62,    62,    62,
-      62,    62,    62,    62,    62,    62,    30,     5,    65,    75,
-      75,    75,    75,    30,    61,    53,    33,    34,    52,    53,
-      31,    31,    31,    52,    14,    51,    31,    30,    51,    53,
-      31,    31
+      84,    85,    84,    32,    49,     4,    33,    35,    33,    84,
+      31,    30,     8,    47,    33,     4,     8,    13,    15,    37,
+      54,    55,    56,    57,    58,    59,    62,    66,    68,    70,
+       4,    30,    51,    30,    32,    35,    69,     4,    32,    32,
+      32,    31,    54,    34,    20,    34,    35,    34,    38,    52,
+      54,    31,    50,    54,    71,     4,    68,    20,    67,     4,
+       6,    29,    32,    65,    70,    83,    65,     5,    78,    83,
+      78,    68,    53,    52,    52,    52,     4,     6,    70,    72,
+      73,    34,    78,    83,     4,    65,    33,    21,    22,    23,
+      24,    25,    26,    27,    28,    29,    33,     4,    16,    18,
+      33,    79,    81,    34,    35,    34,    78,    31,    33,    17,
+      18,    19,    35,    76,    34,    34,    33,    63,    65,    65,
+      65,    65,    65,    65,    65,    65,    65,    60,     5,    82,
+      80,    19,    17,    68,    34,    77,    74,    75,    73,    16,
+      30,    64,    30,    61,    33,    83,    83,    83,    83,    34,
+      73,    73,    73,    73,    52,    54,    52,    54,    31,    31,
+      52,    31,    31,    14,    51,    31,    30,    51,    54,    31,
+      31
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1580,30 +1607,62 @@ yyreduce:
   switch (yyn)
     {
         case 5:
-#line 69 "analizador.y"
-    { add_instruction( "RET", 0, 0 , 0 , 0 ); }
+#line 72 "analizador.y"
+    { add_instruction( "RET", address_instruction, 0 , 0 , 0 ); }
     break;
 
   case 6:
-#line 70 "analizador.y"
+#line 73 "analizador.y"
     { printf("Function MAIN Found : %s\n", yytext); 
+              mainBool = 1;
               nameFunction = "main"; 
               add_symbol("?ADR", nameFunction);
               add_symbol("?VAL", nameFunction);
+              printf("MAIN - address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+              printf("main - tNB NAME ?ADR, ADDRESS %d, NameTMP %s\n" , address_symbol-1, symbolTMP);
+              printf("main - tNB NAME ?VAL, ADDRESS %d, NameTMP %s\n" , address_symbol-1, symbolTMP);
               address_main = address_instruction++;
-              }
+            }
+    break;
+
+  case 7:
+#line 83 "analizador.y"
+    {  int val = find_symbol("?VAL");
+                                  int adr = find_symbol("?ADR");
+                                
+                                  delete_symbol(address_variable);  // DELETE LAST VARIABLE OR TEMPORAL
+                                  address_symbol_previous = address_variable;
+
+                                  if(address_symbol_previous > address_symbol){
+                                    address_variable = address_symbol;
+                                  }
+                                  else{
+                                    address_variable = val;
+                                  }
+                                
+                                  add_instruction( "COP", address_instruction, address_variable , address_symbol_previous , 0 );
+                                  add_instruction( "RET", address_instruction, 0 , 0 , 0 );
+                                  add_instruction( "RET", address_instruction, 0 , 0 , 0 );
+
+                                  delete_symbol(val);       // DELETE ?VAL
+                                  delete_last_symbol(adr);  // DELETE ?ADR
+
+                                  update_instruction("JMP", varFirstJMP, address_main, 0,0 );  // todo - encontrar la direccion del MAIN
+                                  add_instruction( "NOP", address_instruction, 0 , 0 , 0 );  
+                                  mainBool = 0;
+}
     break;
 
   case 8:
-#line 79 "analizador.y"
+#line 110 "analizador.y"
     { printf("Function VOID Found : %s\n", yytext); nameFunction = (yyvsp[(2) - (2)].s); }
     break;
 
   case 10:
-#line 80 "analizador.y"
+#line 111 "analizador.y"
     { printf("Function INT Found : %s\n", yytext);
                  nameFunction = (yyvsp[(2) - (2)].s);
-                 add_symbol("?ADR", nameFunction);
+                 add_symbol("?ADR", nameFunction);  // OK
                  add_symbol("?VAL", nameFunction);
 
                  
@@ -1611,83 +1670,172 @@ yyreduce:
     break;
 
   case 11:
-#line 87 "analizador.y"
+#line 118 "analizador.y"
     { varFirstJMP = address_instruction;
                          add_instruction( "JMP", address_instruction, -999 , 0 , 0 ); 
                          address_function = address_instruction;
                        }
     break;
 
+  case 12:
+#line 122 "analizador.y"
+    {
+      
+      int val = find_symbol("?VAL");
+      int adr = find_symbol("?ADR");
+      printf("functionBodyReturn - BEFORE val : %d, adr : %d \n", val, adr);
+      delete_symbol(val);
+      delete_symbol(adr);
+      delete_last_symbol(var_to_delete);
+      
+    }
+    break;
+
   case 13:
-#line 94 "analizador.y"
-    { add_instruction( "NOP", 0, 0 , 0 , 0 );  }
+#line 134 "analizador.y"
+    { add_instruction( "NOP", address_instruction, 0 , 0 , 0 );  }
     break;
 
   case 14:
-#line 97 "analizador.y"
+#line 137 "analizador.y"
     { int adr = find_symbol("!ADR");
                                                 int val = find_symbol("!VAL");
-                                                printf("structure - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                                //printf("structure - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
                                                 address_variable = adr;
-                                                delete_symbol(val);
-                                                delete_symbol(adr);
+                                                printf("BodyMain - BEFORE val : %d, adr : %d \n", val, adr);
+                                                delete_symbol(val);  // DELETE !VAL
+                                                delete_symbol(adr);  // DELETE !ADR
                                                 //printf("structure - HALF address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
                                                 delete_symbol(address_symbol_previous);
                                                 add_symbol("tmp", nameFunction);
                                                 address_symbol_previous = address_symbol;
-                                                printf("structure - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
-                                                add_instruction( "PUSH", 0, adr , 0 , 0 ); 
-                                                add_instruction( "CALL", 0, address_function , 0 , 0 );
-                                                add_instruction( "POP", 0, adr, 0 , 0 );
-                                                add_instruction( "COP", 0, address_variable , address_symbol_previous , 0 );
+                                                //printf("structure - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                                add_instruction( "PUSH", address_instruction, adr , 0 , 0 ); 
+                                                add_instruction( "CALL", address_instruction, address_function , 0 , 0 );
+                                                add_instruction( "POP", address_instruction, adr, 0 , 0 );
+                                                add_instruction( "COP", address_instruction, address_variable , address_symbol_previous , 0 );
                                                 delete_symbol(address_variable);
-}
-    break;
-
-  case 15:
-#line 113 "analizador.y"
-    { address_variable = find_symbol(nameID);
-            address_symbol_previous = address_symbol;
-            printf("tRBRACE - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
-            add_instruction( "COP", 0, address_variable , address_symbol_previous , 0 );
-            add_instruction( "RET", 0, 0 , 0 , 0 );
-            delete_symbol(address_variable);
-            delete_symbol(find_symbol("?VAL"));
-            delete_last_symbol(find_symbol("?ADR"));
-            update_instruction("JMP", varFirstJMP, address_main, 0,0 );  // todo - encontrar la direccion del MAIN
-            add_instruction( "NOP", 0, 0 , 0 , 0 );  }
-    break;
-
-  case 17:
-#line 127 "analizador.y"
-    {
-      int val = find_symbol("?VAL");
-      int adr = find_symbol("?ADR");
-      delete_symbol(val);
-      delete_symbol(adr);
-      delete_last_symbol(var_to_delete);
-    }
-    break;
-
-  case 18:
-#line 137 "analizador.y"
-    {
-                          address_variable = find_symbol("?VAL");  
-                                            //add_symbol($1, "int"); 
-                                          //  printf("address_variable : %d\n", address_variable);
-                                         //   printf("find_symbol($1) : %s\n", $1);
-                                         process_arithmetic_instructions();
-                                     //    delete_symbol(address_symbol_previous);
-                                    //      add_instruction( "COP", 0, address_variable , address_symbol_previous , 0 );
-                                    add_instruction( "COP", 0, address_variable , address_symbol_previous , 0 );
-                                    add_instruction( "RET", 0, 0 , 0 , 0 );
-                                          in_arithmetic_operation = 0;
-                                  // comment          delete_symbol(address_symbol); 
             }
     break;
 
-  case 31:
-#line 179 "analizador.y"
+  case 16:
+#line 156 "analizador.y"
+    {args_operation = 0; returnBool = 0;}
+    break;
+
+  case 17:
+#line 156 "analizador.y"
+    { 
+                                                int adr = find_symbol("!ADR");
+                                                int val = find_symbol("!VAL");
+                                                printf("BodyMain - BEFORE val : %d, adr : %d \n", val, adr);
+                                                //printf("structure - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                                address_variable = adr;
+                                                delete_symbol(val);       // DELETE ?VAL
+                                                delete_symbol(adr);  // DELETE ?ADR
+                                                //printf("structure - HALF address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                                delete_symbol(address_symbol_previous);
+                                                add_symbol("tmp", nameFunction);
+                                                address_symbol_previous = address_symbol;
+                                                //printf("structure - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                                add_instruction( "PUSH", address_instruction, adr , 0 , 0 ); 
+                                                add_instruction( "CALL", address_instruction, address_function , 0 , 0 );
+                                                add_instruction( "POP", address_instruction, adr, 0 , 0 );
+                                                add_instruction( "COP", address_instruction, address_variable , address_symbol_previous , 0 );
+                                            //    delete_symbol(address_variable);
+            }
+    break;
+
+  case 20:
+#line 183 "analizador.y"
+    { 
+                            returnBool = 1; 
+                          }
+    break;
+
+  case 21:
+#line 186 "analizador.y"
+    {
+                                    address_variable = find_symbol("?VAL");  
+
+                                    printf("returnStatement - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                    if(in_arithmetic_operation){
+                                        process_arithmetic_instructions();
+                                        in_arithmetic_operation = 0;
+                                    }
+
+                                    printf("returnStatement - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                    
+                                    if (returnBool && args_operation){
+                                      //add_symbol("!ADR", 0);
+                                      //add_symbol("!VAL", 0);
+                                      address_symbol_previous = address_var_TMP;
+                                      add_instruction( "COP", address_instruction, address_variable , address_symbol_previous , 0 );
+                                      add_instruction( "RET", address_instruction, 0 , 0 , 0 );
+                                      delete_symbol(address_symbol_previous);
+                                      break;
+                                    }
+                                    if(returnBool && !mainBool){
+                                    add_instruction( "COP", address_instruction, address_variable , address_symbol_previous , 0 );
+                                    add_instruction( "RET", address_instruction, 0 , 0 , 0 );
+                                  }
+                                  }
+    break;
+
+  case 33:
+#line 236 "analizador.y"
+    { //int jmf_index = instruction_table->size - 1;
+                                  printf("WHILE - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                  printf("WHILE - BEFORE address_symbol  %d\n", address_symbol);
+                                  printf("WHILE - BEFORE address_instruction %d\n", address_instruction);
+                                  printf("WHILE - BEFORE idJMF %d\n", idJMF);
+                                  printf("WHILE - BEFORE varFirstIF %d\n", varFirstIF);
+                                
+                                
+                                //printf("address_instruction AGREGANDO %d\n", address_instruction);
+                                add_instruction( "JMF", address_instruction, address_symbol_previous , -999 , 0 );
+                                idJMF = address_symbol_previous;
+                                if (varFirstIF  >= idJMF && address_symbol != 0){
+                                  printf("WHILE - AFTER address_symbol %d\n", address_symbol);
+                                  printf("WHILE - AFTER address_instruction %d\n", address_instruction);
+                                  printf("WHILE - AFTER idJMF %d\n", idJMF);
+                                  printf("WHILE - AFTER varFirstIF %d\n", varFirstIF);
+                                 delete_symbol(address_instruction);  
+                                  printf("WHILE - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                }
+                                push(instruction_table->size - 1);
+ }
+    break;
+
+  case 35:
+#line 258 "analizador.y"
+    { int jmf_index = pop(); // GET THE ADDRESS OF JMF ON THE INSTRUCTION TABLE - WHERE IF STARTS
+                                                printf("WHILE UPDATE - AFTER jmf_index %d\n", jmf_index);
+                                                if (jmf_index != -1) {
+                                                    update_instruction("JMF", jmf_index, idJMF, address_instruction, 0); // UPDATE INSTRUCTION TABLE WITH THE ADDRESS WHERE IF ENDS. LOOK FOR THE JMP + jmf_index IN THE INSTRUCTION, THEN UPDATE.
+                                                } 
+                                                if (idJMF >=  varFirstIF && address_symbol != 0 ){  // DELETE ALL TEMPORAL VARIABLE OF THIS IF SECTION
+                                                delete_symbol(address_symbol_previous);
+                                                }
+                                                printf("ifStructure - AFTER AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+}
+    break;
+
+  case 36:
+#line 268 "analizador.y"
+    { int jmf_index = pop(); // GET THE ADDRESS OF JMF ON THE INSTRUCTION TABLE - WHERE IF STARTS
+                                                if (jmf_index != -1) {
+                                                    update_instruction("JMF", jmf_index, idJMF, address_instruction, 0); // UPDATE INSTRUCTION TABLE WITH THE ADDRESS WHERE IF ENDS. LOOK FOR THE JMP + jmf_index IN THE INSTRUCTION, THEN UPDATE.
+                                                } 
+                                                if (idJMF >=  varFirstIF && address_symbol != 0 ){  // DELETE ALL TEMPORAL VARIABLE OF THIS IF SECTION
+                                                delete_symbol(address_symbol_previous);
+                                                }
+                                                printf("ifStructure - AFTER AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+}
+    break;
+
+  case 37:
+#line 279 "analizador.y"
     { //int jmf_index = instruction_table->size - 1;
                                   printf("IF - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
                                   printf("IF - BEFORE address_symbol  %d\n", address_symbol);
@@ -1704,15 +1852,15 @@ yyreduce:
                                   printf("IF - AFTER address_instruction %d\n", address_instruction);
                                   printf("IF - AFTER idJMF %d\n", idJMF);
                                   printf("IF - AFTER varFirstIF %d\n", varFirstIF);
-                                 delete_symbol(address_symbol_previous);
+                                 delete_symbol(address_instruction);  
                                   printf("IF - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
                                 }
                                 push(instruction_table->size - 1);
  }
     break;
 
-  case 33:
-#line 202 "analizador.y"
+  case 39:
+#line 302 "analizador.y"
     { int jmf_index = pop(); // Obtener el índice de la instrucción JMF
                                           // delete_symbol(address_symbol_previous);
                                           //printf("jmf_index UPDATE %d\n", jmf_index);
@@ -1738,15 +1886,28 @@ yyreduce:
                                           }
     break;
 
-  case 51:
-#line 246 "analizador.y"
+  case 44:
+#line 329 "analizador.y"
+    { int jmf_index = pop(); // GET THE ADDRESS OF JMF ON THE INSTRUCTION TABLE - WHERE IF STARTS
+                                                if (jmf_index != -1) {
+                                                    update_instruction("JMF", jmf_index, idJMF, address_instruction, 0); // UPDATE INSTRUCTION TABLE WITH THE ADDRESS WHERE IF ENDS. LOOK FOR THE JMP + jmf_index IN THE INSTRUCTION, THEN UPDATE.
+                                                } 
+                                                if (idJMF >=  varFirstIF && address_symbol != 0 ){  // DELETE ALL TEMPORAL VARIABLE OF THIS IF SECTION
+                                                delete_symbol(address_symbol_previous);
+                                                }
+                                                printf("ifStructure - AFTER AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+}
+    break;
+
+  case 57:
+#line 354 "analizador.y"
     { 
    nameID = (yyvsp[(2) - (2)].s);
   add_symbol((yyvsp[(2) - (2)].s), nameFunction); }
     break;
 
-  case 53:
-#line 252 "analizador.y"
+  case 59:
+#line 360 "analizador.y"
     {
                        //   address_variable = find_symbol($1);  
                                             //add_symbol($1, "int"); 
@@ -1754,19 +1915,19 @@ yyreduce:
                                          //   printf("find_symbol($1) : %s\n", $1);
                                          process_arithmetic_instructions();
                                      //    delete_symbol(address_symbol_previous);
-                                          add_instruction( "COP", 0, address_variable , address_symbol_previous , 0 );
+                                          add_instruction( "COP", address_instruction, address_variable , address_symbol_previous , 0 );
                                           in_arithmetic_operation = 0;
                                   // comment          delete_symbol(address_symbol); 
             }
     break;
 
-  case 58:
-#line 273 "analizador.y"
+  case 64:
+#line 380 "analizador.y"
     {  nameID = (yyvsp[(1) - (1)].s);  }
     break;
 
-  case 61:
-#line 275 "analizador.y"
+  case 67:
+#line 382 "analizador.y"
     { // nameID = $1;
            // printf("nameID - tID seul %s\n" , nameID);
           //  address_variable = find_symbol($1);  
@@ -1776,37 +1937,162 @@ yyreduce:
                  }
     break;
 
-  case 64:
-#line 289 "analizador.y"
-    { add_symbol("!ADR", nameFunction);
-                     add_symbol("!VAL", nameFunction);
-                     // address_symbol_previous = address_symbol;
-                     add_symbol("tmp" , nameFunction); 
-                     printf("argsName address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
-                     add_instruction( "AFC", 0, address_symbol_previous , global_number , 0 ); 
-                    }
+  case 68:
+#line 391 "analizador.y"
+    { add_symbol("!ADR", nameFunction);   // !ADR et !VAL antes
+                          add_symbol("!VAL", nameFunction); 
+                          printf("ADR y VAL AGREGADAS xxxxxxxxxx\n");}
+    break;
+
+  case 69:
+#line 394 "analizador.y"
+    { //add_symbol("!ADR", nameFunction);
+                                //add_symbol("!VAL", nameFunction);
+                                // address_symbol_previous = address_symbol;
+                                printf("functionName XxXXX returnBool : %d, args_operation %d\n", returnBool,  args_operation);
+                                printf("functionName XxXXX - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                if(returnBool && args_operation){
+                                                int adr = find_symbol("!ADR");
+                                                int val = find_symbol("!VAL");
+                                                //printf("functionName - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                                address_variable = adr;
+                                                delete_symbol(val);  // DELETE !VAL
+                                                delete_symbol(adr);  // DELETE !ADR
+                                                //printf("structure - HALF address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                                
+                                                add_symbol("tmp", nameFunction);
+                                                address_symbol_previous = address_symbol;
+                                                printf("functionName - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                                add_instruction( "PUSH", address_instruction, adr , 0 , 0 ); 
+                                                add_instruction( "CALL", address_instruction, address_function , 0 , 0 );
+                                                add_instruction( "POP", address_instruction, adr, 0 , 0 );
+                                                add_instruction( "COP", address_instruction, address_variable , address_symbol_previous , 0 );
+                                                //delete_symbol(address_symbol_previous);
+                                                //address_variable = address_symbol_previous;
+                                                //printf("argsfunctionName - AFTER AFTER Name address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                                break;
+                                }
+                                printf("functionName XxXXX - HALF address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                if(returnBool){
+                                                int adr = find_symbol("!ADR");
+                                                int val = find_symbol("!VAL");
+                                                printf("functionName XXXX - returnBool - BEFORE val : %d, adr : %d \n", val, adr);
+                                                printf("functionName XXXX - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                                address_variable = adr;
+                                       //         delete_symbol(val);  // DELETE !VAL
+                                        //        delete_symbol(adr);  // DELETE !ADR
+                                                printf("functionName XXXX - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                                //delete_symbol(address_symbol_previous);
+                                                //add_symbol("tmp", nameFunction);
+                                               // address_symbol_previous = address_symbol;
+                                }
+                                printf("functionName XxXXX - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                               
+                                add_symbol("tmp" , nameFunction); 
+                                printf("functionName - tTMP NAME %s, ADDRESS %d, NameTMP %s\n" , nameID, address_symbol-1, symbolTMP);
+                                //printf("argsName address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                add_instruction( "AFC", address_instruction, address_symbol_previous , global_number , 0 );  // AFC BEFORE PUSH
+}
     break;
 
   case 71:
-#line 308 "analizador.y"
+#line 445 "analizador.y"
+    { //add_symbol("!ADR", nameFunction);
+                        //add_symbol("!VAL", nameFunction);
+                     // address_symbol_previous = address_symbol;
+                   //  add_symbol("tmp" , nameFunction); 
+                     printf("argsName address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                 //    add_instruction( "AFC", 0, address_symbol_previous , global_number , 0 ); 
+                    }
+    break;
+
+  case 72:
+#line 455 "analizador.y"
+    { add_symbol("tmp" , nameFunction);
+            nameID = (yyvsp[(1) - (1)].s);
+            //delete_symbol(address_symbol_previous);
+            address_variable = find_symbol((yyvsp[(1) - (1)].s));
+            printf("argListName - tID NAME %s, ADDRESS %d, NameTMP %s\n" , (yyvsp[(1) - (1)].s), address_symbol-1, symbolTMP);  
+            //add_instruction("COP", 0, address_variable, address_symbol_previous, 0);  
+          }
+    break;
+
+  case 73:
+#line 462 "analizador.y"
+    { add_symbol("tmp" , nameFunction);
+           // nameID = "3";
+            delete_symbol(address_symbol_previous);
+            if(nameID != NULL){
+                    address_variable = find_symbol(nameID);  
+            }
+            printf("argListName - tNB NAME %d, ADDRESS %d, NameTMP %s\n" , (yyvsp[(1) - (1)].i), address_symbol-1, symbolTMP);
+            //add_instruction("COP", 0, address_symbol, address_variable, 0);  
+          }
+    break;
+
+  case 76:
+#line 473 "analizador.y"
+    { 
+      add_instruction("DIV", address_instruction, address_symbol_previous, address_symbol_previous, address_symbol);
+      delete_symbol(address_symbol_previous);
+      }
+    break;
+
+  case 78:
+#line 477 "analizador.y"
+    { 
+      add_instruction("MUL", address_instruction, address_symbol_previous, address_symbol_previous, address_symbol);
+      delete_symbol(address_symbol_previous);
+      }
+    break;
+
+  case 80:
+#line 481 "analizador.y"
+    { add_instruction("COP", address_instruction, address_symbol_previous, address_variable,  0); }
+    break;
+
+  case 81:
+#line 482 "analizador.y"
+    { 
+      //printf("SUB BEFORE - address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+      add_instruction("AFC", address_instruction, address_symbol_previous, global_number,  0);
+      global_number = address_symbol_previous;
+      args_operation = 1;
+      delete_symbol(address_symbol_previous);
+      //printf("SUB HALF - address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+      add_instruction("SUB", address_instruction, address_symbol, address_symbol, global_number);
+      //printf("SUB AFTER - address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+      }
+    break;
+
+  case 82:
+#line 492 "analizador.y"
+    { 
+      add_instruction("ADD", 0, address_symbol_previous, address_symbol_previous, address_symbol);
+      delete_symbol(address_symbol_previous);
+      }
+    break;
+
+  case 85:
+#line 500 "analizador.y"
     { 
                             address_symbol_previous = find_symbol(symbolTMP);
                   //         printf("symbolTMP %s \n" , symbolTMP);
                            // add_instruction( "MUL", address_symbol_previous  , address_symbol_previous , address_symbol ); 
-// printf("MUL - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+ printf("MUL - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
                   
                             add_arithmetic_instruction("MUL", address_symbol_previous, address_symbol_previous, address_symbol); 
                             in_arithmetic_operation = 1;
                         //    delete_symbol(address_symbol_previous);
                        //     address_symbol_previous--;
-               //             printf("MUL - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                           printf("MUL - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
 
                        //     delete_symbol(address_symbol);
                           }
     break;
 
-  case 73:
-#line 323 "analizador.y"
+  case 87:
+#line 515 "analizador.y"
     {
             address_symbol_previous = find_symbol(symbolTMP);
                             add_arithmetic_instruction("DIV", address_symbol_previous, address_symbol_previous, address_symbol); 
@@ -1816,8 +2102,8 @@ yyreduce:
           }
     break;
 
-  case 75:
-#line 331 "analizador.y"
+  case 89:
+#line 523 "analizador.y"
     { 
             // printf("ADD - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
 
@@ -1835,8 +2121,8 @@ yyreduce:
                           }
     break;
 
-  case 77:
-#line 347 "analizador.y"
+  case 91:
+#line 539 "analizador.y"
     {
                             address_symbol_previous = find_symbol(symbolTMP);
                             add_arithmetic_instruction("SUB", address_symbol_previous, address_symbol_previous, address_symbol); 
@@ -1846,25 +2132,28 @@ yyreduce:
           }
     break;
 
-  case 79:
-#line 358 "analizador.y"
+  case 93:
+#line 550 "analizador.y"
     { variableTMP = "tmp";
             // nameID = $1;
+            
           //   printf("nameID - TID %s\n" , nameID);
             address_variable = find_symbol((yyvsp[(1) - (1)].s));  
-            //    printf("TID BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol);
+                printf("TID BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol);
                 //    address_symbol_previous = find_symbol($1); 
                     address_var_TMP = address_symbol_previous;
-                    add_symbol(variableTMP , nameFunction);
+                  
+                  add_symbol(variableTMP , nameFunction);
+                  printf("TID NAME %s, ADDRESS %d, NameTMP %s\n" , (yyvsp[(1) - (1)].s), address_symbol-1, symbolTMP);
                   varFirstIF = address_symbol_previous;
                   printf("varFirstIF - TID %d\n" , varFirstIF);
                     //    delete_symbol(address_var_TMP);
                     
                 //   delete_symbol(address_symbol_previous);
                 //    delete_symbol(address_var_TMP);
-              //  printf("TID AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol);
-                    add_instruction( "COP", 0, address_symbol_previous, address_variable , 0 ); 
-              //     
+                printf("TID AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol);
+                    add_instruction( "COP", address_instruction, address_symbol_previous, address_variable , 0 ); 
+           //   delete_symbol(address_symbol_previous);    
           //   if (!in_arithmetic_operation) {
               //         delete_symbol(address_symbol_previous);
               //     }
@@ -1873,13 +2162,15 @@ yyreduce:
           }
     break;
 
-  case 80:
-#line 381 "analizador.y"
+  case 94:
+#line 576 "analizador.y"
     { 
               printf("TNB AFTER - nameID %s\n" , nameID);
               //     printf("address_symbol before : %d\n", address_symbol);
                 //          printf("TNB - before address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+      // snprintf(nameID, sizeof(nameID), "%d", $1);
         add_symbol("tmp" , nameFunction);
+        printf("tNB NAME %d, ADDRESS %d, NameTMP %s\n" , (yyvsp[(1) - (1)].i), address_symbol-1, symbolTMP);
         if(nameID != NULL){
                     address_variable = find_symbol(nameID);  
         }
@@ -1888,19 +2179,19 @@ yyreduce:
 
               delete_symbol(address_symbol_previous);
                       
-              printf("TNB - after address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
-              add_instruction( "AFC", 0, address_symbol_previous , global_number , 0 ); 
+              printf("TNB - after address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d , in_arithmetic_operation : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number, in_arithmetic_operation);
+              add_instruction( "AFC", address_instruction, address_symbol_previous , global_number , 0 ); 
                   //   address_symbol_previous = address_symbol; 
                     
-                if (!in_arithmetic_operation) {
-                        add_instruction("COP", 0, address_variable, address_symbol_previous, 0); 
+                if (!in_arithmetic_operation  && !args_operation) {
+                        add_instruction("COP", address_instruction, address_variable, address_symbol_previous, 0); 
                     }
 
                   }
     break;
 
-  case 85:
-#line 413 "analizador.y"
+  case 99:
+#line 610 "analizador.y"
     { add_symbol((yyvsp[(2) - (2)].s), nameFunction); 
                  printf("ARGUMENTO tID %s\n", (yyvsp[(2) - (2)].s));
                  var_to_delete = find_symbol((yyvsp[(2) - (2)].s));
@@ -1908,15 +2199,15 @@ yyreduce:
                  }
     break;
 
-  case 86:
-#line 418 "analizador.y"
+  case 100:
+#line 615 "analizador.y"
     { add_symbol((yyvsp[(4) - (4)].s), nameFunction);
                                 delete_symbol(address_symbol_previous); }
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1920 "y.tab.c"
+#line 2211 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2130,7 +2421,7 @@ yyreturn:
 }
 
 
-#line 422 "analizador.y"
+#line 619 "analizador.y"
 
 
 
