@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="Data_path_test_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="Data_path_test" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="980.750 ns"></ZoomStartTime>
+      <ZoomEndTime time="1,003.851 ns"></ZoomEndTime>
+      <Cursor1Time time="1,000.000 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="276"></NameColumnWidth>
+      <ValueColumnWidth column_width="92"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="40" />
+   <wvobject type="array" fp_name="/Data_path_test/uut/INS_MEM/ad">
+      <obj_property name="ElementShortName">ad[7:0]</obj_property>
+      <obj_property name="ObjectShortName">ad[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/Data_path_test/uut/INS_MEM/CLK">
+      <obj_property name="ElementShortName">CLK</obj_property>
+      <obj_property name="ObjectShortName">CLK</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/INS_MEM/S">
+      <obj_property name="ElementShortName">S[31:0]</obj_property>
+      <obj_property name="ObjectShortName">S[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/INS_MEM/entre">
+      <obj_property name="ElementShortName">entre[7:0]</obj_property>
+      <obj_property name="ObjectShortName">entre[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/Data_path_test/uut/INS_MEM/lock">
+      <obj_property name="ElementShortName">lock</obj_property>
+      <obj_property name="ObjectShortName">lock</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/Data_path_test/uut/INS_MEM/branch_taken">
+      <obj_property name="ElementShortName">branch_taken</obj_property>
+      <obj_property name="ObjectShortName">branch_taken</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/INS_MEM/Mem">
+      <obj_property name="ElementShortName">Mem[255:0][31:0]</obj_property>
+      <obj_property name="ObjectShortName">Mem[255:0][31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/INS_MEM/Aux">
+      <obj_property name="ElementShortName">Aux[31:0]</obj_property>
+      <obj_property name="ObjectShortName">Aux[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_LI_DI/in_A">
+      <obj_property name="ElementShortName">in_A[7:0]</obj_property>
+      <obj_property name="ObjectShortName">in_A[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_LI_DI/in_B">
+      <obj_property name="ElementShortName">in_B[7:0]</obj_property>
+      <obj_property name="ObjectShortName">in_B[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_LI_DI/in_OP">
+      <obj_property name="ElementShortName">in_OP[7:0]</obj_property>
+      <obj_property name="ObjectShortName">in_OP[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_LI_DI/in_C">
+      <obj_property name="ElementShortName">in_C[7:0]</obj_property>
+      <obj_property name="ObjectShortName">in_C[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_LI_DI/out_A">
+      <obj_property name="ElementShortName">out_A[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_A[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_LI_DI/out_B">
+      <obj_property name="ElementShortName">out_B[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_B[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_LI_DI/out_OP">
+      <obj_property name="ElementShortName">out_OP[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_OP[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_LI_DI/out_C">
+      <obj_property name="ElementShortName">out_C[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_C[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_DI_EX/in_A">
+      <obj_property name="ElementShortName">in_A[7:0]</obj_property>
+      <obj_property name="ObjectShortName">in_A[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_DI_EX/in_B">
+      <obj_property name="ElementShortName">in_B[7:0]</obj_property>
+      <obj_property name="ObjectShortName">in_B[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_DI_EX/in_OP">
+      <obj_property name="ElementShortName">in_OP[7:0]</obj_property>
+      <obj_property name="ObjectShortName">in_OP[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_DI_EX/in_C">
+      <obj_property name="ElementShortName">in_C[7:0]</obj_property>
+      <obj_property name="ObjectShortName">in_C[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_DI_EX/out_A">
+      <obj_property name="ElementShortName">out_A[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_A[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_DI_EX/out_B">
+      <obj_property name="ElementShortName">out_B[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_B[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_DI_EX/out_OP">
+      <obj_property name="ElementShortName">out_OP[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_OP[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_DI_EX/out_C">
+      <obj_property name="ElementShortName">out_C[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_C[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_EX_MEM/in_A">
+      <obj_property name="ElementShortName">in_A[7:0]</obj_property>
+      <obj_property name="ObjectShortName">in_A[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_EX_MEM/in_B">
+      <obj_property name="ElementShortName">in_B[7:0]</obj_property>
+      <obj_property name="ObjectShortName">in_B[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_EX_MEM/in_OP">
+      <obj_property name="ElementShortName">in_OP[7:0]</obj_property>
+      <obj_property name="ObjectShortName">in_OP[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_EX_MEM/in_C">
+      <obj_property name="ElementShortName">in_C[7:0]</obj_property>
+      <obj_property name="ObjectShortName">in_C[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_EX_MEM/out_A">
+      <obj_property name="ElementShortName">out_A[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_A[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_EX_MEM/out_B">
+      <obj_property name="ElementShortName">out_B[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_B[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_EX_MEM/out_OP">
+      <obj_property name="ElementShortName">out_OP[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_OP[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_EX_MEM/out_C">
+      <obj_property name="ElementShortName">out_C[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_C[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_MEM_RE/in_A">
+      <obj_property name="ElementShortName">in_A[7:0]</obj_property>
+      <obj_property name="ObjectShortName">in_A[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_MEM_RE/in_B">
+      <obj_property name="ElementShortName">in_B[7:0]</obj_property>
+      <obj_property name="ObjectShortName">in_B[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_MEM_RE/in_OP">
+      <obj_property name="ElementShortName">in_OP[7:0]</obj_property>
+      <obj_property name="ObjectShortName">in_OP[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_MEM_RE/in_C">
+      <obj_property name="ElementShortName">in_C[7:0]</obj_property>
+      <obj_property name="ObjectShortName">in_C[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_MEM_RE/out_A">
+      <obj_property name="ElementShortName">out_A[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_A[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_MEM_RE/out_B">
+      <obj_property name="ElementShortName">out_B[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_B[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_MEM_RE/out_OP">
+      <obj_property name="ElementShortName">out_OP[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_OP[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_MEM_RE/out_C">
+      <obj_property name="ElementShortName">out_C[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_C[7:0]</obj_property>
+   </wvobject>
+</wave_config>
