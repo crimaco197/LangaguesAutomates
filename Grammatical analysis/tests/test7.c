@@ -1,3 +1,9 @@
+int f(int a, int b) {
+  if (b == 1) {
+    int a = 123;
+  }
+  return a * b;
+}
 void main() { // Main function
   int a;
   a = 123 + 321 * 100 / 200 - 300;

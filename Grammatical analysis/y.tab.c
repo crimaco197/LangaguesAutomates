@@ -167,6 +167,7 @@ int address_function = 0;
 int address_main = 0;
 char* variableTMP;
 char* nameID;
+int numberID;
 int in_arithmetic_operation = 0; // variable test add COP or NOT in tNB
 int idJMF = 0;
 int varFirstIF = 0;
@@ -208,13 +209,13 @@ int yylex(void);
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 42 "analizador.y"
+#line 43 "analizador.y"
 { 
     char *s;
     int i;
 }
 /* Line 193 of yacc.c.  */
-#line 218 "y.tab.c"
+#line 219 "y.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -227,7 +228,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 231 "y.tab.c"
+#line 232 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -557,17 +558,17 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    61,    61,    62,    63,    66,    66,   102,   103,   106,
-     106,   107,   112,   107,   127,   130,   148,   149,   149,   170,
-     171,   174,   174,   202,   203,   204,   208,   212,   213,   214,
-     215,   218,   219,   222,   223,   226,   226,   249,   259,   270,
-     270,   293,   315,   316,   317,   318,   319,   330,   331,   332,
-     333,   334,   335,   336,   337,   338,   339,   340,   341,   345,
-     346,   347,   347,   348,   349,   359,   359,   364,   368,   368,
-     368,   371,   371,   372,   375,   375,   418,   419,   422,   427,
-     435,   436,   437,   437,   445,   445,   453,   453,   464,   464,
-     474,   475,   475,   481,   481,   487,   487,   501,   501,   509,
-     525,   546,   549,   550,   553,   554,   558
+       0,    62,    62,    63,    64,    67,    67,   103,   104,   107,
+     107,   108,   113,   108,   128,   131,   149,   150,   150,   171,
+     172,   175,   175,   203,   204,   205,   209,   213,   214,   215,
+     216,   219,   220,   224,   225,   228,   228,   251,   261,   272,
+     272,   295,   317,   318,   319,   320,   321,   332,   333,   334,
+     335,   336,   337,   338,   339,   340,   341,   342,   343,   347,
+     348,   349,   349,   350,   351,   363,   363,   368,   372,   372,
+     372,   375,   375,   376,   379,   379,   422,   423,   426,   431,
+     440,   441,   442,   442,   450,   450,   458,   458,   469,   469,
+     479,   480,   480,   491,   491,   502,   502,   523,   523,   536,
+     552,   574,   577,   578,   581,   582,   586
 };
 #endif
 
@@ -1610,12 +1611,12 @@ yyreduce:
   switch (yyn)
     {
         case 5:
-#line 66 "analizador.y"
+#line 67 "analizador.y"
     { printf("Function MAIN Found : %s\n", yytext); 
                    mainBool = 1;
                    nameFunction = "main"; 
-                   add_symbol("?ADR", nameFunction);
-                   add_symbol("?VAL", nameFunction);
+                   add_symbol("?ADR", nameFunction, 0);
+                   add_symbol("?VAL", nameFunction, 0);
                    // printf("MAIN - address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
                    // printf("main - tNB NAME ?ADR, ADDRESS %d, NameTMP %s\n" , address_symbol-1, symbolTMP);
                    // printf("main - tNB NAME ?VAL, ADDRESS %d, NameTMP %s\n" , address_symbol-1, symbolTMP);
@@ -1624,7 +1625,7 @@ yyreduce:
     break;
 
   case 6:
-#line 76 "analizador.y"
+#line 77 "analizador.y"
     {  int val = find_symbol("?VAL");
                             int adr = find_symbol("?ADR");
                           
@@ -1652,31 +1653,31 @@ yyreduce:
     break;
 
   case 7:
-#line 102 "analizador.y"
-    { add_instruction( "RET", address_instruction, 0 , 0 , 0 ); }
-    break;
-
-  case 8:
 #line 103 "analizador.y"
     { add_instruction( "RET", address_instruction, 0 , 0 , 0 ); }
     break;
 
+  case 8:
+#line 104 "analizador.y"
+    { add_instruction( "RET", address_instruction, 0 , 0 , 0 ); }
+    break;
+
   case 9:
-#line 106 "analizador.y"
+#line 107 "analizador.y"
     { printf("Function VOID Found : %s\n", yytext); nameFunction = (yyvsp[(2) - (2)].s); }
     break;
 
   case 11:
-#line 107 "analizador.y"
+#line 108 "analizador.y"
     { printf("Function INT Found : %s\n", yytext);
                  nameFunction = (yyvsp[(2) - (2)].s);
-                 add_symbol("?ADR", nameFunction);  // OK
-                 add_symbol("?VAL", nameFunction); 
+                 add_symbol("?ADR", nameFunction, 0);  // OK
+                 add_symbol("?VAL", nameFunction, 0); 
       }
     break;
 
   case 12:
-#line 112 "analizador.y"
+#line 113 "analizador.y"
     { varFirstJMP = address_instruction;
                          add_instruction( "JMP", address_instruction, -999 , 0 , 0 ); 
                          address_function = address_instruction;
@@ -1684,7 +1685,7 @@ yyreduce:
     break;
 
   case 13:
-#line 116 "analizador.y"
+#line 117 "analizador.y"
     {
       
       int val = find_symbol("?VAL");
@@ -1697,12 +1698,12 @@ yyreduce:
     break;
 
   case 14:
-#line 127 "analizador.y"
+#line 128 "analizador.y"
     { add_instruction( "NOP", address_instruction, 0 , 0 , 0 );  }
     break;
 
   case 15:
-#line 130 "analizador.y"
+#line 131 "analizador.y"
     { int adr = find_symbol("!ADR");
                                                 int val = find_symbol("!VAL");
                                                 //printf("structure - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
@@ -1712,9 +1713,9 @@ yyreduce:
                                                 delete_symbol(adr);  // DELETE !ADR
                                                 //printf("structure - HALF address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
                                                 delete_symbol(address_symbol_previous);
-                                                add_symbol("tmp", nameFunction);
+                                                add_symbol("tmp", nameFunction, 0);
                                                 address_symbol_previous = address_symbol;
-                                                //printf("structure - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                                printf("structure - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d  , address_instruction : %d , adr : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number, address_instruction , adr);
                                                 add_instruction( "PUSH", address_instruction, adr , 0 , 0 ); 
                                                 add_instruction( "CALL", address_instruction, address_function , 0 , 0 );
                                                 add_instruction( "POP", address_instruction, adr, 0 , 0 );
@@ -1724,12 +1725,12 @@ yyreduce:
     break;
 
   case 17:
-#line 149 "analizador.y"
+#line 150 "analizador.y"
     {args_operation = 0; returnBool = 0;}
     break;
 
   case 18:
-#line 150 "analizador.y"
+#line 151 "analizador.y"
     { 
                               int adr = find_symbol("!ADR");
                               int val = find_symbol("!VAL");
@@ -1740,7 +1741,7 @@ yyreduce:
                               delete_symbol(adr);  // DELETE ?ADR
                               //printf("structure - HALF address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
                               delete_symbol(address_symbol_previous);
-                              add_symbol("tmp", nameFunction);
+                              add_symbol("tmp", nameFunction, 0);
                               address_symbol_previous = address_symbol;
                               //printf("structure - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
                               add_instruction( "PUSH", address_instruction, adr , 0 , 0 ); 
@@ -1751,14 +1752,14 @@ yyreduce:
     break;
 
   case 21:
-#line 174 "analizador.y"
+#line 175 "analizador.y"
     { 
                             returnBool = 1; 
                   }
     break;
 
   case 22:
-#line 177 "analizador.y"
+#line 178 "analizador.y"
     {
                                     address_variable = find_symbol("?VAL");  
 
@@ -1784,8 +1785,19 @@ yyreduce:
 }
     break;
 
+  case 31:
+#line 219 "analizador.y"
+    { add_instruction("PRI", address_instruction,numberID,0,0); }
+    break;
+
+  case 32:
+#line 220 "analizador.y"
+    { add_instruction("PRI", address_instruction, numberID,0,0);    // On ajoute l'instruction PRI
+}
+    break;
+
   case 35:
-#line 226 "analizador.y"
+#line 228 "analizador.y"
     { //int jmf_index = instruction_table->size - 1;
                       //                   printf("WHILE - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
                       //                   printf("WHILE - BEFORE address_symbol  %d\n", address_symbol);
@@ -1810,7 +1822,7 @@ yyreduce:
     break;
 
   case 37:
-#line 249 "analizador.y"
+#line 251 "analizador.y"
     { int jmf_index = pop(); // GET THE ADDRESS OF JMF ON THE INSTRUCTION TABLE - WHERE IF STARTS
               //                                  printf("WHILE UPDATE - AFTER jmf_index %d\n", jmf_index);
                                               if (jmf_index != -1) {
@@ -1824,7 +1836,7 @@ yyreduce:
     break;
 
   case 38:
-#line 259 "analizador.y"
+#line 261 "analizador.y"
     { int jmf_index = pop(); // GET THE ADDRESS OF JMF ON THE INSTRUCTION TABLE - WHERE IF STARTS
                                               if (jmf_index != -1) {
                                                   update_instruction("JMF", jmf_index, idJMF, address_instruction, 0); // UPDATE INSTRUCTION TABLE WITH THE ADDRESS WHERE IF ENDS. LOOK FOR THE JMP + jmf_index IN THE INSTRUCTION, THEN UPDATE.
@@ -1837,7 +1849,7 @@ yyreduce:
     break;
 
   case 39:
-#line 270 "analizador.y"
+#line 272 "analizador.y"
     { //int jmf_index = instruction_table->size - 1;
                                 //  printf("IF - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
                                 //  printf("IF - BEFORE address_symbol  %d\n", address_symbol);
@@ -1862,7 +1874,7 @@ yyreduce:
     break;
 
   case 41:
-#line 293 "analizador.y"
+#line 295 "analizador.y"
     { int jmf_index = pop(); // Obtener el índice de la instrucción JMF
                                           //printf("jmf_index UPDATE %d\n", jmf_index);
                                           //printf("address_instruction UPDATE %d\n", address_instruction);
@@ -1888,7 +1900,7 @@ yyreduce:
     break;
 
   case 46:
-#line 319 "analizador.y"
+#line 321 "analizador.y"
     { int jmf_index = pop(); // GET THE ADDRESS OF JMF ON THE INSTRUCTION TABLE - WHERE IF STARTS
                                                 if (jmf_index != -1) {
                                                     update_instruction("JMF", jmf_index, idJMF, address_instruction, 0); // UPDATE INSTRUCTION TABLE WITH THE ADDRESS WHERE IF ENDS. LOOK FOR THE JMP + jmf_index IN THE INSTRUCTION, THEN UPDATE.
@@ -1901,58 +1913,60 @@ yyreduce:
     break;
 
   case 61:
-#line 347 "analizador.y"
-    { nameID = (yyvsp[(2) - (3)].s); add_symbol((yyvsp[(2) - (3)].s), nameFunction);  }
+#line 349 "analizador.y"
+    { nameID = (yyvsp[(2) - (3)].s); add_symbol((yyvsp[(2) - (3)].s), nameFunction, 0);  }
     break;
 
   case 64:
-#line 349 "analizador.y"
+#line 351 "analizador.y"
     {
                                     // printf("AGREGANDO OPERACIONES ARITMETICAS\n");
                                     if(in_arithmetic_operation){
                                           process_arithmetic_instructions();
                                           in_arithmetic_operation = 0;
-                                          add_instruction( "COP", address_instruction, address_variable , address_symbol_previous , 0 );
+                                          printf("functionName XxXXX - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                          printf("nameID - variable %s\n", nameID);
+                                          add_instruction( "COPxx", address_instruction, address_variable , address_symbol_previous , 0 );
                                     }
             }
     break;
 
   case 65:
-#line 359 "analizador.y"
+#line 363 "analizador.y"
     { 
                     nameID = (yyvsp[(1) - (1)].s);
-                    add_symbol((yyvsp[(1) - (1)].s), nameFunction); 
+                    add_symbol((yyvsp[(1) - (1)].s), nameFunction, 0); 
               }
     break;
 
   case 67:
-#line 364 "analizador.y"
+#line 368 "analizador.y"
     { 
                     nameID = (yyvsp[(1) - (1)].s);
-                    add_symbol((yyvsp[(1) - (1)].s), nameFunction); 
+                    add_symbol((yyvsp[(1) - (1)].s), nameFunction, 0); 
               }
     break;
 
   case 68:
-#line 368 "analizador.y"
+#line 372 "analizador.y"
     {  nameID = (yyvsp[(1) - (1)].s);  }
     break;
 
   case 71:
-#line 371 "analizador.y"
+#line 375 "analizador.y"
     {  nameID = (yyvsp[(1) - (1)].s);  }
     break;
 
   case 74:
-#line 375 "analizador.y"
-    { add_symbol("!ADR", nameFunction);   // !ADR et !VAL antes
-                          add_symbol("!VAL", nameFunction); 
+#line 379 "analizador.y"
+    { add_symbol("!ADR", nameFunction, 0);   // !ADR et !VAL antes
+                          add_symbol("!VAL", nameFunction, 0); 
                           // printf("ADR y VAL AGREGADAS xxxxxxxxxx\n");
                }
     break;
 
   case 75:
-#line 379 "analizador.y"
+#line 383 "analizador.y"
     { 
                                 // printf("functionName XxXXX returnBool : %d, args_operation %d\n", returnBool,  args_operation);
                                 // printf("functionName XxXXX - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
@@ -1965,7 +1979,7 @@ yyreduce:
                                       delete_symbol(adr);  // DELETE !ADR
                                       // printf("structure - HALF address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
                                       
-                                      add_symbol("tmp", nameFunction);
+                                      add_symbol("tmp", nameFunction, 0);
                                       address_symbol_previous = address_symbol;
                                       // printf("functionName - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
                                       add_instruction( "PUSH", address_instruction, adr , 0 , 0 ); 
@@ -1985,7 +1999,7 @@ yyreduce:
                                     // printf("functionName XXXX - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
                                 }
                                 // printf("functionName XxXXX - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
-                                add_symbol("tmp" , nameFunction); 
+                                add_symbol("tmp" , nameFunction, 0); 
                                 // printf("functionName - tTMP NAME %s, ADDRESS %d, NameTMP %s\n" , nameID, address_symbol-1, symbolTMP);
                                 // printf("argsName address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
                                 add_instruction( "AFC", address_instruction, address_symbol_previous , global_number , 0 );  // AFC BEFORE PUSH
@@ -1993,8 +2007,8 @@ yyreduce:
     break;
 
   case 78:
-#line 422 "analizador.y"
-    { add_symbol("tmp" , nameFunction);
+#line 426 "analizador.y"
+    { add_symbol("tmp" , nameFunction, 0);
                    nameID = (yyvsp[(1) - (1)].s);
                    address_variable = find_symbol((yyvsp[(1) - (1)].s));
                    // printf("argListName - tID NAME %s, ADDRESS %d, NameTMP %s\n" , $1, address_symbol-1, symbolTMP);  
@@ -2002,9 +2016,10 @@ yyreduce:
     break;
 
   case 79:
-#line 427 "analizador.y"
-    { add_symbol("tmp" , nameFunction);
-                    // nameID = "3";
+#line 431 "analizador.y"
+    { add_symbol("tmp" , nameFunction, (yyvsp[(1) - (1)].i));
+                    numberID = (yyvsp[(1) - (1)].i);
+                    printf("argListName - Agregando tmp numberID : %d\n", numberID);
                     delete_symbol(address_symbol_previous);
                     if(nameID != NULL){
                         address_variable = find_symbol(nameID);  
@@ -2014,12 +2029,12 @@ yyreduce:
     break;
 
   case 82:
-#line 437 "analizador.y"
+#line 442 "analizador.y"
     { add_instruction("COP", address_instruction, address_symbol_previous, address_variable,  0); }
     break;
 
   case 83:
-#line 438 "analizador.y"
+#line 443 "analizador.y"
     { 
                                 add_instruction("AFC", address_instruction, address_symbol_previous, global_number,  0);
                                 global_number = address_symbol_previous;
@@ -2030,12 +2045,12 @@ yyreduce:
     break;
 
   case 84:
-#line 445 "analizador.y"
+#line 450 "analizador.y"
     { add_instruction("COP", address_instruction, address_symbol_previous, address_variable,  0); }
     break;
 
   case 85:
-#line 446 "analizador.y"
+#line 451 "analizador.y"
     { 
                                 add_instruction("AFC", address_instruction, address_symbol_previous, global_number,  0);
                                 global_number = address_symbol_previous;
@@ -2046,12 +2061,12 @@ yyreduce:
     break;
 
   case 86:
-#line 453 "analizador.y"
+#line 458 "analizador.y"
     { add_instruction("COP", address_instruction, address_symbol_previous, address_variable,  0); }
     break;
 
   case 87:
-#line 454 "analizador.y"
+#line 459 "analizador.y"
     { 
                                 //printf("SUB BEFORE - address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
                                 add_instruction("AFC", address_instruction, address_symbol_previous, global_number,  0);
@@ -2065,12 +2080,12 @@ yyreduce:
     break;
 
   case 88:
-#line 464 "analizador.y"
+#line 469 "analizador.y"
     { add_instruction("COP", address_instruction, address_symbol_previous, address_variable,  0); }
     break;
 
   case 89:
-#line 465 "analizador.y"
+#line 470 "analizador.y"
     { 
                                 add_instruction("AFC", address_instruction, address_symbol_previous, global_number,  0);
                                 global_number = address_symbol_previous;
@@ -2081,31 +2096,48 @@ yyreduce:
     break;
 
   case 91:
-#line 475 "analizador.y"
-    { 
-                      address_symbol_previous = find_symbol(symbolTMP);
+#line 480 "analizador.y"
+    { printf("AGREGANDO MUL\n");
+                      if(find_symbol(symbolTMP) != -1){
+                          address_symbol_previous = find_symbol(symbolTMP);
+                      }
+                      if(address_symbol_previous == -1){
+                        address_symbol_previous = find_symbol_by_number(numberID);
+                      }
                       add_arithmetic_instruction("MUL", address_symbol_previous, address_symbol_previous, address_symbol); 
                       in_arithmetic_operation = 1;
             }
     break;
 
   case 93:
-#line 481 "analizador.y"
-    {
-                      address_symbol_previous = find_symbol(symbolTMP);
+#line 491 "analizador.y"
+    { printf("AGREGANDO DIV\n");
+                      if(find_symbol(symbolTMP) != -1){
+                          address_symbol_previous = find_symbol(symbolTMP);
+                      }
+                      if(address_symbol_previous == -1){
+                        address_symbol_previous = find_symbol_by_number(numberID);
+                      }
                       add_arithmetic_instruction("DIV", address_symbol_previous, address_symbol_previous, address_symbol); 
                       in_arithmetic_operation = 1;
             }
     break;
 
   case 95:
-#line 487 "analizador.y"
-    { 
+#line 502 "analizador.y"
+    { printf("AGREGANDO ADD\n");
                       // printf("ADD - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
-                      address_symbol_previous = find_symbol(symbolTMP);
+                      if(find_symbol(symbolTMP) != -1){
+                          address_symbol_previous = find_symbol(symbolTMP);
+                      }
+                      
+                      if(address_symbol_previous == -1){
+                          printf("ENTRE AQUIIII - VALOR numberID : %d\n", numberID);
+                          address_symbol_previous = find_symbol_by_number(numberID);
+                      }
                       // printf("symbolTMP %s \n" , symbolTMP);
                       // printf("agregando ADD\n");
-                      // add_instruction( "ADD", address_symbol_previous  , address_symbol_previous , address_symbol ); 
+                      printf("ADD - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
                       add_arithmetic_instruction("ADD", address_symbol_previous, address_symbol_previous, address_symbol); 
                       in_arithmetic_operation = 1;
                       // delete_symbol(address_symbol_previous);
@@ -2116,23 +2148,28 @@ yyreduce:
     break;
 
   case 97:
-#line 501 "analizador.y"
-    {
-                      address_symbol_previous = find_symbol(symbolTMP);
+#line 523 "analizador.y"
+    { printf("AGREGANDO SUB\n");
+                      if(find_symbol(symbolTMP) != -1){
+                          address_symbol_previous = find_symbol(symbolTMP);
+                      }
+                      if(address_symbol_previous == -1){
+                        address_symbol_previous = find_symbol_by_number(numberID);
+                      }
                       add_arithmetic_instruction("SUB", address_symbol_previous, address_symbol_previous, address_symbol); 
                       in_arithmetic_operation = 1;
             }
     break;
 
   case 99:
-#line 509 "analizador.y"
+#line 536 "analizador.y"
     { variableTMP = "tmp";
             // nameID = $1;
             // printf("nameID - TID %s\n" , nameID);
             address_variable = find_symbol((yyvsp[(1) - (1)].s));  
             // printf("TID BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol);
             address_var_TMP = address_symbol_previous;
-            add_symbol(variableTMP , nameFunction);
+            add_symbol(variableTMP , nameFunction, 0);
             // printf("TID NAME %s, ADDRESS %d, NameTMP %s\n" , $1, address_symbol-1, symbolTMP);
             varFirstIF = address_symbol_previous;
             // printf("varFirstIF - TID %d\n" , varFirstIF);
@@ -2145,13 +2182,14 @@ yyreduce:
     break;
 
   case 100:
-#line 525 "analizador.y"
-    { 
+#line 552 "analizador.y"
+    { numberID = (yyvsp[(1) - (1)].i);
             // printf("TNB AFTER - nameID %s\n" , nameID);
             // printf("address_symbol before : %d\n", address_symbol);
             // printf("TNB - before address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
             // snprintf(nameID, sizeof(nameID), "%d", $1);
-            add_symbol("tmp" , nameFunction);
+            add_symbol("tmp" , nameFunction, (yyvsp[(1) - (1)].i));
+            printf("argListName - Agregando tmp numberID : %d\n", numberID);
             // printf("tNB NAME %d, ADDRESS %d, NameTMP %s\n" , $1, address_symbol-1, symbolTMP);
             if(nameID != NULL){
                 address_variable = find_symbol(nameID);  
@@ -2170,23 +2208,23 @@ yyreduce:
     break;
 
   case 105:
-#line 554 "analizador.y"
-    { add_symbol((yyvsp[(2) - (2)].s), nameFunction); 
+#line 582 "analizador.y"
+    { add_symbol((yyvsp[(2) - (2)].s), nameFunction, 0); 
                     // printf("ARGUMENTO tID %s\n", $2);
                     var_to_delete = find_symbol((yyvsp[(2) - (2)].s));
          }
     break;
 
   case 106:
-#line 558 "analizador.y"
-    { add_symbol((yyvsp[(4) - (4)].s), nameFunction);
+#line 586 "analizador.y"
+    { add_symbol((yyvsp[(4) - (4)].s), nameFunction, 0);
                                    delete_symbol(address_symbol_previous); 
          }
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 2190 "y.tab.c"
+#line 2228 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2400,7 +2438,7 @@ yyreturn:
 }
 
 
-#line 563 "analizador.y"
+#line 591 "analizador.y"
 
 
 

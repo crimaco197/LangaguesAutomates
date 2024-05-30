@@ -119,6 +119,7 @@ void process_arithmetic_instructions() {
         current = current->next;
         free(temp->name);
         free(temp);
+        printf("result : %d\n" , result);
         delete_symbol(result);  // it is gonna delete all the tmp but not the last one, the last tmp is deleted after doing COP
     }
     

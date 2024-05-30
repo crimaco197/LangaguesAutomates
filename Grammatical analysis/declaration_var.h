@@ -16,7 +16,8 @@ extern int address_var_TMP;
 extern int address_function;
 extern int address_main;
 extern char symbolTMP [100];
-extern char *nameID;
+extern char *nameID;   // to save the last variable operated
+extern int numberID;   // to save the last variable TMP operated
 
 extern char *nameFunction;
 

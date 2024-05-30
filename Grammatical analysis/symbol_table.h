@@ -4,9 +4,10 @@
 
 typedef struct Symbol {
     char *name; // Symbol Name
-    char *type;   // Symbol Type
+    char *type;   // Name Function where it's found
 
     int address;
+    int valor;
 
 } Symbol;
 
@@ -23,8 +24,9 @@ extern SymbolTable *symbol_table;
 
 
 SymbolTable* create_symbol_table();
-void add_symbol(char *name, char *type);
+void add_symbol(char *name, char *type, int valor);
 int find_symbol(const char *name);
+int find_symbol_by_number(int valor);
 void delete_symbol(int index);
 void delete_last_symbol(int index);
 void print_symbol_table();

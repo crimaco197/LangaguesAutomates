@@ -21,7 +21,7 @@ SymbolTable* create_symbol_table() {
 }
 
 
-void add_symbol(char *name, char *type) {  // ajouter la valeur de chaque variable ?? 
+void add_symbol(char *name, char *type, int valorr) {  // ajouter la valeur de chaque variable ?? 
     if (symbol_table->size >= symbol_table->capacity) {
         symbol_table->capacity *= 2;
         symbol_table->symbols = realloc(symbol_table->symbols, sizeof(Symbol) * symbol_table->capacity);
@@ -36,11 +36,13 @@ void add_symbol(char *name, char *type) {  // ajouter la valeur de chaque variab
         new_symbol.type = strdup(type);
         address_symbol_previous = address_symbol; 
         new_symbol.address = address_symbol++;
+        new_symbol.valor = valorr;
         
     }else{
         new_symbol.name = strdup(name); // Free memory - a voir... 
         new_symbol.type = strdup(type);
         new_symbol.address = address_symbol++;
+        new_symbol.valor = valorr;
     }
 
     symbol_table->symbols[symbol_table->size++] = new_symbol;
@@ -53,6 +55,25 @@ int find_symbol(const char *name) {
             return symbol.address;
         }
     }
+    // Symbol NOT found, return -1
+    return -1;
+}
+
+int find_symbol_by_number(int valorr) {
+    if (!symbol_table) {  // Verificar si la tabla de símbolos está inicializada
+        printf("Symbol table is not initialized.\n");
+        return -1;
+    }
+    
+    printf("RETURN find_symbol_by_number - valor %d\n", valorr);
+    for (int i = 0; i < symbol_table->size; ++i) {
+        Symbol symbol = symbol_table->symbols[i];  // we get the symbol stocked in i
+        if (symbol.valor == valorr) {
+            printf("RETURN ADDRESS - %d\n", symbol.address);
+            return symbol.address;
+        }
+    }
+    printf("RETURN ADDRESS NOT FOUND - %d\n", -1);
     // Symbol NOT found, return -1
     return -1;
 }
@@ -101,18 +122,18 @@ void delete_last_symbol(int index) {
 
 // Print Table Symbol
 void print_symbol_table() {
-    printf("|------------------------------------|\n");
-    printf("|           SYMBOL TABLE             |\n");
-    printf("|------------------------------------|\n");
-	printf("|   Name   |   Adresse  |  Function  |\n");
-	printf("|------------------------------------|\n");
+    printf("|----------------------------------------------|\n");
+    printf("|                  SYMBOL TABLE                |\n");
+    printf("|----------------------------------------------|\n");
+	printf("|   Name   |   Adresse  |  Function  |  Valor  |\n");
+	printf("|----------------------------------------------|\n");
     for (int i = 0; i < symbol_table->size; ++i) {
         Symbol symbol = symbol_table->symbols[i];
-    printf("|%10s|%12d|%12s|\n", symbol.name, symbol.address , symbol.type );
+    printf("|%10s|%12d|%12s|%9d|\n", symbol.name, symbol.address , symbol.type, symbol.valor );
     //        printf("Name: %s, Type: %s\n", symbol.name, symbol.type);
 
     //    printf("Name: %s, Type: %s, Adress: %d\n", symbol.name, symbol.address , symbol.type );
 
     }
-    printf("|------------------------------------|\n");
+    printf("|----------------------------------------------|\n");
 }
