@@ -89,7 +89,7 @@ void add_arithmetic_instruction(char *name, int operand1, int operand2, int resu
     ArithmeticInstruction *new_instruction = malloc(sizeof(ArithmeticInstruction));
 //    delete_symbol(result);
 
-  printf("address_symbol_previous: %d, address_symbol: %d\n", operand1, result);
+    printf("add_arithmetic_instruction - address_symbol_previous: %d, address_symbol: %d\n", operand1, result);
     new_instruction->name = strdup(name);
     new_instruction->operand1 = operand1;
     new_instruction->operand2 = operand2;
