@@ -44,15 +44,19 @@ void add_instruction(char *name,int indexInstruction, int numberRegister, int ad
 }
 
 void update_instruction(char *name, int indexInstruction, int numberRegister, int newAddressMemory, int newAddressValTMP) {
+    // printf("update_instruction - BEFORE UPDATE name : %s , indexInstruction : %d , numberRegister : %d , newAddressMemory : %d , newAddressValTMP : %d\n", name,  indexInstruction,  numberRegister, newAddressMemory, newAddressValTMP);
     for (int i = 0; i < instruction_table->size; ++i) {
         Instruction *instruction = &instruction_table->instructions[i];
+        // printf("update_instruction - BEFORE UPDATE FOUND name : %s , indexInstruction : %d\n", instruction->name, instruction->indexInstruction);
         if (strcmp(instruction->name, name) == 0 && instruction->indexInstruction == indexInstruction) {
             instruction->numberRegister = numberRegister;
             instruction->addressMemory = newAddressMemory;
             instruction->valNonDefined = newAddressValTMP;
+            //printf("JMP UPDATED SUCCESS\n");
             break;
         }
     }
+    //printf("COULD NOT UPDATE JMP\n");
 }
 
 
@@ -117,7 +121,7 @@ void process_arithmetic_instructions() {
        //  printf("Operand1 Value: %d\n", last_operand1_value);
         
         // add_instruction(current->name, 0, current->operand1, current->operand2, current->result);
-        add_instruction(current->name, 0 , current->result, current->operand1, current->operand2);
+        add_instruction(current->name, address_instruction , current->result, current->operand1, current->operand2);
         ArithmeticInstruction *temp = current;
         current = current->next;
         free(temp->name);
@@ -186,7 +190,7 @@ int pop() {
 // Function to print the stack
 void print_stack() {
     StackNode *current = jmf_stack;
-    printf("Stack content : ");
+    printf("Stack bucles content : ");
     while (current != NULL) {
         printf("%d -> ", current->index);
         current = current->next;

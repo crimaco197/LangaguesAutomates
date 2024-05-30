@@ -4,16 +4,21 @@ int f(int a, int b) {
   }
   return a * b;
 }
-void main() { // Main function
+
+void main(void) { // Main function
   int a;
-  a = 123 + 321 * 100 / 200 - 300;
+  a = 123 + 321 * 4 / 2 - 1;
   if (a == 1) {
     print(a);
-  } 
-    while (111 < 222) {
-      a = a + 444;
-      int v = f(a, 555) + 666;
-      print(v + f(a, 777));
+  } if(a) {
+    print(a - 1);
+    int i, j;
+    i = 2;
+    j = a - 10;
+    while (i < j) {
+      i = i + 1;
+      int v = f(i, 1) + 2;
+      print(v + f(i, 2));
     }
-  
+  }
 }

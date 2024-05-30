@@ -78,7 +78,7 @@ main: type tMAIN { printf("Function MAIN Found : %s\n", yytext);
                    // printf("MAIN - address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
                    // printf("main - tNB NAME ?ADR, ADDRESS %d, NameTMP %s\n" , address_symbol-1, symbolTMP);
                    // printf("main - tNB NAME ?VAL, ADDRESS %d, NameTMP %s\n" , address_symbol-1, symbolTMP);
-                  address_main = address_instruction++;
+                  address_main = address_instruction + 1;
         }  
         BodyMain tRBRACE {  int val = find_symbol("?VAL");
                             int adr = find_symbol("?ADR");
@@ -92,7 +92,7 @@ main: type tMAIN { printf("Function MAIN Found : %s\n", yytext);
                             else{
                                 address_variable = val;
                             }
-                          
+                            printf("holaaaaa");
                             add_instruction( "COP", address_instruction, address_variable , address_symbol_previous , 0 );
                             add_instruction( "RET", address_instruction, 0 , 0 , 0 );
                             add_instruction( "RET", address_instruction, 0 , 0 , 0 );
@@ -252,20 +252,7 @@ while : tWHILE tLPAR condition tRPAR { //int jmf_index = instruction_table->size
                       //                   printf("WHILE - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
                                       }
                                       push(instruction_table->size - 1);
-        } whileStructure 
- ;
- 
- whileStructure : tLBRACE structure tRBRACE { int jmf_index = pop(); // GET THE ADDRESS OF JMF ON THE INSTRUCTION TABLE - WHERE IF STARTS
-              //                                  printf("WHILE UPDATE - AFTER jmf_index %d\n", jmf_index);
-                                              if (jmf_index != -1) {
-                                                  update_instruction("JMF", jmf_index, idJMF, address_instruction, 0); // UPDATE INSTRUCTION TABLE WITH THE ADDRESS WHERE IF ENDS. LOOK FOR THE JMP + jmf_index IN THE INSTRUCTION, THEN UPDATE.
-                                              } 
-                                              if (idJMF >=  varFirstIF && address_symbol != 0 ){  // DELETE ALL TEMPORAL VARIABLE OF THIS IF SECTION
-                                              delete_symbol(address_symbol_previous);
-                                              }
-              //                                   printf("ifStructure - AFTER AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
-                  }
-                | tLBRACE returnStatement tRBRACE { int jmf_index = pop(); // GET THE ADDRESS OF JMF ON THE INSTRUCTION TABLE - WHERE IF STARTS
+        } whileStructure tRBRACE { int jmf_index = pop(); // GET THE ADDRESS OF JMF ON THE INSTRUCTION TABLE - WHERE IF STARTS
                                               if (jmf_index != -1) {
                                                   update_instruction("JMF", jmf_index, idJMF, address_instruction, 0); // UPDATE INSTRUCTION TABLE WITH THE ADDRESS WHERE IF ENDS. LOOK FOR THE JMP + jmf_index IN THE INSTRUCTION, THEN UPDATE.
                                               } 
@@ -274,6 +261,19 @@ while : tWHILE tLPAR condition tRPAR { //int jmf_index = instruction_table->size
                                               }
                 //                                  printf("ifStructure - AFTER AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
 }
+ ;
+ 
+ whileStructure : tLBRACE structure /* { int jmf_index = pop(); // GET THE ADDRESS OF JMF ON THE INSTRUCTION TABLE - WHERE IF STARTS
+              //                                  printf("WHILE UPDATE - AFTER jmf_index %d\n", jmf_index);
+                                              if (jmf_index != -1) {
+                                                  update_instruction("JMF", jmf_index, idJMF, address_instruction, 0); // UPDATE INSTRUCTION TABLE WITH THE ADDRESS WHERE IF ENDS. LOOK FOR THE JMP + jmf_index IN THE INSTRUCTION, THEN UPDATE.
+                                              } 
+                                              if (idJMF >=  varFirstIF && address_symbol != 0 ){  // DELETE ALL TEMPORAL VARIABLE OF THIS IF SECTION
+                                              delete_symbol(address_symbol_previous);
+                                              }
+              //                                   printf("ifStructure - AFTER AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                  } */
+                | tLBRACE returnStatement 
 ;
 
 if: tIF tLPAR condition tRPAR { //int jmf_index = instruction_table->size - 1;
@@ -303,7 +303,7 @@ ifStructure : tLBRACE structure tRBRACE { int jmf_index = pop(); // Obtener el √
                                           //printf("jmf_index UPDATE %d\n", jmf_index);
                                           //printf("address_instruction UPDATE %d\n", address_instruction);
                                           if (jmf_index != -1) {
-                                              //printf("ACTUALIZANDO...");
+                                              // printf("ACTUALIZANDO JMF...\n");
                                               update_instruction("JMF", jmf_index, idJMF, address_instruction, 0); // Actualizar la instrucci√≥n JMF
                                           } 
                                           
@@ -484,7 +484,7 @@ argListName : tID { add_symbol("tmp" , nameFunction, 0);
                                 global_number = address_symbol_previous;
                                 args_operation = 1;
                                 delete_symbol(address_symbol_previous);
-                                add_instruction("ADD", 0, address_symbol_previous, address_symbol_previous, address_symbol);
+                                add_instruction("ADD", address_instruction, address_symbol_previous, address_symbol_previous, address_symbol);
         }
 ;
 

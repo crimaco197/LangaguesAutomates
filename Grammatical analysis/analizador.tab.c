@@ -1598,7 +1598,7 @@ yyreduce:
     {
         case 5:
 #line 70 "analizador.y"
-    { add_instruction( "RET", 0, 0 , 0 , 0 ); ;}
+    { add_instruction( "RET", address_instruction, 0 , 0 , 0 ); ;}
     break;
 
   case 6:
@@ -1607,7 +1607,7 @@ yyreduce:
               nameFunction = "main"; 
               add_symbol("?ADR", nameFunction);
               add_symbol("?VAL", nameFunction);
-              address_main = address_instruction++;
+              address_main = address_instruction + 1;
             ;}
     break;
 
@@ -1616,13 +1616,13 @@ yyreduce:
     { address_variable = find_symbol(nameID);
                         address_symbol_previous = address_symbol;
                         printf("tRBRACE - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
-                        add_instruction( "COP", 0, address_variable , address_symbol_previous , 0 );
-                        add_instruction( "RET", 0, 0 , 0 , 0 );
+                        add_instruction( "COP", address_instruction, address_variable , address_symbol_previous , 0 );
+                        add_instruction( "RET", address_instruction, 0 , 0 , 0 );
                         delete_symbol(address_variable);
                         delete_symbol(find_symbol("?VAL"));
                         delete_last_symbol(find_symbol("?ADR"));
                         update_instruction("JMP", varFirstJMP, address_main, 0,0 );  // todo - encontrar la direccion del MAIN
-                        add_instruction( "NOP", 0, 0 , 0 , 0 );  
+                        add_instruction( "NOP", address_instruction, 0 , 0 , 0 );  
 ;}
     break;
 
@@ -1652,7 +1652,7 @@ yyreduce:
 
   case 13:
 #line 106 "analizador.y"
-    { add_instruction( "NOP", 0, 0 , 0 , 0 );  ;}
+    { add_instruction( "NOP", address_instruction, 0 , 0 , 0 );  ;}
     break;
 
   case 14:
@@ -1668,10 +1668,10 @@ yyreduce:
                                                 add_symbol("tmp", nameFunction);
                                                 address_symbol_previous = address_symbol;
                                                 printf("structure - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
-                                                add_instruction( "PUSH", 0, adr , 0 , 0 ); 
-                                                add_instruction( "CALL", 0, address_function , 0 , 0 );
-                                                add_instruction( "POP", 0, adr, 0 , 0 );
-                                                add_instruction( "COP", 0, address_variable , address_symbol_previous , 0 );
+                                                add_instruction( "PUSH", address_instruction, adr , 0 , 0 ); 
+                                                add_instruction( "CALL", address_instruction, address_function , 0 , 0 );
+                                                add_instruction( "POP", address_instruction, adr, 0 , 0 );
+                                                add_instruction( "COP", address_instruction, address_variable , address_symbol_previous , 0 );
                                                 delete_symbol(address_variable);
             ;}
     break;
@@ -1702,8 +1702,8 @@ yyreduce:
                                          process_arithmetic_instructions();
                                      //    delete_symbol(address_symbol_previous);
                                     //      add_instruction( "COP", 0, address_variable , address_symbol_previous , 0 );
-                                    add_instruction( "COP", 0, address_variable , address_symbol_previous , 0 );
-                                    add_instruction( "RET", 0, 0 , 0 , 0 );
+                                    add_instruction( "COP", address_instruction, address_variable , address_symbol_previous , 0 );
+                                    add_instruction( "RET", address_instruction, 0 , 0 , 0 );
                                           in_arithmetic_operation = 0;
                                   // comment          delete_symbol(address_symbol); 
             ;}
@@ -1777,7 +1777,7 @@ yyreduce:
                                          //   printf("find_symbol($1) : %s\n", $1);
                                          process_arithmetic_instructions();
                                      //    delete_symbol(address_symbol_previous);
-                                          add_instruction( "COP", 0, address_variable , address_symbol_previous , 0 );
+                                          add_instruction( "COP", address_instruction, address_variable , address_symbol_previous , 0 );
                                           in_arithmetic_operation = 0;
                                   // comment          delete_symbol(address_symbol); 
             ;}
@@ -1816,10 +1816,10 @@ yyreduce:
                                        // int val = find_symbol("!VAL");
                                        address_variable = adr;
                                        address_symbol_previous = address_symbol;
-                                       add_instruction( "PUSH", 0, adr , 0 , 0 ); 
-                                       add_instruction( "CALL", 0, address_function , 0 , 0 );
-                                       add_instruction( "POP", 0, adr, 0 , 0 );
-                                       add_instruction( "COP", 0, address_variable , address_symbol_previous , 0 );
+                                       add_instruction( "PUSH", address_instruction, adr , 0 , 0 ); 
+                                       add_instruction( "CALL", address_instruction, address_function , 0 , 0 );
+                                       add_instruction( "POP", address_instruction, adr, 0 , 0 );
+                                       add_instruction( "COP", address_instruction, address_variable , address_symbol_previous , 0 );
                                 }
                                 add_symbol("tmp" , nameFunction); 
                                 printf("argsName address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
