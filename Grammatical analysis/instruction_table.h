@@ -15,9 +15,9 @@ typedef struct Instruction {
 // TABLE TO STOCK INSTRUCTIONS
 typedef struct ArithmeticInstruction {
     char *name;
+    int result;  // changed
     int operand1;
     int operand2;
-    int result;
     struct ArithmeticInstruction *next;
 } ArithmeticInstruction;
 
@@ -48,7 +48,8 @@ char* find_instruction(InstructionTable *table, char *name);
 void print_instruction_table();
 
 // TABLE TO STOCK ARTIHMETIC INSTRUCTIONS 
-void add_arithmetic_instruction(char *name, int operand1, int operand2, int result);
+/* void add_arithmetic_instruction(char *name, int operand1, int operand2, int result); */
+void add_arithmetic_instruction(char *name, int result, int operand1, int operand2);
 void process_arithmetic_instructions();
 void print_arithmetic_instruction_table();
 

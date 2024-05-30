@@ -21,6 +21,10 @@ extern int numberID;   // to save the last variable TMP operated
 
 extern char *nameFunction;
 
+extern int address_operand1;
+extern int address_operand2;
+extern int address_result;
+
 
 extern char *yytext;                // last ID read
 extern int yylineno;                // number line of program

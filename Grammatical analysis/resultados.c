@@ -25,11 +25,11 @@ Name: MUL, Number Register: 4, Adress Memory: 4, Val: 5
 Name: ADD, Number Register: 3, Adress Memory: 3, Val: 4
 Name: COP, Number Register: 0, Adress Memory: 3, Val: 0
 Name: NOP, Number Register: 0, Adress Memory: 0, Val: 0
-SIZE : 11
+SIZE : 11  OK
 -------------------
 
 void test1 (){
-  int a = 0;
+  int a = 8;
    if (a) { a = 6; }
 } 
 
@@ -41,14 +41,14 @@ Name: a, Type: int, Adress: 0
 -------------------
 Instruction Table:
 -------------------
-Name: AFC, Number Register: 1, Adress Memory: 0, Val: 0
+Name: AFC, Number Register: 1, Adress Memory: 8, Val: 0
 Name: COP, Number Register: 0, Adress Memory: 1, Val: 0
 Name: COP, Number Register: 1, Adress Memory: 0, Val: 0
 Name: JMF, Number Register: 1, Adress Memory: 6, Val: 0
 Name: AFC, Number Register: 1, Adress Memory: 6, Val: 0
 Name: COP, Number Register: 0, Adress Memory: 1, Val: 0
 Name: NOP, Number Register: 0, Adress Memory: 0, Val: 0
-SIZE : 7
+SIZE : 7  OK
 -------------------
 
  void test2 (){
@@ -81,7 +81,7 @@ Name: COP, Number Register: 0, Adress Memory: 1, Val: 0
 Name: AFC, Number Register: 1, Adress Memory: 7, Val: 0
 Name: COP, Number Register: 0, Adress Memory: 1, Val: 0
 Name: NOP, Number Register: 0, Adress Memory: 0, Val: 0
-SIZE : 13
+SIZE : 13  OK
 -------------------
 
 
@@ -110,17 +110,17 @@ Name: COP, Number Register: 1, Adress Memory: 2, Val: 0
 Name: COP, Number Register: 2, Adress Memory: 1, Val: 0
 Name: JMF, Number Register: 2, Adress Memory: 10, Val: 0
 Name: AFC, Number Register: 3, Adress Memory: 9, Val: 0
-Name: COP, Number Register: 2, Adress Memory: 3, Val: 0
+Name: COP, Number Register: 2, Adress Memory: 3, Val: 0 
 Name: NOP, Number Register: 0, Adress Memory: 0, Val: 0
 SIZE : 11
 -------------------
 
 
 int f (int a) {
-    return a + 2;
+    return a + 222;
 }
 int main() {
-    int a = f(2);
+    int a = f(333);
 }
 
 TEST - 4
@@ -137,7 +137,7 @@ Name: ADD, Number Register: 3, Adress Memory: 3, Val: 4
 Name: COP, Number Register: 1, Adress Memory: 3, Val: 0
 Name: RET, Number Register: 0, Adress Memory: 0, Val: 0
 Name: RET, Number Register: 0, Adress Memory: 0, Val: 0
-Name: AFC, Number Register: 5, Adress Memory: 2, Val: 0
+Name: AFC, Number Register: 5, Adress Memory: 2, Val: 0 **
 Name: PUSH, Number Register: 3, Adress Memory: 0, Val: 0
 Name: CALL, Number Register: 1, Adress Memory: 0, Val: 0
 Name: POP, Number Register: 3, Adress Memory: 0, Val: 0
@@ -146,7 +146,7 @@ Name: COP, Number Register: 2, Adress Memory: 3, Val: 0
 Name: RET, Number Register: 0, Adress Memory: 0, Val: 0
 Name: RET, Number Register: 0, Adress Memory: 0, Val: 0
 Name: NOP, Number Register: 0, Adress Memory: 0, Val: 0
-SIZE : 15
+SIZE : 16 OK -
 -------------------
 
 
@@ -197,7 +197,7 @@ Name: COP, Number Register: 1, Adress Memory: 2, Val: 0
 Name: RET, Number Register: 0, Adress Memory: 0, Val: 0
 Name: RET, Number Register: 0, Adress Memory: 0, Val: 0
 Name: NOP, Number Register: 0, Adress Memory: 0, Val: 0
-SIZE : 27
+SIZE : 27  OK !
 -------------------
 
 

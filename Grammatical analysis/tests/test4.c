@@ -1,8 +1,8 @@
 int test4 (int a) {
-    return a + 2;
+    return a + 222;
 }
 int main() {
-    int a = f(2);
+    int a = f(33);
 }
 
 /*

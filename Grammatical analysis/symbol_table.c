@@ -64,7 +64,7 @@ int find_symbol_by_number(int valorr) {
         printf("Symbol table is not initialized.\n");
         return -1;
     }
-    
+
     printf("RETURN find_symbol_by_number - valor %d\n", valorr);
     for (int i = 0; i < symbol_table->size; ++i) {
         Symbol symbol = symbol_table->symbols[i];  // we get the symbol stocked in i
@@ -81,7 +81,7 @@ int find_symbol_by_number(int valorr) {
 void delete_symbol(int index) {
    //  int index = find_symbol(name); 
    if (symbol_table->size == 1) {
-        printf("No se puede eliminar el único símbolo restante.\n");
+        printf("Last element on the Symbol Table can not be deleted.\n");
         return;
     }
 

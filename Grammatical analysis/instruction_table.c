@@ -91,11 +91,12 @@ void print_instruction_table() {
 ArithmeticInstruction *arithmetic_instructions = NULL;
 
 // TODO - COMMENTS AND UNDERSTAND HOW IT WORKS.
-void add_arithmetic_instruction(char *name, int operand1, int operand2, int result) {
+//void add_arithmetic_instruction(char *name, int operand1, int operand2, int result) { 
+void add_arithmetic_instruction(char *name, int result, int operand1, int operand2) {
     ArithmeticInstruction *new_instruction = malloc(sizeof(ArithmeticInstruction));
 //    delete_symbol(result);
 
-    printf("add_arithmetic_instruction - address_symbol_previous: %d, address_symbol: %d\n", operand1, result);
+    // printf("AGREGANDO OPERACION - NAME : %s , result : %d , operand1 : %d , operand2 : %d\n", name  , result , operand1, operand2);
     new_instruction->name = strdup(name);
     new_instruction->operand1 = operand1;
     new_instruction->operand2 = operand2;
@@ -108,19 +109,22 @@ void add_arithmetic_instruction(char *name, int operand1, int operand2, int resu
 void process_arithmetic_instructions() {
     ArithmeticInstruction *current = arithmetic_instructions;
     int last_operand1_value = 0; // Variable para almacenar el último valor de operand1
-    int result = 0;
+    int operand2 = 0;
     while (current != NULL) {
         last_operand1_value = current->operand1; // Almacenar el valor de operand1
-        result = current->result;
+        // result = current->result;
+        operand2 = current->operand2;
        //  printf("Operand1 Value: %d\n", last_operand1_value);
         
-        add_instruction(current->name, 0, current->operand1, current->operand2, current->result);
+        // add_instruction(current->name, 0, current->operand1, current->operand2, current->result);
+        add_instruction(current->name, 0 , current->result, current->operand1, current->operand2);
         ArithmeticInstruction *temp = current;
         current = current->next;
         free(temp->name);
         free(temp);
-        printf("result : %d\n" , result);
-        delete_symbol(result);  // it is gonna delete all the tmp but not the last one, the last tmp is deleted after doing COP
+        // printf("DELETING TMP : %d\n" , operand2);
+        delete_symbol(operand2);  // comentado
+        //delete_symbol(result);  // it is gonna delete all the tmp but not the last one, the last tmp is deleted after doing COP
     }
     
 
@@ -182,7 +186,7 @@ int pop() {
 // Function to print the stack
 void print_stack() {
     StackNode *current = jmf_stack;
-    printf("Stack content:\n");
+    printf("Stack content : ");
     while (current != NULL) {
         printf("%d -> ", current->index);
         current = current->next;
