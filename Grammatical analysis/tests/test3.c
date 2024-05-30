@@ -1,5 +1,5 @@
 
-void test2(){
+void test3(){
 int a = 7;
 if (a) { 
   int b =8;

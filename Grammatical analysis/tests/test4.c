@@ -1,4 +1,4 @@
-int f (int a) {
+int test4 (int a) {
     return a + 2;
 }
 int main() {

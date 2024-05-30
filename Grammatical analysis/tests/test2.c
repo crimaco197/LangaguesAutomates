@@ -1,4 +1,4 @@
- void test1 (){
+ void test2 (){
   int a = 8;
   if (a) { 
     a = 0;

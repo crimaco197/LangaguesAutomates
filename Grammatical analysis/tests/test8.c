@@ -1,5 +1,7 @@
 void kuku() { // Main function
-  int a, b, c;
-  // a = 123 + 321 * 100 / 200 - 300;
-   a = a + b * c / d - e;
+int a = 10, b = 20, c = 30;
+
+
+  a = 1, b   = 0;
+
 }

@@ -1,4 +1,4 @@
-int fact(int a) {
+int test5(int a) {
     if (a) { 
         return fact(a - 1) * a;
         }
