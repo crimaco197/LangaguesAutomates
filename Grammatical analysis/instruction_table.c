@@ -58,19 +58,25 @@ void update_instruction(char *name, int indexInstruction, int numberRegister, in
 
 // Print Table Instruction
 void print_instruction_table() {
-    printf("Instruction Table:\n");
-    printf("-------------------\n");
+    printf("|--------------------------------------------------------|\n");
+    printf("|                 ASSEMBLY INSTRUCTION TABLE             |\n");
+    printf("|--------------------------------------------------------|\n");
+	printf("|   Instruction   |   Operand 1  |  Operand 2  |  Other  |\n");
+	printf("|--------------------------------------------------------|\n");
     for (int i = 0; i < instruction_table->size; ++i) {
         Instruction instruction = instruction_table->instructions[i];
 
   //      printf("Name: %s", instruction.name);
-
-        printf("Name: %s, Number Register: %d, Adress Memory: %d, Val: %d\n", instruction.name, instruction.numberRegister , instruction.addressMemory, instruction.valNonDefined);
+        printf("|%17s|%14d|%13d|%9d|\n", instruction.name, instruction.numberRegister , instruction.addressMemory, instruction.valNonDefined);
+      //  printf("Name: %s, Number Register: %d, Adress Memory: %d, Val: %d\n", instruction.name, instruction.numberRegister , instruction.addressMemory, instruction.valNonDefined);
 
     }
-    printf("SIZE : %d\n", instruction_table->size);
-    printf("-------------------\n");
+    printf("|--------------------------------------------------------|\n");
+    printf("| SIZE : %48d|\n", instruction_table->size);
+    printf("|--------------------------------------------------------|\n");
 }
+
+
 
 
 /*********************************************************************************************************/
@@ -129,14 +135,18 @@ void process_arithmetic_instructions() {
 // Print Arithmetic Instructions
 void print_arithmetic_instruction_table() {
     ArithmeticInstruction *current = arithmetic_instructions;
-    printf("Arithmetic Instruction Table:\n");
-    printf("-------------------\n");
+    printf("|---------------------------------------------------------|\n");
+    printf("|               ARITHMETIC INSTRUCTION TABLE              |\n");
+    printf("|---------------------------------------------------------|\n");
+	printf("|   Instruction   |   Operand 1  |  Operand 2  |  Result  |\n");
+	printf("|---------------------------------------------------------|\n");
     while (current != NULL) {
-        printf("Name: %s, Operand1: %d, Operand2: %d, Result: %d\n", current->name, current->operand1, current->operand2, current->result);
+        printf("|%17s|%14d|%13d|%10d|\n", current->name, current->operand1, current->operand2, current->result);
         current = current->next;
     }
-    printf("-------------------\n");
+    printf("|---------------------------------------------------------|\n");
 }
+
 
 
 /*********************************************************************************************************/

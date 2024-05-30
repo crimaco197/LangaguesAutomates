@@ -1707,7 +1707,7 @@ yyreduce:
                                                 int val = find_symbol("!VAL");
                                                 //printf("structure - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
                                                 address_variable = adr;
-                                                printf("BodyMain - BEFORE val : %d, adr : %d \n", val, adr);
+                                                // printf("BodyMain - BEFORE val : %d, adr : %d \n", val, adr);
                                                 delete_symbol(val);  // DELETE !VAL
                                                 delete_symbol(adr);  // DELETE !ADR
                                                 //printf("structure - HALF address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);

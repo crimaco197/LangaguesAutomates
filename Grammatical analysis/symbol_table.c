@@ -101,16 +101,18 @@ void delete_last_symbol(int index) {
 
 // Print Table Symbol
 void print_symbol_table() {
-    printf("Symbol Table:\n");
-    printf("-------------------\n");
+    printf("|------------------------------------|\n");
+    printf("|           SYMBOL TABLE             |\n");
+    printf("|------------------------------------|\n");
+	printf("|   Name   |   Adresse  |  Function  |\n");
+	printf("|------------------------------------|\n");
     for (int i = 0; i < symbol_table->size; ++i) {
         Symbol symbol = symbol_table->symbols[i];
+    printf("|%10s|%12d|%12s|\n", symbol.name, symbol.address , symbol.type );
+    //        printf("Name: %s, Type: %s\n", symbol.name, symbol.type);
 
-//        printf("Name: %s, Type: %s\n", symbol.name, symbol.type);
-
-        printf("Name: %s, Type: %s, Adress: %d\n", symbol.name, symbol.type , symbol.address);
+    //    printf("Name: %s, Type: %s, Adress: %d\n", symbol.name, symbol.address , symbol.type );
 
     }
-    printf("-------------------\n");
+    printf("|------------------------------------|\n");
 }
-
