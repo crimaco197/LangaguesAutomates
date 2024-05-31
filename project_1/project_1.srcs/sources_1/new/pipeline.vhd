@@ -43,7 +43,6 @@ entity pipeline is
         out_C : out STD_LOGIC_VECTOR (7 downto 0);
         CLK : in STD_LOGIC;
         RST : in STD_LOGIC;
-        enable : in STD_LOGIC;
         nop : in STD_LOGIC
     );
 end pipeline;

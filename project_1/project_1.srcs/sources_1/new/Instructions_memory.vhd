@@ -39,7 +39,7 @@ entity Instructions_memory is
         ad : in std_logic_vector(7 downto 0);          -- Address input
         CLK : in std_logic;                            -- Clock input
         S : out std_logic_vector(31 downto 0) ;      -- Data output
-        entre : in std_logic_vector(7 downto 0);       -- Branch address input
+        ad_branch : in std_logic_vector(7 downto 0);       -- Branch address input
         lock : in std_logic;                           -- Lock signal for controlling read
         branch_taken : in std_logic                    -- Signal indicating if branch is taken
     );
@@ -49,12 +49,12 @@ architecture Behavioral of Instructions_memory is
 
     -- Define memory as an array of 256 entries, each 32 bits wide
     type memory_array is array(0 to 255) of std_logic_vector(31 downto 0);
-    signal Mem : memory_array := (
-        x"06030200",  -- NOP ou instruction non définie
+    signal Mem_inst : memory_array := (
+        x"00000000",  -- NOP ou instruction non définie
         x"00000000", 
-        x"06050600", 
         x"00000000", 
-        x"08040300",
+        x"06050200",     -- AFC 05 02
+        x"01080305",     -- ADD 08 05 03
         x"00000000",  -- ADD R2, R3, R4
         x"00000000",
  --       x"00000000",
@@ -81,9 +81,9 @@ begin
        
            if (lock ='1') then 
             if (branch_taken='0') then 
-            Aux <= Mem(to_integer(unsigned(entre)));    
+            Aux <= Mem_inst(to_integer(unsigned(ad_branch)));   --ad_branch est la ligne de l'instru à lire au cas d'un brancheemnt (jmp)
             else  
-             Aux <= Mem(to_integer(unsigned(ad))); 
+             Aux <= Mem_inst(to_integer(unsigned(ad))); 
             
         end if;
         end if;

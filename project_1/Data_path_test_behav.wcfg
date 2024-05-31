@@ -10,15 +10,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="980.750 ns"></ZoomStartTime>
-      <ZoomEndTime time="1,003.851 ns"></ZoomEndTime>
+      <ZoomStartTime time="316.666 ns"></ZoomStartTime>
+      <ZoomEndTime time="1,136.667 ns"></ZoomEndTime>
       <Cursor1Time time="1,000.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="276"></NameColumnWidth>
-      <ValueColumnWidth column_width="92"></ValueColumnWidth>
+      <ValueColumnWidth column_width="84"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="40" />
+   <WVObjectSize size="32" />
    <wvobject type="array" fp_name="/Data_path_test/uut/INS_MEM/ad">
       <obj_property name="ElementShortName">ad[7:0]</obj_property>
       <obj_property name="ObjectShortName">ad[7:0]</obj_property>
@@ -31,10 +31,6 @@
       <obj_property name="ElementShortName">S[31:0]</obj_property>
       <obj_property name="ObjectShortName">S[31:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/Data_path_test/uut/INS_MEM/entre">
-      <obj_property name="ElementShortName">entre[7:0]</obj_property>
-      <obj_property name="ObjectShortName">entre[7:0]</obj_property>
-   </wvobject>
    <wvobject type="logic" fp_name="/Data_path_test/uut/INS_MEM/lock">
       <obj_property name="ElementShortName">lock</obj_property>
       <obj_property name="ObjectShortName">lock</obj_property>
@@ -44,28 +40,16 @@
       <obj_property name="ObjectShortName">branch_taken</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/Data_path_test/uut/INS_MEM/Mem">
-      <obj_property name="ElementShortName">Mem[255:0][31:0]</obj_property>
-      <obj_property name="ObjectShortName">Mem[255:0][31:0]</obj_property>
+      <obj_property name="ElementShortName">Mem[0:255][31:0]</obj_property>
+      <obj_property name="ObjectShortName">Mem[0:255][31:0]</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/Data_path_test/uut/INS_MEM/Aux">
       <obj_property name="ElementShortName">Aux[31:0]</obj_property>
       <obj_property name="ObjectShortName">Aux[31:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_LI_DI/in_A">
-      <obj_property name="ElementShortName">in_A[7:0]</obj_property>
-      <obj_property name="ObjectShortName">in_A[7:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_LI_DI/in_B">
-      <obj_property name="ElementShortName">in_B[7:0]</obj_property>
-      <obj_property name="ObjectShortName">in_B[7:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_LI_DI/in_OP">
-      <obj_property name="ElementShortName">in_OP[7:0]</obj_property>
-      <obj_property name="ObjectShortName">in_OP[7:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_LI_DI/in_C">
-      <obj_property name="ElementShortName">in_C[7:0]</obj_property>
-      <obj_property name="ObjectShortName">in_C[7:0]</obj_property>
+   <wvobject type="array" fp_name="/Data_path_test/uut/Data_Memory_unit/registre">
+      <obj_property name="ElementShortName">registre[0:255][7:0]</obj_property>
+      <obj_property name="ObjectShortName">registre[0:255][7:0]</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/Data_path_test/uut/LVL_LI_DI/out_A">
       <obj_property name="ElementShortName">out_A[7:0]</obj_property>
@@ -83,22 +67,6 @@
       <obj_property name="ElementShortName">out_C[7:0]</obj_property>
       <obj_property name="ObjectShortName">out_C[7:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_DI_EX/in_A">
-      <obj_property name="ElementShortName">in_A[7:0]</obj_property>
-      <obj_property name="ObjectShortName">in_A[7:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_DI_EX/in_B">
-      <obj_property name="ElementShortName">in_B[7:0]</obj_property>
-      <obj_property name="ObjectShortName">in_B[7:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_DI_EX/in_OP">
-      <obj_property name="ElementShortName">in_OP[7:0]</obj_property>
-      <obj_property name="ObjectShortName">in_OP[7:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_DI_EX/in_C">
-      <obj_property name="ElementShortName">in_C[7:0]</obj_property>
-      <obj_property name="ObjectShortName">in_C[7:0]</obj_property>
-   </wvobject>
    <wvobject type="array" fp_name="/Data_path_test/uut/LVL_DI_EX/out_A">
       <obj_property name="ElementShortName">out_A[7:0]</obj_property>
       <obj_property name="ObjectShortName">out_A[7:0]</obj_property>
@@ -114,22 +82,6 @@
    <wvobject type="array" fp_name="/Data_path_test/uut/LVL_DI_EX/out_C">
       <obj_property name="ElementShortName">out_C[7:0]</obj_property>
       <obj_property name="ObjectShortName">out_C[7:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_EX_MEM/in_A">
-      <obj_property name="ElementShortName">in_A[7:0]</obj_property>
-      <obj_property name="ObjectShortName">in_A[7:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_EX_MEM/in_B">
-      <obj_property name="ElementShortName">in_B[7:0]</obj_property>
-      <obj_property name="ObjectShortName">in_B[7:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_EX_MEM/in_OP">
-      <obj_property name="ElementShortName">in_OP[7:0]</obj_property>
-      <obj_property name="ObjectShortName">in_OP[7:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_EX_MEM/in_C">
-      <obj_property name="ElementShortName">in_C[7:0]</obj_property>
-      <obj_property name="ObjectShortName">in_C[7:0]</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/Data_path_test/uut/LVL_EX_MEM/out_A">
       <obj_property name="ElementShortName">out_A[7:0]</obj_property>
@@ -147,22 +99,6 @@
       <obj_property name="ElementShortName">out_C[7:0]</obj_property>
       <obj_property name="ObjectShortName">out_C[7:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_MEM_RE/in_A">
-      <obj_property name="ElementShortName">in_A[7:0]</obj_property>
-      <obj_property name="ObjectShortName">in_A[7:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_MEM_RE/in_B">
-      <obj_property name="ElementShortName">in_B[7:0]</obj_property>
-      <obj_property name="ObjectShortName">in_B[7:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_MEM_RE/in_OP">
-      <obj_property name="ElementShortName">in_OP[7:0]</obj_property>
-      <obj_property name="ObjectShortName">in_OP[7:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/Data_path_test/uut/LVL_MEM_RE/in_C">
-      <obj_property name="ElementShortName">in_C[7:0]</obj_property>
-      <obj_property name="ObjectShortName">in_C[7:0]</obj_property>
-   </wvobject>
    <wvobject type="array" fp_name="/Data_path_test/uut/LVL_MEM_RE/out_A">
       <obj_property name="ElementShortName">out_A[7:0]</obj_property>
       <obj_property name="ObjectShortName">out_A[7:0]</obj_property>
@@ -178,5 +114,37 @@
    <wvobject type="array" fp_name="/Data_path_test/uut/LVL_MEM_RE/out_C">
       <obj_property name="ElementShortName">out_C[7:0]</obj_property>
       <obj_property name="ObjectShortName">out_C[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/Banc_registers/Ad_A">
+      <obj_property name="ElementShortName">Ad_A[3:0]</obj_property>
+      <obj_property name="ObjectShortName">Ad_A[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/Banc_registers/Ad_B">
+      <obj_property name="ElementShortName">Ad_B[3:0]</obj_property>
+      <obj_property name="ObjectShortName">Ad_B[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/Banc_registers/Ad_W">
+      <obj_property name="ElementShortName">Ad_W[3:0]</obj_property>
+      <obj_property name="ObjectShortName">Ad_W[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/Data_path_test/uut/Banc_registers/W">
+      <obj_property name="ElementShortName">W</obj_property>
+      <obj_property name="ObjectShortName">W</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/Banc_registers/DATA">
+      <obj_property name="ElementShortName">DATA[7:0]</obj_property>
+      <obj_property name="ObjectShortName">DATA[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/Banc_registers/QA">
+      <obj_property name="ElementShortName">QA[7:0]</obj_property>
+      <obj_property name="ObjectShortName">QA[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/Banc_registers/QB">
+      <obj_property name="ElementShortName">QB[7:0]</obj_property>
+      <obj_property name="ObjectShortName">QB[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/Data_path_test/uut/Banc_registers/registre">
+      <obj_property name="ElementShortName">registre[15:0][7:0]</obj_property>
+      <obj_property name="ObjectShortName">registre[15:0][7:0]</obj_property>
    </wvobject>
 </wave_config>

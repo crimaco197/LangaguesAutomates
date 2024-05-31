@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "otro": "c"
+        "otro": "c",
+        "declaration_var.h": "c",
+        "typeinfo": "c"
     }
 }

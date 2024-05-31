@@ -43,7 +43,6 @@ architecture Behavioral of Data_path is
         out_C : out STD_LOGIC_VECTOR (7 downto 0);
         CLK : in STD_LOGIC;
         rst : in STD_LOGIC;
-        enable : in STD_LOGIC;
         nop : in STD_LOGIC 
        );
     end component;
@@ -52,7 +51,7 @@ architecture Behavioral of Data_path is
         Port ( ad : in std_logic_vector (7 downto 0);
                CLK : in std_logic;
                S : out std_logic_vector (31 downto 0);
-               entre : in STD_LOGIC_VECTOR (7 downto 0);
+               ad_branch  : in STD_LOGIC_VECTOR (7 downto 0);
                lock : in STD_LOGIC;
                branch_taken : in STD_LOGIC 
        );
@@ -94,14 +93,12 @@ architecture Behavioral of Data_path is
 
     -- Signal declarations
     signal IP : STD_LOGIC_VECTOR (7 downto 0) := x"00";           -- Instruction Pointer
-    signal out_I : STD_LOGIC_VECTOR (31 downto 0);                -- Current Instruction
+    signal OUT_InstMemory : STD_LOGIC_VECTOR (31 downto 0);                -- Current Instruction
 
     -- Pipeline stage signals
-    signal li_di_A, li_di_B, li_di_OP, li_di_C : STD_LOGIC_VECTOR (7 downto 0);   -- LI/DI stage
+    signal li_di_A, li_di_B_OUT, li_di_OP, li_di_C_OUT : STD_LOGIC_VECTOR (7 downto 0);   -- LI/DI stage
     signal di_ex_A, di_ex_B, di_ex_OP, di_ex_C : STD_LOGIC_VECTOR (7 downto 0);   -- DI/EX stage
-    signal di_ex_enable : std_logic := '0';                     -- DI/EX enable signal
     signal di_ex_nop : std_logic := '1';                        -- DI/EX NOP signal
-    signal li_di_enable : std_logic := '0';                     -- LI/DI enable signal
     signal li_di_nop : std_logic := '1';                        -- LI/DI NOP signal
 
     signal LC_UAL : STD_LOGIC_VECTOR (2 downto 0);              -- ALU control signal
@@ -109,14 +106,12 @@ architecture Behavioral of Data_path is
     signal S_UAL : STD_LOGIC_VECTOR (7 downto 0);               -- ALU result
 
     signal ex_mem_A, ex_mem_B, ex_mem_OP, ex_mem_C : STD_LOGIC_VECTOR (7 downto 0);  -- EX/MEM stage
-    signal ex_mem_enable : std_logic := '0';                    -- EX/MEM enable signal
     signal ex_mem_nop : std_logic := '1';                       -- EX/MEM NOP signal
 
     signal LC_DM : STD_LOGIC;                                   -- Data Memory control signal
-    signal OUT_DM, in_MEM, mem_re_B_IN, bd_memre_in : STD_LOGIC_VECTOR (7 downto 0);  -- Data Memory signals
+    signal OUT_DM, in_MEM, Mux_DM_OUT, Mux_DM_IN : STD_LOGIC_VECTOR (7 downto 0);  -- Data Memory signals
 
     signal mem_re_A, mem_re_B, mem_re_OP, mem_re_C : STD_LOGIC_VECTOR (7 downto 0);  -- MEM/RE stage
-    signal mem_re_enable : std_logic := '0';                    -- MEM/RE enable signal
     signal mem_re_nop : std_logic := '1';                       -- MEM/RE NOP signal
     signal QA, QB : STD_LOGIC_VECTOR (7 downto 0);              -- Register File outputs
 
@@ -132,18 +127,12 @@ architecture Behavioral of Data_path is
 
 begin
 
-    -- Instruction memory instantiation
-    INS_MEM : Instructions_memory
-        port map ( ad => IP,
-                   CLK => CLK,
-                   S => out_I,
-                   entre => out_I(23 downto 16),
-                   lock => alea,
-                   branch_taken => branch_taken );
+    
 
     -- Jump control logic
-    uncond_branch <= '0' when out_I(31 downto 24) = x"09" else '1';
-    branch_taken <= '0' when uncond_branch = '0' or cond_branch = '0' else '1';
+    uncond_branch <= '0' when OUT_InstMemory(31 downto 24) = x"0c" else '1';        ---gerer jmp
+    branch_taken <= '0' when uncond_branch = '0' or cond_branch = '0' else '1';     ---controle de jump (if, while ou main)
+    
 
     -- Instruction Pointer (IP) update process
     process
@@ -155,46 +144,60 @@ begin
             if (alea = '1' and uncond_branch = '1') then
                 IP <= IP + 1;
             elsif (uncond_branch = '0') then
-                IP <= out_I(23 downto 16);
+                IP <= OUT_InstMemory(23 downto 16);
             end if;
         end if;
     end process;
+    
+    -- Instruction memory instantiation
+    INS_MEM : Instructions_memory
+        port map ( ad => IP,
+                   CLK => CLK,
+                   S => OUT_InstMemory,
+                   ad_branch  => OUT_InstMemory(23 downto 16),
+                   lock => alea,
+                   branch_taken => branch_taken );
 
     -- Pipeline LI/DI stage instantiation
     LVL_LI_DI : pipeline
-        port map ( in_A => out_I(23 downto 16),
-                   in_B => out_I(15 downto 8),
-                   in_OP => out_I(31 downto 24),
-                   in_C => out_I(7 downto 0),
+        port map ( 
+                   in_C => OUT_InstMemory(7 downto 0),  -- in B
+                   in_B => OUT_InstMemory(15 downto 8), -- in A
+                   in_A => OUT_InstMemory(23 downto 16),
+                   in_OP => OUT_InstMemory(31 downto 24),
+                   
                    out_A => li_di_A,
-                   out_B => li_di_B,
+                   out_B => li_di_B_OUT,
                    out_OP => li_di_OP,
-                   out_C => li_di_C,
+                   out_C => li_di_C_OUT,
                    CLK => CLK,
                    RST => RST,
-                   enable => '1',
                    nop => alea );
-
-    -- Decoding stage: control signals
-    di_ex_B_IN <= QA when li_di_OP = x"01" or li_di_OP = x"02" or 
-                       li_di_OP = x"03" or li_di_OP = x"05" or 
-                       li_di_OP = x"08" else li_di_B;
-
-    di_ex_OP_IN <= x"06" when li_di_OP = x"05" else li_di_OP;
-
+    
+    -- Register file instantiation
+    Banc_registers : banc_registres
+        port map ( Ad_A => li_di_B_OUT (3 downto 0),    -- in A
+                   Ad_B => li_di_C_OUT (3 downto 0),    -- in B
+                   Ad_W => mem_re_A (3 downto 0),
+                   W => LC,
+                   DATA => mem_re_B,
+                   RST => RST,
+                   CLK => CLK,
+                   QA => QA,
+                   QB => QB );
+                   
     -- Pipeline DI/EX stage instantiation
     LVL_DI_EX : pipeline
         port map ( in_A => li_di_A,
-                   in_B => di_ex_B_IN,
-                   in_OP => di_ex_OP_IN,
-                   in_C => QB,
+                   in_B => di_ex_B_IN,  -- in A 
+                   in_OP => di_ex_OP_IN,  
+                   in_C => QB,          -- in B
                    out_A => di_ex_A,
                    out_B => di_ex_B,
                    out_OP => di_ex_OP,
                    out_C => di_ex_C,
                    CLK => CLK,
                    RST => RST,
-                   enable => '1',
                    nop => di_ex_nop );
 
     -- ALU instantiation
@@ -207,15 +210,8 @@ begin
                    C => C,
                    S => S_UAL,
                    Ctrl_Alu => LC_UAL );
-
-    -- ALU control signal
-    LC_UAL <= di_ex_OP(2 downto 0) when di_ex_OP = x"01" or di_ex_OP = x"02" or 
-                                     di_ex_OP = x"03" else "000";
-
-    -- Pipeline EX/MEM stage instantiation
-    ex_mem_B_IN <= S_UAL when di_ex_OP = x"01" or di_ex_OP = x"02" or 
-                            di_ex_OP = x"03" or di_ex_OP = x"04" else di_ex_B;
-
+                   
+    -- Pipeline EX/MEM stage instantiation               
     LVL_EX_MEM : pipeline
         port map ( in_A => di_ex_A,
                    in_B => ex_mem_B_IN,
@@ -227,29 +223,21 @@ begin
                    out_C => ex_mem_C,
                    CLK => CLK,
                    RST => RST,
-                   enable => '1',
                    nop => ex_mem_nop );
-
-    -- Data memory instantiation
-    bd_memre_in <= ex_mem_A when ex_mem_OP = x"08" else ex_mem_B;
-
+                   
+    -- DM : DATA MEMORY instantiation
     Data_Memory_unit : Data_memory
-        port map ( ad => bd_memre_in,
+        port map ( ad => Mux_DM_IN,
                    I => ex_mem_B,
                    RW => LC_DM,
                    RST => RST,
                    CLK => CLK,
                    S => OUT_DM );
-
-    -- Data memory control signal
-    LC_DM <= '0' when ex_mem_OP = x"08" else '1'; -- LOAD operation
-
-    -- Pipeline MEM/RE stage instantiation
-    mem_re_B_IN <= OUT_DM when ex_mem_OP = x"07" else ex_mem_B;
-
+                   
+    -- Pipeline MEM/RE stage instantiation                
     LVL_MEM_RE : pipeline
         port map ( in_A => ex_mem_A,
-                   in_B => mem_re_B_IN,
+                   in_B => Mux_DM_OUT,
                    in_OP => ex_mem_OP,
                    in_C => ex_mem_C,
                    out_A => mem_re_A,
@@ -258,31 +246,52 @@ begin
                    out_C => mem_re_C,
                    CLK => CLK,
                    RST => RST,
-                   enable => '1',
                    nop => mem_re_nop );
 
-    -- Control signal for register write
-    LC <= '1' when mem_re_OP = x"06" or mem_re_OP = x"01" or
-                     mem_re_OP = x"02" or mem_re_OP = x"03" or
-                     mem_re_OP = x"07" else '0';
 
-    -- Register file instantiation
-    Banc_registers : banc_registres
-        port map ( Ad_A => li_di_B (3 downto 0),
-                   Ad_B => li_di_C (3 downto 0),
-                   Ad_W => mem_re_A (3 downto 0),
-                   W => LC,
-                   DATA => mem_re_B,
-                   RST => RST,
-                   CLK => CLK,
-                   QA => QA,
-                   QB => QB );
+    -- Decoding stage: control signals
+    di_ex_B_IN <= QA when li_di_OP = x"01" or li_di_OP = x"02" or 
+                       li_di_OP = x"03" or li_di_OP = x"05" or 
+                       li_di_OP = x"08" else li_di_B_OUT;
+
+    di_ex_OP_IN <= x"06" when li_di_OP = x"05" else li_di_OP;    
+    cond_branch <= '0' when  QA = 0 and di_ex_OP_IN = x"0b" else '1';   ---pour gerer jmf 
+
+    
+    -- ALU control signal
+    LC_UAL <= di_ex_OP(2 downto 0) when di_ex_OP = x"01" or di_ex_OP = x"02" or 
+                                     di_ex_OP = x"03" else "000";
+
+    -- Pipeline EX/MEM stage instantiation
+    ex_mem_B_IN <= S_UAL when di_ex_OP = x"01" or di_ex_OP = x"02" or 
+                            di_ex_OP = x"03"  else di_ex_B;
+
+    
+
+    -- Data memory instantiation
+    Mux_DM_IN <= ex_mem_A when ex_mem_OP = x"08" else ex_mem_B;
+
+    
+
+    -- Data memory control signal
+    LC_DM <= '0' when ex_mem_OP = x"08" else '1'; -- Store operation
+
+    -- Pipeline MEM/RE stage instantiation
+    Mux_DM_OUT <= OUT_DM when ex_mem_OP = x"07" else ex_mem_B;
+
+
+    -- Control signal for register write
+    LC <= '1' when mem_re_OP = x"07" or mem_re_OP = x"06" or
+                     mem_re_OP = x"03" or mem_re_OP = x"02" or
+                     mem_re_OP = x"01" else '0';
+
+    
 
     -- Detection and management of hazards
     -- Identifies if the current instruction reads from registers
-    li_di_Read <= '1' when out_I(31 downto 24) = x"05" or out_I(31 downto 24) = x"02" or
-                       out_I(31 downto 24) = x"03" or out_I(31 downto 24) = x"08" or
-                       out_I(31 downto 24) = x"01" else '0';
+    li_di_Read <= '1' when OUT_InstMemory(31 downto 24) = x"05" or OUT_InstMemory(31 downto 24) = x"02" or
+                       OUT_InstMemory(31 downto 24) = x"03" or OUT_InstMemory(31 downto 24) = x"08" or
+                       OUT_InstMemory(31 downto 24) = x"01" else '0';
 
     -- Identifies if the current instruction writes to registers
     di_ex_Write <= '1' when li_di_OP = x"06" or li_di_OP = x"01" or li_di_OP = x"02" or
@@ -294,8 +303,8 @@ begin
 
     -- Identifies if there is a hazard
     alea <= '0' when ((li_di_Read = '1' and di_ex_Write = '1') and
-                      (li_di_A = out_I(15 downto 8) or li_di_A = out_I(7 downto 0))) or
+                      (li_di_A = OUT_InstMemory(15 downto 8) or li_di_A = OUT_InstMemory(7 downto 0))) or
                      ((li_di_Read = '1' and ex_mem_Write = '1') and
-                      (di_ex_A = out_I(15 downto 8) or di_ex_A = out_I(7 downto 0))) else '1';
+                      (di_ex_A = OUT_InstMemory(15 downto 8) or di_ex_A = OUT_InstMemory(7 downto 0))) else '1';
 
 end Behavioral;

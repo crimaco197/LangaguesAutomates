@@ -10,8 +10,8 @@ entity Register_Bank is
            Reset : in STD_LOGIC;
            Clock : in STD_LOGIC;
            Write_Enable : in STD_LOGIC;
-           Output_A : out STD_LOGIC_VECTOR (7 downto 0);
-           Output_B : out STD_LOGIC_VECTOR (7 downto 0));
+           QA : out STD_LOGIC_VECTOR (7 downto 0);
+           QB : out STD_LOGIC_VECTOR (7 downto 0));
 end Register_Bank;
 
 architecture Behavior of Register_Bank is
@@ -21,8 +21,8 @@ architecture Behavior of Register_Bank is
     signal Temp_B : STD_LOGIC_VECTOR (7 downto 0) := (others => '0');
 
 begin
-    Output_A <= Temp_A;
-    Output_B <= Temp_B;
+    QA <= Temp_A;
+    QB <= Temp_B;
 
     process
     begin
@@ -40,7 +40,7 @@ begin
                 end if;
             end if;
         else
-            Registers <= (others => (others => '0'));
+            Registers <= (others => (others => '0'));      ----si reset est à 0 , en vide les registres 
         end if;
     end process;
 

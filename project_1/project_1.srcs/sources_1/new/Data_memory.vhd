@@ -42,7 +42,7 @@ end Data_memory;
 
 architecture Behavioral of Data_memory is
 type myTab is array(0 to 255) of std_logic_vector(7 downto 0);
-signal registre : myTab := (
+signal register_memory : myTab := (
   0 => "00000001",
   1 => "00000010",
   2 => "00000011",
@@ -67,18 +67,18 @@ begin
    
         if RW = '0' then 
         -- écriture
-            registre(to_integer(unsigned(ad))) <= I;
+            register_memory(to_integer(unsigned(ad))) <= I;
             
         end if;
          if RST ='0' then
          reset :for i IN 255 downto 0 LOOP
-                   registre(i) <= (others => '0');
+                   register_memory(i) <= (others => '0');
                    end loop reset;
     end if;
         
    
     
 end process;
-S <= registre(to_integer(unsigned(ad)));
+S <= register_memory(to_integer(unsigned(ad)));
 
 end Behavioral;

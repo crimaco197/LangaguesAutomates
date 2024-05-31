@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xc7k70tfbv676-1" LaunchTime="1716897064" LaunchIncrCheckpoint="$PSRCDIR/utils_1/imports/synth_1/Alu.dcp">
+<GenRun Id="synth_1" LaunchPart="xc7k70tfbv676-1" LaunchTime="1717109661" LaunchIncrCheckpoint="$PSRCDIR/utils_1/imports/synth_1/Alu.dcp">
+  <File Type="VDS-TIMINGSUMMARY" Name="Data_path_timing_summary_synth.rpt"/>
   <File Type="RDS-DCP" Name="Data_path.dcp"/>
   <File Type="RDS-UTIL-PB" Name="Data_path_utilization_synth.pb"/>
-  <File Type="PA-TCL" Name="Data_path.tcl"/>
   <File Type="RDS-UTIL" Name="Data_path_utilization_synth.rpt"/>
-  <File Type="REPORTS-TCL" Name="Data_path_reports.tcl"/>
+  <File Type="RDS-PROPCONSTRS" Name="Data_path_drc_synth.rpt"/>
   <File Type="RDS-RDS" Name="Data_path.vds"/>
+  <File Type="REPORTS-TCL" Name="Data_path_reports.tcl"/>
+  <File Type="VDS-TIMING-PB" Name="Data_path_timing_summary_synth.pb"/>
+  <File Type="PA-TCL" Name="Data_path.tcl"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
     <Filter Type="Srcs"/>
     <File Path="$PSRCDIR/sources_1/new/Alu.vhd">
