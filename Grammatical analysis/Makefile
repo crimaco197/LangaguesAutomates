@@ -46,15 +46,6 @@ $(INST:.c=.o): $(INST)
 clean:
 	rm -f $(OBJ) y.tab.c y.tab.h lex.yy.c $(BIN)
 
-# Testing Test Files
-#test: $(BIN)
-#	@echo "Running tests..."
-#	@for file in $(TEST_DIR)/*.c; do \
-#		echo "Testing $$file..."; \
-#		./$(BIN) < $$file; \
-#		echo ""; \
-#	done
-
 test: $(BIN)
 	@echo "Running tests..."
 	@for file in $(TEST_DIR)/*.c; do \

@@ -161,7 +161,7 @@ void print_arithmetic_instruction_table() {
 /*********************************************************************************************************/
 /********************************** STACK ADDRESSES JMF - JMP ********************************************/
 /*********************************************************************************************************/
-// TO SAVE THE INDEX OF JMF (IF - WHILE) - FILO
+// TO SAVE THE INDEX OF JMF (IF - WHILE), and MAIN - FILO
 
 StackNode *jmf_stack = NULL;
 
@@ -171,7 +171,7 @@ void push(int index) {
     new_node->index = index;
     new_node->next = jmf_stack;
     jmf_stack = new_node;
-    print_stack();
+    // print_stack();
 }
 
 // DELETE DE LAST ELEMENT AND RETURN THE NEW INDEX
@@ -183,7 +183,7 @@ int pop() {
     int index = temp->index;
     jmf_stack = jmf_stack->next;
     free(temp);
-    print_stack();
+    // print_stack();  print the stack
     return index;
 }
 

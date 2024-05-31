@@ -92,7 +92,6 @@ main: type tMAIN { printf("Function MAIN Found : %s\n", yytext);
                             else{
                                 address_variable = val;
                             }
-                            printf("holaaaaa");
                             add_instruction( "COP", address_instruction, address_variable , address_symbol_previous , 0 );
                             add_instruction( "RET", address_instruction, 0 , 0 , 0 );
                             add_instruction( "RET", address_instruction, 0 , 0 , 0 );
@@ -110,7 +109,7 @@ type : tVOID  { add_instruction( "RET", address_instruction, 0 , 0 , 0 ); }
      | tINT   { add_instruction( "RET", address_instruction, 0 , 0 , 0 ); } 
 ;
 
-fun : tVOID tID { printf("Function VOID Found : %s\n", yytext); nameFunction = $2; } Body 
+fun : tVOID tID {  printf("Function VOID Found : %s\n", yytext); nameFunction = $2; } Body 
     | tINT tID { printf("Function INT Found : %s\n", yytext);
                  nameFunction = $2;
                  add_symbol("?ADR", nameFunction, 0);  // OK
@@ -136,12 +135,23 @@ Body : tLPAR args tRPAR tLBRACE structure tRBRACE { add_instruction( "NOP", addr
 
 BodyMain : tLPAR args tRPAR tLBRACE structure { int adr = find_symbol("!ADR");
                                                 int val = find_symbol("!VAL");
-                                                //printf("structure - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                                // printf("structure - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                                if(adr == -1 && val == -1){
+                                                    adr = 0;
+                                                    //val = 0;
+                                                    delete_symbol(address_symbol_previous);
+                                                    add_instruction( "PUSH", address_instruction, adr , 0 , 0 ); 
+                                                    add_instruction( "CALL", address_instruction, address_function , 0 , 0 );
+                                                    add_instruction( "POP", address_instruction, adr, 0 , 0 );
+                                                    add_instruction( "COP", address_instruction, address_variable , address_symbol_previous , 0 );
+                                                break;
+                                                }
+                                                
                                                 address_variable = adr;
                                                 // printf("BodyMain - BEFORE val : %d, adr : %d \n", val, adr);
                                                 delete_symbol(val);  // DELETE !VAL
                                                 delete_symbol(adr);  // DELETE !ADR
-                                                //printf("structure - HALF address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
+                                                // printf("structure - HALF address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
                                                 delete_symbol(address_symbol_previous);
                                                 add_symbol("tmp", nameFunction, 0);
                                                 address_symbol_previous = address_symbol;
@@ -152,9 +162,9 @@ BodyMain : tLPAR args tRPAR tLBRACE structure { int adr = find_symbol("!ADR");
                                                 add_instruction( "COP", address_instruction, address_variable , address_symbol_previous , 0 );
                                                 delete_symbol(address_variable);
             } 
-          | tLPAR args tRPAR tLBRACE structure returnStatement
+    //      | tLPAR args tRPAR tLBRACE structure returnStatement
           | tLPAR args tRPAR tLBRACE {args_operation = 0; returnBool = 0;} 
-            returnStatement { 
+            structure returnStatement { 
                               int adr = find_symbol("!ADR");
                               int val = find_symbol("!VAL");
                               // printf("BodyMain - BEFORE val : %d, adr : %d \n", val, adr);
@@ -307,11 +317,7 @@ ifStructure : tLBRACE structure tRBRACE { int jmf_index = pop(); // Obtener el �
                                               update_instruction("JMF", jmf_index, idJMF, address_instruction, 0); // Actualizar la instrucción JMF
                                           } 
                                           
-                                        //      printf("ifStructure - BEFORE address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
-                                        //      printf("ifStructure - BEFORE address_symbol  %d\n", address_symbol);
-                                        //      printf("ifStructure - BEFORE jmf_index %d\n", jmf_index);
-                                        //      printf("ifStructure - BEFORE idJMF %d\n", idJMF);
-                                        //      printf("ifStructure - BEFORE varFirstIF %d\n", varFirstIF);
+
                                           if (idJMF >=  varFirstIF && address_symbol != 0 ){
                                        //       printf("ifStructure - AFTER address_symbol  %d\n", address_symbol);
                                        //       printf("ifStructure - AFTER jmf_index  %d\n", jmf_index);
@@ -321,9 +327,27 @@ ifStructure : tLBRACE structure tRBRACE { int jmf_index = pop(); // Obtener el �
                                        //       printf("ifStructure - AFTER address_symbol_previous : %d, address_variable : %d, address_var_TMP : %d , address_symbol : %d , global_number : %d \n", address_symbol_previous, address_variable , address_var_TMP, address_symbol, global_number);
                                           }
                                           }
-            | tLBRACE structure tRBRACE tELSE tLBRACE structure tRBRACE
+            | tLBRACE structure tRBRACE tELSE tLBRACE { int jmf_index = pop(); // Obtener el índice de la instrucción JMF
+                                          if (jmf_index != -1) {
+                                              // printf("ACTUALIZANDO JMF...\n");
+                                              update_instruction("JMF", jmf_index, idJMF, address_instruction, 0); // Actualizar la instrucción JMF
+                                          } 
+                                          
+                                          if (idJMF >=  varFirstIF && address_symbol != 0 ){
+                                           delete_symbol(address_symbol_previous);
+                                          }
+                                          } structure tRBRACE
             | tLBRACE structure tRBRACE functionBodyReturn
-            | tLBRACE structure tRBRACE tELSE tLBRACE functionBodyReturn tRBRACE
+            | tLBRACE structure tRBRACE tELSE tLBRACE { int jmf_index = pop(); // Obtener el índice de la instrucción JMF
+                                          if (jmf_index != -1) {
+                                              // printf("ACTUALIZANDO JMF...\n");
+                                              update_instruction("JMF", jmf_index, idJMF, address_instruction, 0); // Actualizar la instrucción JMF
+                                          } 
+                                          
+                                          if (idJMF >=  varFirstIF && address_symbol != 0 ){
+                                           delete_symbol(address_symbol_previous);
+                                          }
+                                          } functionBodyReturn tRBRACE
             | tLBRACE structure returnStatement tRBRACE
             | tLBRACE returnStatement tRBRACE { int jmf_index = pop(); // GET THE ADDRESS OF JMF ON THE INSTRUCTION TABLE - WHERE IF STARTS
                                                 if (jmf_index != -1) {

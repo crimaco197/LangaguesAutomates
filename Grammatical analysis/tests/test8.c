@@ -10,7 +10,7 @@ void main(void) { // Main function
   a = 123 + 321 * 4 / 2 - 1;
   if (a == 1) {
     print(a);
-  } if(a) {
+  } else {
     print(a - 1);
     int i, j;
     i = 2;
